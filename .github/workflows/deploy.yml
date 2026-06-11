@@ -1,8 +1,16 @@
 name: Deploy to Cloudflare Workers
 
+# Manual deploy. Run it from the GitHub "Actions" tab → "Deploy to Cloudflare
+# Workers" → "Run workflow" once you have set up your Cloudflare resources.
+#
+# Before the first deploy:
+#   1. Create a D1 database + R2 bucket in Cloudflare and put the real
+#      `database_id` / bucket name into apps/user-application/wrangler.jsonc.
+#   2. Set the worker secret:  wrangler secret put BETTER_AUTH_SECRET
+#   3. Add repo secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID.
+#   4. Apply remote migrations:  pnpm db:migrate:remote
 on:
-  push:
-    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   deploy:

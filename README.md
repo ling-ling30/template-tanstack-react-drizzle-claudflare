@@ -7,17 +7,17 @@ multi-language ready, and batteries-included. Built to be cloned and shipped, no
 
 ## 🚀 Tech stack
 
-| | |
-| --- | --- |
-| **Framework** | [TanStack Start](https://tanstack.com/start/latest) + React 19 |
-| **Routing / data** | TanStack Router + TanStack Query |
-| **Auth** | [Better Auth](https://better-auth.com/) (orgs, roles, username) |
-| **Database** | [Drizzle ORM](https://orm.drizzle.team/) + Cloudflare D1 |
-| **Storage** | Cloudflare R2 |
-| **UI** | [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) (neutral) + Radix |
-| **i18n** | [react-i18next](https://react.i18next.com/) (EN/ID) |
-| **Deploy** | [Cloudflare Workers](https://workers.cloudflare.com/) |
-| **Monorepo** | [pnpm](https://pnpm.io/) workspaces |
+|                    |                                                                                                     |
+| ------------------ | --------------------------------------------------------------------------------------------------- |
+| **Framework**      | [TanStack Start](https://tanstack.com/start/latest) + React 19                                      |
+| **Routing / data** | TanStack Router + TanStack Query                                                                    |
+| **Auth**           | [Better Auth](https://better-auth.com/) (orgs, roles, username)                                     |
+| **Database**       | [Drizzle ORM](https://orm.drizzle.team/) + Cloudflare D1                                            |
+| **Storage**        | Cloudflare R2                                                                                       |
+| **UI**             | [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) (neutral) + Radix |
+| **i18n**           | [react-i18next](https://react.i18next.com/) (EN/ID)                                                 |
+| **Deploy**         | [Cloudflare Workers](https://workers.cloudflare.com/)                                               |
+| **Monorepo**       | [pnpm](https://pnpm.io/) workspaces                                                                 |
 
 ## ✅ What's included
 
@@ -71,21 +71,21 @@ See **[docs/quickstart.md](docs/quickstart.md)** for the full command table.
 
 ## 🗺️ Pages
 
-| Route | Purpose | Access |
-| --- | --- | --- |
-| `/` | Marketing landing + feature guide | public |
-| `/showcase` | Live component + capability gallery | public |
-| `/todos` | Mock form example (TanStack Form + server fn) | public |
-| `/sitemap.xml` | Dynamic sitemap | public |
-| `/login` | Sign in (platform admin) | public |
-| `/$organizationSlug/login` | Org login | public |
-| `/$organizationSlug/app` | Organization workspace shell | org member |
-| `/dashboard` | Admin dashboard shell | platform admin |
-| `/dashboard/account` | Profile, change password, sign out | platform admin |
-| `/dashboard/settings` | Site settings + Open Graph editor | platform admin |
-| `/dashboard/organizations` | Organization management | platform admin |
-| `/health`, `/ready` | Liveness / readiness probes | public |
-| `/api/auth/$` | Better Auth handler (rate-limited) | — |
+| Route                      | Purpose                                       | Access         |
+| -------------------------- | --------------------------------------------- | -------------- |
+| `/`                        | Marketing landing + feature guide             | public         |
+| `/showcase`                | Live component + capability gallery           | public         |
+| `/todos`                   | Mock form example (TanStack Form + server fn) | public         |
+| `/sitemap.xml`             | Dynamic sitemap                               | public         |
+| `/login`                   | Sign in (platform admin)                      | public         |
+| `/$organizationSlug/login` | Org login                                     | public         |
+| `/$organizationSlug/app`   | Organization workspace shell                  | org member     |
+| `/dashboard`               | Admin dashboard shell                         | platform admin |
+| `/dashboard/account`       | Profile, change password, sign out            | platform admin |
+| `/dashboard/settings`      | Site settings + Open Graph editor             | platform admin |
+| `/dashboard/organizations` | Organization management                       | platform admin |
+| `/health`, `/ready`        | Liveness / readiness probes                   | public         |
+| `/api/auth/$`              | Better Auth handler (rate-limited)            | —              |
 
 ## 🏗️ Project structure
 
@@ -208,8 +208,8 @@ pnpm db:migrate:remote
 pnpm run deploy:user-application          # builds data-ops, then wrangler deploy
 ```
 
-CI/CD: `.github/workflows/ci.yml` (typecheck + lint + test on PRs) and `deploy.yml` (deploy on
-push to `main`). Set repo secrets `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`. Full steps
+CI/CD: `.github/workflows/ci.yml` (typecheck + lint + test on push/PR) and `deploy.yml`
+(**manual** — run from the Actions tab once your Cloudflare resources + secrets are set up). Set repo secrets `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`. Full steps
 in the **[deploy](.claude/skills/deploy/SKILL.md)** skill.
 
 ## 📚 Documentation
@@ -224,5 +224,6 @@ in the **[deploy](.claude/skills/deploy/SKILL.md)** skill.
 - [docs/data-table-guide.md](docs/data-table-guide.md) — data table usage
 
 ### In-repo skills (`.claude/skills/`)
+
 `add-feature` · `add-server-function` · `add-migration` · `add-ui-component` · `deploy` —
 recipes that auto-load in Claude Code / Cowork when you ask to add a feature, migration, etc.
