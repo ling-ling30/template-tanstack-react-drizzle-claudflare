@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1779403309748,
+      "tag": "0000_petite_vanisher",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1779417506867,
+      "tag": "0001_amazing_amazoness",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1779500000000,
+      "tag": "0002_site_settings",
+      "breakpoints": true
+    }
+  ]
+}

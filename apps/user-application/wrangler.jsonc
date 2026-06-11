@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "saas-template-app",
+  "compatibility_date": "2026-05-21",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./src/server.ts",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "saas_template_db",
+      "database_id": "local-development-database-id",
+      "migrations_dir": "../../packages/data-ops/src/drizzle"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "PROOF_BUCKET",
+      "bucket_name": "saas-template-storage"
+    }
+  ],
+  "vars": {
+    "BETTER_AUTH_URL": "http://localhost:3000",
+    "PLATFORM_ADMIN_EMAILS": "owner@example.com"
+  }
+}

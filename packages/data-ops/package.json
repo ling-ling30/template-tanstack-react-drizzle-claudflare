@@ -1,0 +1,57 @@
+{
+  "name": "@repo/data-ops",
+  "version": "1.0.0",
+  "description": "Manage auth, database, schemas, and queries",
+  "exports": {
+    "./auth/*": {
+      "default": "./dist/auth/*.js",
+      "types": "./dist/auth/*.d.ts"
+    },
+    "./database/*": {
+      "default": "./dist/database/*.js",
+      "types": "./dist/database/*.d.ts"
+    },
+    "./errors": {
+      "default": "./dist/errors.js",
+      "types": "./dist/errors.d.ts"
+    },
+    "./zod-schema/*": {
+      "default": "./dist/zod-schema/*.js",
+      "types": "./dist/zod-schema/*.d.ts"
+    },
+    "./queries/*": {
+      "default": "./dist/queries/*.js",
+      "types": "./dist/queries/*.d.ts"
+    },
+    "./drizzle/*": {
+      "default": "./dist/drizzle/*.js",
+      "types": "./dist/drizzle/*.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json --outDir ./dist && tsc-alias",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "better-auth:generate": "npx @better-auth/cli@latest generate --yes --config ./config/auth.ts --output ./src/drizzle/auth-schema.ts",
+    "drizzle:generate": "drizzle-kit generate --config drizzle.config.ts",
+    "drizzle:migrate": "drizzle-kit migrate --config drizzle.config.ts",
+    "drizzle:pull": "drizzle-kit pull --config drizzle.config.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "better-auth": "^1.6.11",
+    "drizzle-orm": "^0.45.2",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260521.1",
+    "better-sqlite3": "^12.10.0",
+    "drizzle-kit": "^0.31.10",
+    "tsc-alias": "^1.8.17",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  }
+}

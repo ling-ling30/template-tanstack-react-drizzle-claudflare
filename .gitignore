@@ -1,0 +1,10 @@
+.superpowers/
+node_modules/
+.pnpm-store/
+dist/
+.output/
+.wrangler/
+.dev.vars
+.env
+.env.local
+*.log

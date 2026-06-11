@@ -1,0 +1,46 @@
+{
+  "name": "saas-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "setup": "pnpm install && pnpm run build:data-ops",
+    "build:data-ops": "pnpm --filter @repo/data-ops build",
+    "dev:user-application": "pnpm --filter user-application dev",
+    "build:user-application": "pnpm --filter user-application build",
+    "dev": "pnpm run --filter user-application dev",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "deploy:user-application": "pnpm run build:data-ops && pnpm --filter user-application deploy",
+    "seed:admin": "npx tsx scripts/seed-admin.ts",
+    "check:env": "tsx scripts/check-env.ts",
+    "prepare": "husky",
+    "seed": "tsx scripts/seed.ts",
+    "db:migrate:local": "pnpm --filter user-application run db:migrate:local",
+    "db:migrate:remote": "pnpm --filter user-application run db:migrate:remote",
+    "predev": "pnpm run build:data-ops",
+    "postinstall": "pnpm run build:data-ops"
+  },
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.18.12",
+    "eslint": "^10.4.0",
+    "eslint-plugin-i18next": "^6.1.4",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "tsx": "^4.22.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.59.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,md}": "prettier --write",
+    "*.{ts,tsx}": "eslint --fix"
+  }
+}
