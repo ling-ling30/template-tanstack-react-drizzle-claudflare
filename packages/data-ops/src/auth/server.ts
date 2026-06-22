@@ -19,15 +19,23 @@ type AuthConfig = {
   baseURL: string;
   adapter: {
     drizzleDb: AppDatabase;
-    provider: "sqlite";
+    provider: "mysql";
   };
   /** Optional transactional email sender. When provided, Better Auth uses it
    * for email verification and password-reset messages. */
   sendEmail?: SendEmailFn;
   /** Optional template builders so the app owns email copy/HTML. */
   emailTemplates?: {
-    verification: (url: string) => { subject: string; text: string; html?: string };
-    resetPassword: (url: string) => { subject: string; text: string; html?: string };
+    verification: (url: string) => {
+      subject: string;
+      text: string;
+      html?: string;
+    };
+    resetPassword: (url: string) => {
+      subject: string;
+      text: string;
+      html?: string;
+    };
   };
 };
 
@@ -50,7 +58,13 @@ export function createAuth(config: AuthConfig) {
       enabled: true,
       ...(config.sendEmail
         ? {
-            sendResetPassword: async ({ user, url }: { user: { email: string }; url: string }) => {
+            sendResetPassword: async ({
+              user,
+              url,
+            }: {
+              user: { email: string };
+              url: string;
+            }) => {
               const tpl = config.emailTemplates?.resetPassword(url) ?? {
                 subject: "Reset your password",
                 text: `Reset your password: ${url}`,
@@ -63,7 +77,13 @@ export function createAuth(config: AuthConfig) {
     ...(config.sendEmail
       ? {
           emailVerification: {
-            sendVerificationEmail: async ({ user, url }: { user: { email: string }; url: string }) => {
+            sendVerificationEmail: async ({
+              user,
+              url,
+            }: {
+              user: { email: string };
+              url: string;
+            }) => {
               const tpl = config.emailTemplates?.verification(url) ?? {
                 subject: "Verify your email",
                 text: `Verify your email: ${url}`,

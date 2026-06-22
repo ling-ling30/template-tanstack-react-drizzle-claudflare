@@ -8,16 +8,16 @@ import {
 import { siteSettingsInputSchema } from "@repo/data-ops/zod-schema/site-settings";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
-import { env } from "cloudflare:workers";
+import { getEnv } from "@/core/env";
 
 async function requirePlatformAdmin() {
   const session = await getAuth().api.getSession(getRequest());
   if (!session) {
     throw appError("AUTH_REQUIRED", "Authentication required.");
   }
-  const allowed = env.PLATFORM_ADMIN_EMAILS.split(",").map((e) =>
-    e.trim().toLowerCase(),
-  );
+  const allowed = getEnv()
+    .PLATFORM_ADMIN_EMAILS.split(",")
+    .map((e) => e.trim().toLowerCase());
   if (!allowed.includes(session.user.email.toLowerCase())) {
     throw appError("FORBIDDEN", "Platform admin access required.");
   }
@@ -32,7 +32,7 @@ async function requirePlatformAdmin() {
 export const getSiteSettingsFn = createServerFn({ method: "GET" }).handler(
   async () => {
     return getSiteSettings(getDb());
-  },
+  }
 );
 
 /** Update site settings. Platform-admin only. */

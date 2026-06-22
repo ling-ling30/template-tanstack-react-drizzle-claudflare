@@ -1,14 +1,15 @@
 import type { Config } from "drizzle-kit";
 
+// MySQL (replaces Cloudflare D1). Generate + apply with drizzle-kit:
+//   pnpm --filter @repo/data-ops drizzle:generate
+//   pnpm --filter @repo/data-ops drizzle:migrate
 const config = {
   out: "./src/drizzle",
   schema: ["./src/drizzle/auth-schema.ts", "./src/drizzle/app-schema.ts"],
-  dialect: "sqlite",
-  driver: "d1-http",
+  dialect: "mysql",
   dbCredentials: {
-    accountId: process.env.CLOUDFLARE_ACCOUNT_ID!,
-    databaseId: process.env.CLOUDFLARE_DATABASE_ID!,
-    token: process.env.CLOUDFLARE_D1_TOKEN!,
+    url:
+      process.env.DATABASE_URL ?? "mysql://root:@localhost:3306/chatbot_saas",
   },
 } satisfies Config;
 

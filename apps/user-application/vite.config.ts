@@ -3,7 +3,6 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
-import { cloudflare } from "@cloudflare/vite-plugin";
 
 const config = defineConfig({
   resolve: {
@@ -29,6 +28,8 @@ const config = defineConfig({
       projects: ["./tsconfig.json"],
     }),
     tailwindcss(),
+    // Node target (was Cloudflare). TanStack Start defaults to the Node/Nitro
+    // server preset when no Cloudflare plugin is present.
     tanstackStart({
       srcDirectory: "src",
       server: { entry: "./server.ts" },
@@ -37,11 +38,6 @@ const config = defineConfig({
       },
     }),
     viteReact(),
-    cloudflare({
-      viteEnvironment: {
-        name: "ssr",
-      },
-    }),
   ],
 });
 

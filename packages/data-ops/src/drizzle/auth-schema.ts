@@ -1,160 +1,155 @@
-import { relations, sql } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
-  sqliteTable,
+  mysqlTable,
+  varchar,
   text,
-  integer,
+  boolean,
+  timestamp,
   index,
   uniqueIndex,
-} from "drizzle-orm/sqlite-core";
+} from "drizzle-orm/mysql-core";
 
-export const user = sqliteTable("user", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: integer("email_verified", { mode: "boolean" })
-    .default(false)
-    .notNull(),
-  image: text("image"),
-  createdAt: integer("created_at", { mode: "timestamp_ms" })
-    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-    .notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
-    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  role: text("role"),
-  banned: integer("banned", { mode: "boolean" }).default(false),
-  banReason: text("ban_reason"),
-  banExpires: integer("ban_expires", { mode: "timestamp_ms" }),
-  username: text("username").unique(),
-  displayUsername: text("display_username"),
-});
+/**
+ * Better Auth core + plugin tables, ported from sqlite-core to mysql-core.
+ * Field set is preserved exactly (username, ban, impersonation, org plugin) so
+ * Better Auth adapters/plugins keep working — only the dialect changed.
+ *
+ * Conventions: ids varchar(36); timestamps use MySQL `timestamp`; booleans use
+ * `boolean` (tinyint). Better Auth sets timestamps itself, so we don't default them.
+ */
 
-export const session = sqliteTable(
-  "session",
+export const user = mysqlTable(
+  "user",
   {
-    id: text("id").primaryKey(),
-    expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
-    token: text("token").notNull().unique(),
-    createdAt: integer("created_at", { mode: "timestamp_ms" })
-      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-      .notNull(),
-    updatedAt: integer("updated_at", { mode: "timestamp_ms" })
-      .$onUpdate(() => /* @__PURE__ */ new Date())
-      .notNull(),
-    ipAddress: text("ip_address"),
-    userAgent: text("user_agent"),
-    userId: text("user_id")
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-    impersonatedBy: text("impersonated_by"),
-    activeOrganizationId: text("active_organization_id"),
+    id: varchar("id", { length: 36 }).primaryKey(),
+    name: text("name").notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    emailVerified: boolean("email_verified").default(false).notNull(),
+    image: text("image"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    role: text("role"),
+    banned: boolean("banned").default(false),
+    banReason: text("ban_reason"),
+    banExpires: timestamp("ban_expires"),
+    username: varchar("username", { length: 255 }),
+    displayUsername: text("display_username"),
   },
-  (table) => [index("session_userId_idx").on(table.userId)],
+  (table) => [
+    uniqueIndex("user_email_uidx").on(table.email),
+    uniqueIndex("user_username_uidx").on(table.username),
+  ]
 );
 
-export const account = sqliteTable(
+export const session = mysqlTable(
+  "session",
+  {
+    id: varchar("id", { length: 36 }).primaryKey(),
+    expiresAt: timestamp("expires_at").notNull(),
+    token: varchar("token", { length: 255 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+    ipAddress: text("ip_address"),
+    userAgent: text("user_agent"),
+    userId: varchar("user_id", { length: 36 })
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    impersonatedBy: varchar("impersonated_by", { length: 36 }),
+    activeOrganizationId: varchar("active_organization_id", { length: 36 }),
+  },
+  (table) => [
+    uniqueIndex("session_token_uidx").on(table.token),
+    index("session_userId_idx").on(table.userId),
+  ]
+);
+
+export const account = mysqlTable(
   "account",
   {
-    id: text("id").primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey(),
     accountId: text("account_id").notNull(),
     providerId: text("provider_id").notNull(),
-    userId: text("user_id")
+    userId: varchar("user_id", { length: 36 })
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     accessToken: text("access_token"),
     refreshToken: text("refresh_token"),
     idToken: text("id_token"),
-    accessTokenExpiresAt: integer("access_token_expires_at", {
-      mode: "timestamp_ms",
-    }),
-    refreshTokenExpiresAt: integer("refresh_token_expires_at", {
-      mode: "timestamp_ms",
-    }),
+    accessTokenExpiresAt: timestamp("access_token_expires_at"),
+    refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
     scope: text("scope"),
     password: text("password"),
-    createdAt: integer("created_at", { mode: "timestamp_ms" })
-      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-      .notNull(),
-    updatedAt: integer("updated_at", { mode: "timestamp_ms" })
-      .$onUpdate(() => /* @__PURE__ */ new Date())
-      .notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
-  (table) => [index("account_userId_idx").on(table.userId)],
+  (table) => [index("account_userId_idx").on(table.userId)]
 );
 
-export const verification = sqliteTable(
+export const verification = mysqlTable(
   "verification",
   {
-    id: text("id").primaryKey(),
-    identifier: text("identifier").notNull(),
+    id: varchar("id", { length: 36 }).primaryKey(),
+    identifier: varchar("identifier", { length: 255 }).notNull(),
     value: text("value").notNull(),
-    expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
-    createdAt: integer("created_at", { mode: "timestamp_ms" })
-      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-      .notNull(),
-    updatedAt: integer("updated_at", { mode: "timestamp_ms" })
-      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-      .$onUpdate(() => /* @__PURE__ */ new Date())
-      .notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
   },
-  (table) => [index("verification_identifier_idx").on(table.identifier)],
+  (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
-export const organization = sqliteTable(
+export const organization = mysqlTable(
   "organization",
   {
-    id: text("id").primaryKey(),
+    id: varchar("id", { length: 36 }).primaryKey(),
     name: text("name").notNull(),
-    slug: text("slug").notNull().unique(),
+    slug: varchar("slug", { length: 255 }).notNull(),
     logo: text("logo"),
-    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+    createdAt: timestamp("created_at").notNull(),
     metadata: text("metadata"),
   },
-  (table) => [uniqueIndex("organization_slug_uidx").on(table.slug)],
+  (table) => [uniqueIndex("organization_slug_uidx").on(table.slug)]
 );
 
-export const member = sqliteTable(
+export const member = mysqlTable(
   "member",
   {
-    id: text("id").primaryKey(),
-    organizationId: text("organization_id")
+    id: varchar("id", { length: 36 }).primaryKey(),
+    organizationId: varchar("organization_id", { length: 36 })
       .notNull()
       .references(() => organization.id, { onDelete: "cascade" }),
-    userId: text("user_id")
+    userId: varchar("user_id", { length: 36 })
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    role: text("role").default("member").notNull(),
-    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+    role: text("role").notNull(),
+    createdAt: timestamp("created_at").notNull(),
   },
   (table) => [
     index("member_organizationId_idx").on(table.organizationId),
     index("member_userId_idx").on(table.userId),
-  ],
+  ]
 );
 
-export const invitation = sqliteTable(
+export const invitation = mysqlTable(
   "invitation",
   {
-    id: text("id").primaryKey(),
-    organizationId: text("organization_id")
+    id: varchar("id", { length: 36 }).primaryKey(),
+    organizationId: varchar("organization_id", { length: 36 })
       .notNull()
       .references(() => organization.id, { onDelete: "cascade" }),
-    email: text("email").notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
     role: text("role"),
-    status: text("status").default("pending").notNull(),
-    expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
-    createdAt: integer("created_at", { mode: "timestamp_ms" })
-      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
-      .notNull(),
-    inviterId: text("inviter_id")
+    status: text("status").notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    inviterId: varchar("inviter_id", { length: 36 })
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
   },
   (table) => [
     index("invitation_organizationId_idx").on(table.organizationId),
     index("invitation_email_idx").on(table.email),
-  ],
+  ]
 );
 
 export const userRelations = relations(user, ({ many }) => ({
@@ -165,17 +160,11 @@ export const userRelations = relations(user, ({ many }) => ({
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
-  user: one(user, {
-    fields: [session.userId],
-    references: [user.id],
-  }),
+  user: one(user, { fields: [session.userId], references: [user.id] }),
 }));
 
 export const accountRelations = relations(account, ({ one }) => ({
-  user: one(user, {
-    fields: [account.userId],
-    references: [user.id],
-  }),
+  user: one(user, { fields: [account.userId], references: [user.id] }),
 }));
 
 export const organizationRelations = relations(organization, ({ many }) => ({
@@ -188,10 +177,7 @@ export const memberRelations = relations(member, ({ one }) => ({
     fields: [member.organizationId],
     references: [organization.id],
   }),
-  user: one(user, {
-    fields: [member.userId],
-    references: [user.id],
-  }),
+  user: one(user, { fields: [member.userId], references: [user.id] }),
 }));
 
 export const invitationRelations = relations(invitation, ({ one }) => ({
@@ -199,8 +185,5 @@ export const invitationRelations = relations(invitation, ({ one }) => ({
     fields: [invitation.organizationId],
     references: [organization.id],
   }),
-  user: one(user, {
-    fields: [invitation.inviterId],
-    references: [user.id],
-  }),
+  user: one(user, { fields: [invitation.inviterId], references: [user.id] }),
 }));

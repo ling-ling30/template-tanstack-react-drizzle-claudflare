@@ -1,44 +1,43 @@
+import { getEnv } from "@/core/env";
+
 /**
- * Transactional Email Shell
+ * Transactional Email Shell — Nodemailer over Mailgun SMTP.
  *
- * Inversion-of-control layer for sending transactional email (verification,
- * password reset, org invites). By default it logs the message to the console
- * in development. For production, drop your provider SDK (Resend, SES, Postmark,
- * SendGrid) into `sendEmail` — the rest of the app and Better Auth call this one
- * function, so there is exactly one place to swap.
- *
- * This runs on the server (inside the Cloudflare Worker), not in the browser.
+ * One function (`sendEmail`) that Better Auth and the app call. In dev (no SMTP
+ * creds) it logs instead of sending. Runs on the Node server, never the browser.
  */
 export type EmailMessage = {
   to: string;
   subject: string;
-  /** Plain-text body. Providers can derive HTML or you can add an `html` field. */
+  /** Plain-text body. */
   text: string;
   html?: string;
 };
 
 export async function sendEmail(message: EmailMessage): Promise<void> {
-  // --- Development: log instead of sending ---------------------------------
-  if (import.meta.env?.DEV) {
+  const env = getEnv();
+
+  if (!env.SMTP_USER || !env.SMTP_PASS) {
     console.info(
-      `[email] (dev, not sent) to=${message.to} subject="${message.subject}"\n${message.text}`,
+      `[email] (dev, not sent) to=${message.to} subject="${message.subject}"\n${message.text}`
     );
     return;
   }
 
-  // --- Production: wire your provider here ---------------------------------
-  // Example (Resend):
-  //   const resend = new Resend(env.RESEND_API_KEY);
-  //   await resend.emails.send({
-  //     from: "no-reply@yourdomain.com",
-  //     to: message.to,
-  //     subject: message.subject,
-  //     text: message.text,
-  //     html: message.html,
-  //   });
-  //
-  // Until a provider is wired, fail loudly so missing email isn't silent.
-  console.error(
-    `[email] No provider configured. Drop your SDK into core/email/mailer.ts. Dropped message to ${message.to}: "${message.subject}"`,
-  );
+  // Lazy import so the client bundle never pulls nodemailer.
+  const nodemailer = await import("nodemailer");
+  const transport = nodemailer.createTransport({
+    host: env.SMTP_HOST,
+    port: env.SMTP_PORT,
+    secure: env.SMTP_PORT === 465,
+    auth: { user: env.SMTP_USER, pass: env.SMTP_PASS },
+  });
+
+  await transport.sendMail({
+    from: env.MAIL_FROM,
+    to: message.to,
+    subject: message.subject,
+    text: message.text,
+    html: message.html,
+  });
 }

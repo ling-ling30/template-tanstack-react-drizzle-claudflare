@@ -64,7 +64,7 @@
     "cta": "Buka dasbor",
     "featuresTitle": "Isi paket",
     "guideTitle": "Mulai",
-    "guideStep1": "Salin .dev.vars.example ke .dev.vars lalu jalankan pnpm check:env",
+    "guideStep1": "Salin .env.example ke .env lalu jalankan pnpm check:env",
     "guideStep2": "Jalankan migrasi: pnpm --filter @repo/data-ops drizzle:migrate",
     "guideStep3": "Seed admin master + data demo: pnpm seed",
     "guideStep4": "Jalankan aplikasi: pnpm dev"

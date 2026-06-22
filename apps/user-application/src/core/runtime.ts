@@ -5,17 +5,21 @@ import { initDatabase } from "@repo/data-ops/database/setup";
 import { validateEnv, type ValidatedEnv } from "@/core/env";
 import { sendEmail } from "@/core/email/mailer";
 import { verificationEmail, resetPasswordEmail } from "@/core/email/templates";
+import {
+  createLocalStorage,
+  type ObjectStorage,
+} from "@/core/storage/local-storage";
 
 /**
- * The fully-initialized server runtime: validated env plus the singletons
- * (db, auth) that server functions depend on. Built exactly once per worker
- * isolate and memoized, so we never rebuild the auth instance per request.
+ * Fully-initialized server runtime: validated env plus the singletons (db, auth,
+ * storage). Built once per process and memoized, so the auth instance and MySQL
+ * pool are never rebuilt per request. (Was per Cloudflare isolate; now per Node
+ * process.)
  */
 type Runtime = {
   auth: ReturnType<typeof createAuth>;
   db: ReturnType<typeof createDatabase>;
-  dbBinding: D1Database;
-  proofBucket: R2Bucket;
+  storage: ObjectStorage;
   platformAdminEmails: string;
   env: ValidatedEnv;
 };
@@ -23,11 +27,12 @@ type Runtime = {
 let runtime: Runtime | undefined;
 let runtimePromise: Promise<Runtime> | undefined;
 
-async function createRuntime(bindings: Env): Promise<Runtime> {
-  const env = validateEnv(bindings);
-  const db = createDatabase(env.DB);
+async function createRuntime(): Promise<Runtime> {
+  const env = validateEnv();
+  const db = createDatabase(env.DATABASE_URL);
+  const storage = createLocalStorage(env.STORAGE_DIR);
   const auth = createAuth({
-    adapter: { drizzleDb: db, provider: "sqlite" },
+    adapter: { drizzleDb: db, provider: "mysql" },
     baseURL: env.BETTER_AUTH_URL,
     secret: env.BETTER_AUTH_SECRET,
     sendEmail,
@@ -39,9 +44,9 @@ async function createRuntime(bindings: Env): Promise<Runtime> {
 
   // Populate the backwards-compatible singletons so existing server functions
   // that call getDb()/getAuth() continue to work without changes.
-  initDatabase(env.DB);
+  initDatabase(env.DATABASE_URL);
   setAuth({
-    adapter: { drizzleDb: db, provider: "sqlite" },
+    adapter: { drizzleDb: db, provider: "mysql" },
     baseURL: env.BETTER_AUTH_URL,
     secret: env.BETTER_AUTH_SECRET,
     sendEmail,
@@ -50,8 +55,7 @@ async function createRuntime(bindings: Env): Promise<Runtime> {
   return {
     auth,
     db,
-    dbBinding: env.DB,
-    proofBucket: env.PROOF_BUCKET,
+    storage,
     platformAdminEmails: env.PLATFORM_ADMIN_EMAILS,
     env,
   };
@@ -61,9 +65,9 @@ async function createRuntime(bindings: Env): Promise<Runtime> {
  * Initializes the runtime once and memoizes it. Safe to call on every request;
  * subsequent calls return the same promise/instance.
  */
-export async function initRuntime(bindings: Env): Promise<Runtime> {
+export async function initRuntime(): Promise<Runtime> {
   if (!runtimePromise) {
-    runtimePromise = createRuntime(bindings).then((value) => {
+    runtimePromise = createRuntime().then((value) => {
       runtime = value;
       return value;
     });
@@ -74,7 +78,9 @@ export async function initRuntime(bindings: Env): Promise<Runtime> {
 /** Returns the initialized runtime, throwing if `initRuntime` has not run. */
 export function getRuntime(): Runtime {
   if (!runtime) {
-    throw new Error("Runtime not initialized. Did server.ts call initRuntime()?");
+    throw new Error(
+      "Runtime not initialized. Did the server entry call initRuntime()?"
+    );
   }
   return runtime;
 }

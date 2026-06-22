@@ -8,7 +8,7 @@ import {
 } from "@repo/data-ops/queries/organizations";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
-import { env } from "cloudflare:workers";
+import { getEnv } from "@/core/env";
 import { z } from "zod";
 
 async function requirePlatformAdmin() {
@@ -18,9 +18,9 @@ async function requirePlatformAdmin() {
     throw appError("AUTH_REQUIRED", "Please sign in first.");
   }
 
-  const allowedEmails = env.PLATFORM_ADMIN_EMAILS.split(",").map((email) =>
-    email.trim().toLowerCase(),
-  );
+  const allowedEmails = getEnv()
+    .PLATFORM_ADMIN_EMAILS.split(",")
+    .map((email) => email.trim().toLowerCase());
 
   if (!allowedEmails.includes(session.user.email.toLowerCase())) {
     throw appError("FORBIDDEN", "Platform admin access required.");
@@ -42,7 +42,10 @@ export const listPlatformOrganizationsFn = createServerFn({ method: "GET" })
   });
 
 const createOrganizationSchema = z.object({
-  slug: z.string().min(1).regex(/^[a-z0-9-]+$/),
+  slug: z
+    .string()
+    .min(1)
+    .regex(/^[a-z0-9-]+$/),
   name: z.string().min(1),
 });
 

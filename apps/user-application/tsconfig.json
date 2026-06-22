@@ -6,7 +6,12 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client", "@testing-library/jest-dom", "vitest/globals"],
+    "types": [
+      "node",
+      "vite/client",
+      "@testing-library/jest-dom",
+      "vitest/globals"
+    ],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

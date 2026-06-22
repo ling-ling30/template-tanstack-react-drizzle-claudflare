@@ -12,16 +12,16 @@
     "dev": "pnpm run --filter user-application dev",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
-    "deploy:user-application": "pnpm run build:data-ops && pnpm --filter user-application run deploy",
     "seed:admin": "npx tsx scripts/seed-admin.ts",
     "check:env": "tsx scripts/check-env.ts",
     "prepare": "husky",
     "seed": "tsx scripts/seed.ts",
-    "db:migrate:local": "pnpm --filter user-application run db:migrate:local",
-    "db:migrate:remote": "pnpm --filter user-application run db:migrate:remote",
+    "db:generate": "pnpm --filter @repo/data-ops run drizzle:generate",
+    "db:migrate": "pnpm --filter @repo/data-ops run drizzle:migrate",
+    "db:push": "pnpm --filter @repo/data-ops run drizzle:push",
+    "db:studio": "pnpm --filter @repo/data-ops run drizzle:studio",
     "predev": "pnpm run build:data-ops",
-    "postinstall": "pnpm run build:data-ops",
-    "cf:deploy": "pnpm run build:data-ops && pnpm --filter user-application run build && pnpm --filter user-application exec wrangler deploy"
+    "postinstall": "pnpm run build:data-ops"
   },
   "packageManager": "pnpm@10.14.0",
   "devDependencies": {

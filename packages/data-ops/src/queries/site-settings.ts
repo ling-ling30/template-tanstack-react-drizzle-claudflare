@@ -1,7 +1,10 @@
 import { eq } from "drizzle-orm";
 import type { AppDatabase } from "@/database/setup";
 import { siteSettings } from "@/drizzle/app-schema";
-import type { SiteSettings, SiteSettingsInput } from "@/zod-schema/site-settings";
+import type {
+  SiteSettings,
+  SiteSettingsInput,
+} from "@/zod-schema/site-settings";
 
 const DEFAULT_ID = "default";
 
@@ -29,7 +32,7 @@ export async function getSiteSettings(db: AppDatabase): Promise<SiteSettings> {
 /** Inserts or updates the single site-settings row. */
 export async function upsertSiteSettings(
   db: AppDatabase,
-  input: SiteSettingsInput & { now: string },
+  input: SiteSettingsInput & { now: string }
 ): Promise<SiteSettings> {
   const values = {
     id: DEFAULT_ID,
@@ -39,9 +42,10 @@ export async function upsertSiteSettings(
     ogImage: input.ogImage,
     updatedAt: input.now,
   };
+  // MySQL upsert (was sqlite/pg onConflictDoUpdate).
   await db
     .insert(siteSettings)
     .values(values)
-    .onConflictDoUpdate({ target: siteSettings.id, set: values });
+    .onDuplicateKeyUpdate({ set: values });
   return values;
 }
