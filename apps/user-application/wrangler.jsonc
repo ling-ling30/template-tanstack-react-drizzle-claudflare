@@ -8,7 +8,7 @@
     {
       "binding": "DB",
       "database_name": "saas_template_db",
-      "database_id": "local-development-database-id",
+      "database_id": "d62512c5-6aaa-4604-a063-3cb4effa854f",
       "migrations_dir": "../../packages/data-ops/src/drizzle"
     }
   ],
