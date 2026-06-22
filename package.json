@@ -20,7 +20,8 @@
     "db:migrate:local": "pnpm --filter user-application run db:migrate:local",
     "db:migrate:remote": "pnpm --filter user-application run db:migrate:remote",
     "predev": "pnpm run build:data-ops",
-    "postinstall": "pnpm run build:data-ops"
+    "postinstall": "pnpm run build:data-ops",
+    "cf:deploy": "pnpm run build:data-ops && pnpm --filter user-application run build && pnpm --filter user-application exec wrangler deploy"
   },
   "packageManager": "pnpm@10.14.0",
   "devDependencies": {
