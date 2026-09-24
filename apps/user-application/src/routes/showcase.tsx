@@ -52,6 +52,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
+  Typography,
+  Heading,
+  Text,
+  Code,
+  Kbd,
+  TypographyComponents,
+  type TypographyProps,
+} from "@/components/ui/typography";
+import {
   Card,
   CardHeader,
   CardTitle,
@@ -205,39 +214,46 @@ const COLOR_TOKENS: ColorToken[] = [
     previewClass: "bg-ring",
     category: "border",
   },
+  {
+    name: "Signature Coral",
+    variable: "--coral",
+    description: "Iconic Asana brand accent for key actions and celebrations.",
+    previewClass: "bg-coral",
+    category: "brand",
+  },
   // Charts
   {
-    name: "Chart 1 (Amber / Coral)",
+    name: "Chart 1 (Coral / Lead)",
     variable: "--chart-1",
-    description: "Lead metric trendline or primary analytics series.",
+    description: "Primary analytics trendline or lead category metric.",
     previewClass: "bg-[var(--chart-1)]",
     category: "charts",
   },
   {
-    name: "Chart 2 (Cyan / Teal)",
+    name: "Chart 2 (Emerald / Growth)",
     variable: "--chart-2",
-    description: "Secondary comparison dataset.",
+    description: "Positive growth, completed bookings, or retention dataset.",
     previewClass: "bg-[var(--chart-2)]",
     category: "charts",
   },
   {
-    name: "Chart 3 (Cobalt / Indigo)",
+    name: "Chart 3 (Azure / Volume)",
     variable: "--chart-3",
-    description: "Tertiary metric or historical baseline.",
+    description: "Secondary volume comparison or baseline trendline.",
     previewClass: "bg-[var(--chart-3)]",
     category: "charts",
   },
   {
-    name: "Chart 4 (Emerald / Lime)",
+    name: "Chart 4 (Amber / Pending)",
     variable: "--chart-4",
-    description: "Positive growth / retention metric.",
+    description: "Warning thresholds, pending deliverables, or notice metric.",
     previewClass: "bg-[var(--chart-4)]",
     category: "charts",
   },
   {
-    name: "Chart 5 (Berry / Fuchsia)",
+    name: "Chart 5 (Amethyst / Supplemental)",
     variable: "--chart-5",
-    description: "Supplemental categorical indicator.",
+    description: "Tertiary metric or supplemental categorical indicator.",
     previewClass: "bg-[var(--chart-5)]",
     category: "charts",
   },
@@ -461,6 +477,93 @@ const COMPONENT_PADDING_RULES = [
   },
 ];
 
+/* -------------------------------------------------------------------------
+   Concentric Corner Radius System Tokens
+   ------------------------------------------------------------------------- */
+interface RadiusToken {
+  name: string;
+  variable: string;
+  pixels: number;
+  rem: string;
+  tailwind: string;
+  usage: string;
+}
+
+const RADIUS_TOKENS: RadiusToken[] = [
+  {
+    name: "Micro (2xs)",
+    variable: "--radius-2xs",
+    pixels: 3,
+    rem: "0.1875rem",
+    tailwind: "rounded-[var(--radius-2xs)]",
+    usage: "Sub-pixel indicators, checkbox checks, dot badges",
+  },
+  {
+    name: "Extra Small (xs)",
+    variable: "--radius-xs",
+    pixels: 4,
+    rem: "0.25rem",
+    tailwind: "rounded-xs",
+    usage: "Keyboard keys (kbd), compact tags, status pips",
+  },
+  {
+    name: "Small (sm)",
+    variable: "--radius-sm",
+    pixels: 6,
+    rem: "0.375rem",
+    tailwind: "rounded-sm",
+    usage: "Compact buttons, segmented controls, inner input elements",
+  },
+  {
+    name: "Medium (md)",
+    variable: "--radius-md",
+    pixels: 8,
+    rem: "0.5rem",
+    tailwind: "rounded-md",
+    usage: "Standard buttons, inputs, dropdown items, select triggers",
+  },
+  {
+    name: "Large (lg)",
+    variable: "--radius-lg",
+    pixels: 10,
+    rem: "0.625rem",
+    tailwind: "rounded-lg",
+    usage: "Base system radius, dialog popovers, nested sub-panels",
+  },
+  {
+    name: "Extra Large (xl)",
+    variable: "--radius-xl",
+    pixels: 14,
+    rem: "0.875rem",
+    tailwind: "rounded-xl",
+    usage: "Standard cards, feature bento panels, elevation sheets",
+  },
+  {
+    name: "2X Large (2xl)",
+    variable: "--radius-2xl",
+    pixels: 18,
+    rem: "1.125rem",
+    tailwind: "rounded-2xl",
+    usage: "Modal dialog windows, master viewports, hero shells",
+  },
+  {
+    name: "3X Large (3xl)",
+    variable: "--radius-3xl",
+    pixels: 24,
+    rem: "1.5rem",
+    tailwind: "rounded-3xl",
+    usage: "Floating hero containers, drawer sheets, presentation cards",
+  },
+  {
+    name: "Full (Pill)",
+    variable: "--radius-full",
+    pixels: 9999,
+    rem: "9999px",
+    tailwind: "rounded-full",
+    usage: "Pill navigation buttons, avatar circles, filter capsules",
+  },
+];
+
 const SAMPLE_VENUES: ComboboxOption[] = [
   {
     value: "villa-sol",
@@ -571,7 +674,7 @@ interface ShowcaseTabItem {
 const SHOWCASE_TABS: ShowcaseTabItem[] = [
   { id: "tokens", label: "Color Tokens", icon: Palette },
   { id: "typography", label: "Typography", icon: Type },
-  { id: "spacing", label: "Padding & Spacing", icon: Ruler },
+  { id: "spacing", label: "Spacing & Radius", icon: Ruler },
   { id: "primitives", label: "UI Primitives", icon: Sparkles },
   { id: "inputs", label: "Field Controls", icon: FormInput },
   { id: "table", label: "Data Table", icon: TableIcon },
@@ -733,6 +836,17 @@ function ShowcasePage() {
     useState("Asana Design Token");
   const [valueBoxTypeDemo, setValueBoxTypeDemo] =
     useState<ValueBoxType>("info");
+
+  // Interactive Typography Component Playground
+  const [typographyVariant, setTypographyVariant] =
+    useState<NonNullable<TypographyProps["variant"]>>("display");
+  const [typographyColor, setTypographyColor] =
+    useState<TypographyProps["color"]>("default");
+  const [typographyTabular, setTypographyTabular] = useState(false);
+  const [typographyBalance, setTypographyBalance] = useState(true);
+  const [typographySampleText, setTypographySampleText] = useState(
+    "Cinematic Wedding Photography & Client Gallery"
+  );
 
   // Form states
   const [formEventName, setFormEventName] = useState("");
@@ -932,6 +1046,159 @@ function ShowcasePage() {
           </div>
 
           <div className="grid gap-6">
+            {/* Interactive Typography Component Playground */}
+            <Card size="sm">
+              <CardHeader>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <CardTitle>
+                    Unified Typography Component (
+                    <code className="text-primary font-mono text-xs">
+                      &lt;Typography /&gt;
+                    </code>
+                    )
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    size="sm"
+                    className="font-mono text-xs"
+                  >
+                    Polymorphic · 14 Variants · Optical Tracking
+                  </Badge>
+                </div>
+                <CardDescription>
+                  Production-grade typographic primitive supporting polymorphic
+                  HTML tags, Emil Kowalski optical tracking calibrations,
+                  tabular numerals, and text balancing.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                {/* Live Preview Box */}
+                <div className="border-border/60 bg-muted/20 dark:bg-background relative flex min-h-[130px] flex-col justify-center rounded-xl border p-6 transition-all">
+                  <Typography
+                    variant={typographyVariant}
+                    color={typographyColor}
+                    tabular={typographyTabular}
+                    balance={typographyBalance}
+                  >
+                    {typographySampleText || "Type custom text..."}
+                  </Typography>
+                </div>
+
+                {/* Controls Bar */}
+                <div className="space-y-3">
+                  {/* Variant Selector */}
+                  <div className="space-y-1.5">
+                    <span className="text-muted-foreground text-xs font-medium">
+                      Select Variant:
+                    </span>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {(
+                        [
+                          "display",
+                          "h1",
+                          "h2",
+                          "h3",
+                          "h4",
+                          "lead",
+                          "large",
+                          "body",
+                          "small",
+                          "caption",
+                          "code",
+                          "kbd",
+                          "micro",
+                          "blockquote",
+                        ] as const
+                      ).map((v) => (
+                        <Button
+                          key={v}
+                          type="button"
+                          size="xs"
+                          variant={
+                            typographyVariant === v ? "default" : "outline"
+                          }
+                          onClick={() => setTypographyVariant(v)}
+                          className="font-mono text-[11px]"
+                        >
+                          {v}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Color & Modifiers Row */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <span className="text-muted-foreground text-xs font-medium">
+                        Color:
+                      </span>
+                      {(
+                        [
+                          "default",
+                          "muted",
+                          "primary",
+                          "coral",
+                          "destructive",
+                          "chart-2",
+                        ] as const
+                      ).map((c) => (
+                        <Button
+                          key={c}
+                          type="button"
+                          size="xs"
+                          variant={
+                            typographyColor === c ? "default" : "outline"
+                          }
+                          onClick={() => setTypographyColor(c)}
+                          className="font-mono text-[11px]"
+                        >
+                          {c}
+                        </Button>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        size="xs"
+                        variant={typographyTabular ? "default" : "outline"}
+                        onClick={() => setTypographyTabular(!typographyTabular)}
+                        className="font-mono text-[11px]"
+                      >
+                        Tabular Nums
+                      </Button>
+                      <Button
+                        type="button"
+                        size="xs"
+                        variant={typographyBalance ? "default" : "outline"}
+                        onClick={() => setTypographyBalance(!typographyBalance)}
+                        className="font-mono text-[11px]"
+                      >
+                        Text Balance
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Sample text input */}
+                  <div className="pt-1">
+                    <Input
+                      size="sm"
+                      value={typographySampleText}
+                      onChange={(e) => setTypographySampleText(e.target.value)}
+                      placeholder="Type custom preview text..."
+                    />
+                  </div>
+                </div>
+
+                {/* Generated Code Readout */}
+                <ValueBox
+                  label="Generated Component Code"
+                  type="info"
+                  value={`<Typography variant="${typographyVariant}" color="${typographyColor}"${typographyTabular ? " tabular" : ""}${typographyBalance ? " balance" : ""}>${typographySampleText}</Typography>`}
+                />
+              </CardContent>
+            </Card>
+
             {/* Font Family Overview Card */}
             <Card size="sm">
               <CardHeader>
@@ -1043,6 +1310,84 @@ function ShowcasePage() {
                 ))}
               </div>
             </Card>
+
+            {/* Semantic Compound Primitives Card */}
+            <Card size="sm">
+              <CardHeader>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <CardTitle>
+                    Semantic Typography Helpers & Compound Primitives
+                  </CardTitle>
+                  <Badge
+                    variant="outline"
+                    size="sm"
+                    className="font-mono text-xs"
+                  >
+                    &lt;Heading&gt; · &lt;Text&gt; · &lt;Code&gt; · &lt;Kbd&gt;
+                  </Badge>
+                </div>
+                <CardDescription>
+                  Ergonomic convenience components built on top of Typography
+                  with automatic HTML tag assignment and Asana styling.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="border-border/60 bg-muted/20 dark:bg-background/80 space-y-1 rounded-xl border p-3.5">
+                    <TypographyComponents.Micro>
+                      HEADING PRIMITIVE
+                    </TypographyComponents.Micro>
+                    <Heading level={3} className="text-base">
+                      Custom H3 Header
+                    </Heading>
+                    <Text className="text-muted-foreground text-xs">
+                      Auto-maps to &lt;h3&gt; tag
+                    </Text>
+                  </div>
+                  <div className="border-border/60 bg-muted/20 dark:bg-background/80 space-y-1 rounded-xl border p-3.5">
+                    <TypographyComponents.Micro>
+                      BODY TEXT PRIMITIVE
+                    </TypographyComponents.Micro>
+                    <Text className="text-sm font-medium">
+                      Standard Paragraph
+                    </Text>
+                    <Text className="text-muted-foreground text-xs">
+                      Auto-maps to &lt;p&gt; tag
+                    </Text>
+                  </div>
+                  <div className="border-border/60 bg-muted/20 dark:bg-background/80 space-y-1 rounded-xl border p-3.5">
+                    <TypographyComponents.Micro>
+                      CODE INLINE
+                    </TypographyComponents.Micro>
+                    <div>
+                      <Code>const theme = oklch();</Code>
+                    </div>
+                    <Text className="text-muted-foreground text-xs">
+                      Auto-maps to &lt;code&gt; tag
+                    </Text>
+                  </div>
+                  <div className="border-border/60 bg-muted/20 dark:bg-background/80 space-y-1 rounded-xl border p-3.5">
+                    <TypographyComponents.Micro>
+                      KEYBOARD KBD
+                    </TypographyComponents.Micro>
+                    <div className="flex items-center gap-1.5">
+                      <Kbd>⌘</Kbd>
+                      <Kbd>Shift</Kbd>
+                      <Kbd>P</Kbd>
+                    </div>
+                    <Text className="text-muted-foreground text-xs">
+                      Auto-maps to &lt;kbd&gt; tag
+                    </Text>
+                  </div>
+                </div>
+
+                <TypographyComponents.Blockquote>
+                  &ldquo;Good design is as little design as possible. Less, but
+                  better &mdash; because it concentrates on the essential
+                  aspects.&rdquo;
+                </TypographyComponents.Blockquote>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
@@ -1148,6 +1493,123 @@ function ShowcasePage() {
                 </TableBody>
               </Table>
             </div>
+          </Card>
+
+          {/* Concentric Corner Radius System ("maybe rounded?") */}
+          <Card className="overflow-hidden">
+            <CardHeader className="border-border/50 border-b p-6 pb-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <CardTitle className="text-base">
+                  Concentric Corner Radius System & Squircle Geometry
+                </CardTitle>
+                <Badge
+                  variant="outline"
+                  size="sm"
+                  className="font-mono text-xs"
+                >
+                  Base --radius: 10px (0.625rem)
+                </Badge>
+              </div>
+              <CardDescription className="text-xs">
+                Tactile border radii hierarchy designed per Emil Kowalski
+                concentric nesting:
+                <code className="text-primary ml-1 font-mono">
+                  R_inner = R_outer - padding
+                </code>
+                .
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6 p-6">
+              {/* Radii Swatch Tiles */}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+                {RADIUS_TOKENS.map((token) => (
+                  <div
+                    key={token.variable}
+                    className="border-border/60 bg-muted/20 dark:bg-background/80 hover:border-primary/40 flex flex-col items-center justify-between rounded-xl border p-3.5 text-center transition-all"
+                  >
+                    <div
+                      style={{
+                        borderRadius:
+                          token.pixels === 9999
+                            ? "9999px"
+                            : `${token.pixels}px`,
+                      }}
+                      className="border-primary/50 bg-primary/10 text-primary flex size-12 items-center justify-center border font-mono text-[10px] font-bold shadow-2xs"
+                    >
+                      {token.pixels === 9999 ? "full" : `${token.pixels}px`}
+                    </div>
+                    <div className="mt-2.5 space-y-0.5">
+                      <div className="text-foreground text-xs font-semibold">
+                        {token.name}
+                      </div>
+                      <div className="text-muted-foreground font-mono text-[10px]">
+                        {token.rem}
+                      </div>
+                      <code className="text-primary/90 bg-muted/60 block truncate rounded px-1 font-mono text-[9px]">
+                        {token.tailwind}
+                      </code>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Concentric Nesting Visualizer */}
+              <div className="border-border/50 bg-muted/15 dark:bg-card/50 space-y-3 rounded-xl border p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-foreground text-xs font-semibold">
+                    Concentric Arc Nesting in Action
+                  </span>
+                  <span className="text-muted-foreground font-mono text-xs">
+                    R_inner = 14px - 8px = 6px
+                  </span>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {/* Correct Concentric Nesting */}
+                  <div className="border-chart-2/40 bg-chart-2/5 space-y-2 rounded-xl border p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-chart-2 text-xs font-semibold">
+                        Correct (Concentric Arc)
+                      </span>
+                      <Badge variant="success" size="compact">
+                        Harmonious
+                      </Badge>
+                    </div>
+                    <div className="border-chart-2/30 bg-background/90 text-foreground rounded-sm border p-3 text-xs shadow-2xs">
+                      Outer:{" "}
+                      <code className="text-chart-2 font-mono">
+                        rounded-xl (14px)
+                      </code>{" "}
+                      · Inset: 16px · Inner:{" "}
+                      <code className="text-chart-2 font-mono">
+                        rounded-sm (6px)
+                      </code>
+                    </div>
+                  </div>
+
+                  {/* Incorrect Non-concentric Nesting */}
+                  <div className="border-destructive/30 bg-destructive/5 space-y-2 rounded-xl border p-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-destructive text-xs font-semibold">
+                        Mismatched (Corner Clashing)
+                      </span>
+                      <Badge variant="coral" size="compact">
+                        Unequal Arc Gap
+                      </Badge>
+                    </div>
+                    <div className="border-destructive/30 bg-background/90 text-foreground rounded-3xl border p-3 text-xs shadow-2xs">
+                      Outer:{" "}
+                      <code className="text-destructive font-mono">
+                        rounded-xl (14px)
+                      </code>{" "}
+                      · Inset: 16px · Inner:{" "}
+                      <code className="text-destructive font-mono">
+                        rounded-3xl (24px)
+                      </code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
           </Card>
         </section>
 

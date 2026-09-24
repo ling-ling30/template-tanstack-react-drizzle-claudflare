@@ -5,12 +5,12 @@ import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const cardVariants = cva(
-  "bg-card text-card-foreground border-border asana-card-shadow flex flex-col rounded-lg border transition-shadow duration-150",
+  "bg-card text-card-foreground border-border asana-card-shadow flex flex-col rounded-xl border transition-shadow duration-150",
   {
     variants: {
       size: {
         default: "gap-6 py-6",
-        sm: "gap-4 py-5",
+        sm: "gap-4 py-5 rounded-lg",
       },
     },
     defaultVariants: {
