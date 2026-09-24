@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-medium tracking-wide w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/40 focus-visible:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-all overflow-hidden",
+  "inline-flex items-center justify-center border font-medium tracking-wide w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/40 focus-visible:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-all overflow-hidden",
   {
     variants: {
       variant: {
@@ -21,10 +21,19 @@ const badgeVariants = cva(
         warning: "border-chart-4/30 bg-chart-4/10 text-chart-4",
         info: "border-chart-3/30 bg-chart-3/10 text-chart-3",
         coral: "border-destructive/30 bg-destructive/10 text-destructive",
+        neutral: "border-border/60 bg-muted/40 text-muted-foreground",
+        pill: "border-border/80 bg-background/80 text-foreground [a&]:hover:bg-muted/60",
+      },
+      size: {
+        default: "rounded-full px-2.5 py-0.5 text-xs",
+        sm: "rounded-full px-2 py-0.5 text-[11px]",
+        compact: "rounded-sm px-1.5 py-0 text-[10px] font-mono tracking-wider",
+        pill: "rounded-full px-3 py-1 text-xs",
       },
     },
     defaultVariants: {
       variant: "default",
+      size: "default",
     },
   }
 );
@@ -32,6 +41,7 @@ const badgeVariants = cva(
 function Badge({
   className,
   variant,
+  size,
   asChild = false,
   ...props
 }: React.ComponentProps<"span"> &
@@ -41,7 +51,7 @@ function Badge({
   return (
     <Comp
       data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
+      className={cn(badgeVariants({ variant, size }), className)}
       {...props}
     />
   );

@@ -112,3 +112,8 @@ export {
   TableCell,
   TableCaption,
 };
+
+export {
+  DataTablePagination,
+  type DataTablePaginationProps,
+} from "@/components/data-table/data-table-pagination";

@@ -92,4 +92,38 @@ describe("PhoneInput", () => {
       })
     );
   });
+
+  it("applies border-destructive and destructive ring when error prop is true", () => {
+    const { container } = render(
+      <PhoneInput error defaultValue="2025550123" />
+    );
+    const root = container.querySelector('[data-slot="phone-input-root"]');
+    expect(root).toHaveAttribute("aria-invalid", "true");
+    expect(root?.classList.contains("border-destructive")).toBe(true);
+    expect(root?.classList.contains("ring-destructive/20")).toBe(true);
+  });
+
+  it("applies border-destructive and destructive ring when showValidationState is true and number is invalid", () => {
+    const { container } = render(
+      <PhoneInput showValidationState defaultValue="202" />
+    );
+    const root = container.querySelector('[data-slot="phone-input-root"]');
+    expect(root).toHaveAttribute("aria-invalid", "true");
+    expect(root?.classList.contains("border-destructive")).toBe(true);
+    expect(root?.classList.contains("ring-destructive/20")).toBe(true);
+  });
+
+  it("does not apply destructive border and ring when phone number is valid", () => {
+    const { container } = render(
+      <PhoneInput
+        showValidationState
+        defaultValue="2025550123"
+        defaultCountry="US"
+      />
+    );
+    const root = container.querySelector('[data-slot="phone-input-root"]');
+    expect(root).not.toHaveAttribute("aria-invalid");
+    expect(root?.classList.contains("border-destructive")).toBe(false);
+    expect(root?.classList.contains("border-input")).toBe(true);
+  });
 });

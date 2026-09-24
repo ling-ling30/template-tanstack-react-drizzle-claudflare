@@ -24,10 +24,16 @@ import {
   Sliders,
   Send,
   Loader2,
+  Type,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import {
+  ValueBox,
+  TelemetryBox,
+  type ValueBoxType,
+} from "@/components/ui/value-box";
 import { NumberInput } from "@/components/ui/number-input";
 import {
   DateInput,
@@ -40,6 +46,7 @@ import {
   CountryFlag,
   type PhoneValueMeta,
 } from "@/components/ui/phone-input";
+import { Combobox, type ComboboxOption } from "@/components/ui/combobox";
 import { parsePhoneNumber } from "@/lib/phone";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -49,6 +56,7 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardAction,
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
@@ -76,6 +84,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  DataTablePagination,
 } from "@/components/ui/table";
 import { ThemeToggle } from "@/components/theme";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
@@ -235,6 +244,116 @@ const COLOR_TOKENS: ColorToken[] = [
 ];
 
 /* -------------------------------------------------------------------------
+   Typography Hierarchy & Specimen Tokens
+   ------------------------------------------------------------------------- */
+interface TypographyToken {
+  name: string;
+  role: string;
+  size: string;
+  lineHeight: string;
+  tracking: string;
+  weight: string;
+  sample: string;
+  className: string;
+}
+
+const TYPOGRAPHY_TOKENS: TypographyToken[] = [
+  {
+    name: "Display Hero",
+    role: "Hero headers, major metric calls, landing showcase headlines",
+    size: "48px / 3.0rem",
+    lineHeight: "1.1",
+    tracking: "-0.035em",
+    weight: "SemiBold (600)",
+    sample: "Unforgettable Moments Captured",
+    className: "text-3xl sm:text-5xl font-semibold tracking-[-0.035em]",
+  },
+  {
+    name: "Page Title (H1)",
+    role: "Primary view header, dashboard page title, dialog headlines",
+    size: "30px / 1.875rem",
+    lineHeight: "1.2",
+    tracking: "-0.025em",
+    weight: "SemiBold (600)",
+    sample: "Design System & Component Spec",
+    className: "text-2xl sm:text-3xl font-semibold tracking-tight",
+  },
+  {
+    name: "Section Title (H2)",
+    role: "Major content chapter divider, module headings",
+    size: "24px / 1.5rem",
+    lineHeight: "1.25",
+    tracking: "-0.02em",
+    weight: "SemiBold (600)",
+    sample: "Typography & Hierarchy System",
+    className: "text-xl sm:text-2xl font-semibold tracking-tight",
+  },
+  {
+    name: "Card Title (H3)",
+    role: "Card headers, popover titles, grouping section labels",
+    size: "16px / 1.0rem",
+    lineHeight: "1.35",
+    tracking: "-0.01em",
+    weight: "SemiBold (600)",
+    sample: "Interactive Form Composition",
+    className: "text-base font-semibold leading-snug",
+  },
+  {
+    name: "Lead / Subheading",
+    role: "Introductory summaries, hero subtitle copy",
+    size: "16px / 1.0rem",
+    lineHeight: "1.6",
+    tracking: "normal",
+    weight: "Regular (400)",
+    sample:
+      "Strict token definitions, mathematical padding rhythm, and responsive controls.",
+    className: "text-base text-muted-foreground leading-relaxed",
+  },
+  {
+    name: "Body Regular",
+    role: "Standard UI paragraphs, card descriptions, data table entries",
+    size: "14px / 0.875rem",
+    lineHeight: "1.5",
+    tracking: "normal",
+    weight: "Regular (400)",
+    sample:
+      "Every input state tuned with instant feedback and tactile focus rings.",
+    className: "text-sm text-foreground/90 leading-relaxed",
+  },
+  {
+    name: "Caption / Label",
+    role: "Field labels, column headers, metadata timestamps",
+    size: "12px / 0.75rem",
+    lineHeight: "1.4",
+    tracking: "normal",
+    weight: "Medium (500)",
+    sample: "Event Date & Start Time · Required Field",
+    className: "text-xs font-medium text-muted-foreground",
+  },
+  {
+    name: "Monospace / Telemetry",
+    role: "Code tokens, E.164 phone payloads, coordinates, IDs",
+    size: "12px / 0.75rem",
+    lineHeight: "1.4",
+    tracking: "-0.01em",
+    weight: "Regular (400)",
+    sample: "EVT-8921 · +1 (202) 555-0123 · origin-aware",
+    className: "font-mono text-xs text-foreground",
+  },
+  {
+    name: "Micro Badge / Tag",
+    role: "Status pill tags, compact counts, keyboard shortcuts",
+    size: "10px / 0.625rem",
+    lineHeight: "1.0",
+    tracking: "0.05em",
+    weight: "SemiBold (600)",
+    sample: "VERIFIED · ⌘K · v2.0",
+    className:
+      "font-mono text-[10px] uppercase font-semibold tracking-wider text-muted-foreground",
+  },
+];
+
+/* -------------------------------------------------------------------------
    Spacing & Padding Rules Data
    ------------------------------------------------------------------------- */
 interface SpacingRule {
@@ -342,6 +461,45 @@ const COMPONENT_PADDING_RULES = [
   },
 ];
 
+const SAMPLE_VENUES: ComboboxOption[] = [
+  {
+    value: "villa-sol",
+    label: "Villa Solstice Clifftop",
+    description: "Uluwatu, Bali · 300 Guests",
+    group: "Bali Venues",
+  },
+  {
+    value: "ayana-estate",
+    label: "Ayana Ocean Glasshouse",
+    description: "Jimbaran · 450 Guests",
+    group: "Bali Venues",
+  },
+  {
+    value: "como-shambhala",
+    label: "COMO Shambhala Rainforest",
+    description: "Ubud · 180 Guests",
+    group: "Bali Venues",
+  },
+  {
+    value: "como-point-yamu",
+    label: "Point Yamu Overlook",
+    description: "Phuket, Thailand · 200 Guests",
+    group: "International",
+  },
+  {
+    value: "chateau-bouffemont",
+    label: "Château de Bouffémont",
+    description: "Paris, France · 150 Guests",
+    group: "International",
+  },
+  {
+    value: "amalfi-belmond",
+    label: "Hotel Caruso Belvedere",
+    description: "Ravello, Italy · 120 Guests",
+    group: "International",
+  },
+];
+
 /* -------------------------------------------------------------------------
    Sample Table Data
    ------------------------------------------------------------------------- */
@@ -395,7 +553,14 @@ const SAMPLE_EVENTS: EventRow[] = [
 ];
 
 type SectionTab =
-  "tokens" | "spacing" | "inputs" | "table" | "form" | "components";
+  | "tokens"
+  | "typography"
+  | "spacing"
+  | "primitives"
+  | "inputs"
+  | "table"
+  | "form"
+  | "components";
 
 interface ShowcaseTabItem {
   id: SectionTab;
@@ -405,8 +570,10 @@ interface ShowcaseTabItem {
 
 const SHOWCASE_TABS: ShowcaseTabItem[] = [
   { id: "tokens", label: "Color Tokens", icon: Palette },
+  { id: "typography", label: "Typography", icon: Type },
   { id: "spacing", label: "Padding & Spacing", icon: Ruler },
-  { id: "inputs", label: "Inputs & Controls", icon: FormInput },
+  { id: "primitives", label: "UI Primitives", icon: Sparkles },
+  { id: "inputs", label: "Field Controls", icon: FormInput },
   { id: "table", label: "Data Table", icon: TableIcon },
   { id: "form", label: "Interactive Form", icon: Sliders },
   { id: "components", label: "Motion & Overlays", icon: Layers },
@@ -451,7 +618,9 @@ function ShowcasePage() {
   useEffect(() => {
     const sectionIds: SectionTab[] = [
       "tokens",
+      "typography",
       "spacing",
+      "primitives",
       "inputs",
       "table",
       "form",
@@ -552,9 +721,18 @@ function ShowcasePage() {
   });
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [selectValue, setSelectValue] = useState("pro");
+  const [comboboxValue, setComboboxValue] = useState("villa-sol");
   const [selectedRows, setSelectedRows] = useState<string[]>(["EVT-8921"]);
   const [tableSearch, setTableSearch] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Primitives showcase interactive states
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [lastClickedButton, setLastClickedButton] = useState<string>("None");
+  const [primitiveInputText, setPrimitiveInputText] =
+    useState("Asana Design Token");
+  const [valueBoxTypeDemo, setValueBoxTypeDemo] =
+    useState<ValueBoxType>("info");
 
   // Form states
   const [formEventName, setFormEventName] = useState("");
@@ -635,19 +813,22 @@ function ShowcasePage() {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               return (
-                <a
+                <Button
                   key={tab.id}
-                  href={`#${tab.id}`}
-                  onClick={(e) => scrollToSection(e, tab.id)}
-                  className={`flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 whitespace-nowrap transition-all active:scale-95 ${
-                    isActive
-                      ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
-                  }`}
+                  asChild
+                  variant="pill"
+                  size="pill"
+                  data-active={isActive}
+                  className={isActive ? "font-semibold shadow-xs" : ""}
                 >
-                  <Icon className="size-3.5" />
-                  <span>{tab.label}</span>
-                </a>
+                  <a
+                    href={`#${tab.id}`}
+                    onClick={(e) => scrollToSection(e, tab.id)}
+                  >
+                    <Icon className="size-3.5" />
+                    <span>{tab.label}</span>
+                  </a>
+                </Button>
               );
             })}
           </nav>
@@ -732,13 +913,147 @@ function ShowcasePage() {
         </section>
 
         {/* =========================================================================
-            SECTION 2: SPACING & PADDING RULES
+            SECTION 2: TYPOGRAPHY SYSTEM
+            ========================================================================= */}
+        <section id="typography" className="scroll-mt-28 space-y-6">
+          <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
+            <div>
+              <h2 className="section-title text-2xl font-semibold">
+                2. Typography & Hierarchy System
+              </h2>
+              <p className="text-muted-foreground mt-0.5 text-sm">
+                Swiss editorial type stack, mathematical scale hierarchy, and
+                open apertures for data density.
+              </p>
+            </div>
+            <Badge variant="outline" className="w-fit font-mono text-xs">
+              TWK Lausanne · Swiss Precision
+            </Badge>
+          </div>
+
+          <div className="grid gap-6">
+            {/* Font Family Overview Card */}
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Typeface Stack & Alphabet Specimen</CardTitle>
+                <CardDescription>
+                  Clean Swiss geometry with open counters and balanced
+                  micro-contrast for effortless reading.
+                </CardDescription>
+                <CardAction>
+                  <code className="text-muted-foreground bg-muted/60 rounded px-2 py-0.5 font-mono text-[11px]">
+                    --font-sans
+                  </code>
+                </CardAction>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="border-border/60 bg-muted/30 dark:bg-background space-y-3 rounded-xl border p-4">
+                  <div className="border-border/40 flex flex-wrap items-center justify-between gap-2 border-b pb-2">
+                    <span className="text-foreground text-xs font-semibold">
+                      TWK Lausanne Primary Character Set
+                    </span>
+                    <span className="text-muted-foreground font-mono text-xs">
+                      Weights: 400 · 500 · 600
+                    </span>
+                  </div>
+                  <div className="text-foreground text-2xl leading-normal font-medium tracking-tight break-all sm:text-3xl">
+                    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                  </div>
+                  <div className="text-muted-foreground text-xl leading-normal font-normal tracking-tight break-all sm:text-2xl">
+                    abcdefghijklmnopqrstuvwxyz 0123456789
+                  </div>
+                  <div className="text-muted-foreground/80 font-mono text-xs break-all">
+                    !@#$%^&*()_+-=[]&#123;&#125;|;:&apos;&quot;,&lt;.&gt;?/~`
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="border-border/50 bg-background/50 rounded-lg border p-3">
+                    <div className="text-muted-foreground text-xs font-medium">
+                      Regular (400)
+                    </div>
+                    <div className="text-foreground mt-1 text-sm font-normal">
+                      Product body copy & table cells
+                    </div>
+                  </div>
+                  <div className="border-border/50 bg-background/50 rounded-lg border p-3">
+                    <div className="text-muted-foreground text-xs font-medium">
+                      Medium (500)
+                    </div>
+                    <div className="text-foreground mt-1 text-sm font-medium">
+                      Form labels, tabs & controls
+                    </div>
+                  </div>
+                  <div className="border-border/50 bg-background/50 rounded-lg border p-3">
+                    <div className="text-muted-foreground text-xs font-medium">
+                      SemiBold (600)
+                    </div>
+                    <div className="text-foreground mt-1 text-sm font-semibold">
+                      Titles, headings & CTAs
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Scale Hierarchy Sheet */}
+            <Card className="overflow-hidden">
+              <CardHeader className="border-border/50 border-b">
+                <CardTitle>Typography Scale & Usage Roster</CardTitle>
+                <CardDescription>
+                  Every headline and body tier is bound to standard rem tokens
+                  and tracking values.
+                </CardDescription>
+              </CardHeader>
+              <div className="divide-border/50 divide-y">
+                {TYPOGRAPHY_TOKENS.map((token) => (
+                  <div
+                    key={token.name}
+                    className="hover:bg-muted/20 flex flex-col justify-between gap-4 p-4 transition-colors sm:p-5 lg:flex-row lg:items-center"
+                  >
+                    <div className="w-64 shrink-0 space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-foreground text-sm font-semibold">
+                          {token.name}
+                        </span>
+                      </div>
+                      <div className="text-muted-foreground text-xs leading-relaxed">
+                        {token.role}
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        <code className="bg-muted/80 text-foreground rounded px-1.5 py-0.5 font-mono text-[10px]">
+                          {token.size}
+                        </code>
+                        <span className="text-muted-foreground font-mono text-[10px]">
+                          {token.weight}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <p className={token.className}>{token.sample}</p>
+                    </div>
+
+                    <div className="shrink-0 lg:text-right">
+                      <code className="text-primary bg-muted/60 block max-w-xs truncate rounded px-2 py-1 font-mono text-[11px]">
+                        {token.className}
+                      </code>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            SECTION 3: SPACING & PADDING RULES
             ========================================================================= */}
         <section id="spacing" className="scroll-mt-28 space-y-6">
           <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
             <div>
               <h2 className="section-title text-2xl font-semibold">
-                2. Padding & Spacing Rhythm
+                3. Padding & Spacing Rhythm
               </h2>
               <p className="text-muted-foreground mt-0.5 text-sm">
                 The 4px / 8px spatial grid eliminates arbitrary numbers and
@@ -837,13 +1152,535 @@ function ShowcasePage() {
         </section>
 
         {/* =========================================================================
-            SECTION 3: INPUTS & FORM CONTROLS
+            SECTION 4: BASIC UI PRIMITIVES
+            ========================================================================= */}
+        <section id="primitives" className="scroll-mt-28 space-y-6">
+          <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
+            <div>
+              <h2 className="section-title text-2xl font-semibold">
+                4. Basic UI Primitives
+              </h2>
+              <p className="text-muted-foreground mt-0.5 text-sm">
+                Standardized buttons, inputs, badges, and telemetry containers
+                built with strict 4px/8px rhythm and tactile physics.
+              </p>
+            </div>
+            <Badge variant="outline" className="w-fit font-mono text-xs">
+              Button · Input · Badge · ValueBox
+            </Badge>
+          </div>
+
+          <div className="grid gap-6">
+            {/* Card 1: Button Variants & Semantic Tiers */}
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Button Variants & Semantic Tiers</CardTitle>
+                <CardDescription>
+                  Every action tier has a distinct visual hierarchy. Emil
+                  Kowalski active scale ensures tactile feedback on press.
+                </CardDescription>
+                <CardAction>
+                  <Badge
+                    variant="outline"
+                    size="sm"
+                    className="font-mono text-xs"
+                  >
+                    7 Variants
+                  </Badge>
+                </CardAction>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button
+                    variant="default"
+                    onClick={() => setLastClickedButton("Default / Primary")}
+                  >
+                    Primary Action
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => setLastClickedButton("Secondary")}
+                  >
+                    Secondary
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setLastClickedButton("Outline")}
+                  >
+                    Outline
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setLastClickedButton("Ghost")}
+                  >
+                    Ghost
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={() => setLastClickedButton("Destructive")}
+                  >
+                    <Trash2 className="size-4" />
+                    Destructive
+                  </Button>
+                  <Button
+                    variant="link"
+                    onClick={() => setLastClickedButton("Link")}
+                  >
+                    Link Action
+                  </Button>
+                  <Button
+                    variant="pill"
+                    onClick={() => setLastClickedButton("Pill")}
+                  >
+                    Pill Action
+                  </Button>
+                </div>
+
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <ValueBox
+                    label="Last Clicked Action"
+                    value={lastClickedButton}
+                  />
+                  <ValueBox>
+                    Tactile physics: active:scale-[0.97] provides instant haptic
+                    feedback.
+                  </ValueBox>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Card 2: Button Sizes & Icon Controls */}
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Standardized Button Sizes & Icon Controls</CardTitle>
+                <CardDescription>
+                  Strict height alignment across xs (24px), sm (32px), default
+                  (38px), lg (44px), pill (28px), and icon controls.
+                </CardDescription>
+                <CardAction>
+                  <Badge
+                    variant="outline"
+                    size="sm"
+                    className="font-mono text-xs"
+                  >
+                    8 Sizes / Types
+                  </Badge>
+                </CardAction>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button size="xs" variant="outline">
+                    Extra Small (24px)
+                  </Button>
+                  <Button size="sm" variant="outline">
+                    Small (32px)
+                  </Button>
+                  <Button size="default" variant="default">
+                    Default (38px)
+                  </Button>
+                  <Button size="lg" variant="default">
+                    Large (44px)
+                  </Button>
+                  <Button size="pill" variant="secondary">
+                    Pill (28px)
+                  </Button>
+                </div>
+
+                <div className="border-border/50 flex flex-wrap items-center gap-3 border-t pt-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground text-xs font-medium">
+                      Icon Buttons:
+                    </span>
+                    <Button size="icon" variant="outline" aria-label="Add item">
+                      <Plus className="size-4" />
+                    </Button>
+                    <Button
+                      size="icon-sm"
+                      variant="outline"
+                      aria-label="Filter items"
+                    >
+                      <Filter className="size-3.5" />
+                    </Button>
+                    <Button
+                      size="icon-xs"
+                      variant="outline"
+                      aria-label="More options"
+                    >
+                      <MoreHorizontal className="size-3" />
+                    </Button>
+                  </div>
+
+                  <div className="bg-border/60 mx-2 hidden h-6 w-px sm:block" />
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground text-xs font-medium">
+                      State Toggles:
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setButtonLoading(!buttonLoading)}
+                    >
+                      {buttonLoading ? (
+                        <>
+                          <Loader2 className="animate-spin" />
+                          <span>Processing...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="size-3.5" />
+                          <span>Toggle Loading</span>
+                        </>
+                      )}
+                    </Button>
+                    <Button variant="outline" size="sm" disabled>
+                      Disabled
+                    </Button>
+                  </div>
+                </div>
+
+                <ValueBox
+                  label="Button Interactive State"
+                  value={
+                    buttonLoading
+                      ? "Loading State Active (pointer events locked)"
+                      : "Idle / Ready (all controls interactive)"
+                  }
+                />
+              </CardContent>
+            </Card>
+
+            {/* Card 3: Standardized Input Sizes (CVA) & Height Parity */}
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>
+                  Standardized Input Sizes (CVA) & Button Parity
+                </CardTitle>
+                <CardDescription>
+                  Input sizes (sm: 32px, default: 38px, lg: 44px) engineered for
+                  exact optical height parity with buttons.
+                </CardDescription>
+                <CardAction>
+                  <Badge
+                    variant="outline"
+                    size="sm"
+                    className="font-mono text-xs"
+                  >
+                    sm · default · lg
+                  </Badge>
+                </CardAction>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  {/* Small Size: 32px */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="input-sm" className="text-xs font-medium">
+                        Small Size:{" "}
+                        <code className="text-primary font-mono text-[11px]">
+                          size="sm"
+                        </code>{" "}
+                        (h-8 / 32px)
+                      </Label>
+                      <span className="text-muted-foreground text-2xs font-mono">
+                        Matches Button size="sm"
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="input-sm"
+                        size="sm"
+                        value={primitiveInputText}
+                        onChange={(e) => setPrimitiveInputText(e.target.value)}
+                        placeholder="Small input (32px)..."
+                      />
+                      <Button size="sm" variant="default" className="shrink-0">
+                        Submit
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Default Size: 38px */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <Label
+                        htmlFor="input-default"
+                        className="text-xs font-medium"
+                      >
+                        Default Size:{" "}
+                        <code className="text-primary font-mono text-[11px]">
+                          size="default"
+                        </code>{" "}
+                        (h-9.5 / 38px)
+                      </Label>
+                      <span className="text-muted-foreground text-2xs font-mono">
+                        Matches Button size="default"
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="input-default"
+                        size="default"
+                        value={primitiveInputText}
+                        onChange={(e) => setPrimitiveInputText(e.target.value)}
+                        placeholder="Default input (38px)..."
+                      />
+                      <Button
+                        size="default"
+                        variant="default"
+                        className="shrink-0"
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Large Size: 44px */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="input-lg" className="text-xs font-medium">
+                        Large Size:{" "}
+                        <code className="text-primary font-mono text-[11px]">
+                          size="lg"
+                        </code>{" "}
+                        (h-11 / 44px)
+                      </Label>
+                      <span className="text-muted-foreground text-2xs font-mono">
+                        Matches Button size="lg"
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="input-lg"
+                        size="lg"
+                        value={primitiveInputText}
+                        onChange={(e) => setPrimitiveInputText(e.target.value)}
+                        placeholder="Large input (44px)..."
+                      />
+                      <Button size="lg" variant="default" className="shrink-0">
+                        Submit
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Input States Comparison */}
+                <div className="border-border/50 grid gap-3 border-t pt-3 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <Label className="text-muted-foreground text-xs">
+                      Disabled Input State
+                    </Label>
+                    <Input disabled value="Read-only system token" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-destructive text-xs">
+                      Invalid Validation State (aria-invalid)
+                    </Label>
+                    <Input
+                      aria-invalid="true"
+                      defaultValue="invalid_token_format"
+                    />
+                  </div>
+                </div>
+
+                <ValueBox
+                  label="Live Input Mirror"
+                  value={primitiveInputText || "(empty)"}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Card 4: Badges & Semantic Status Tags */}
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Badge Sizes & Semantic Status Tags</CardTitle>
+                <CardDescription>
+                  Versatile metadata indicators with standardized compact, sm,
+                  default, and pill sizing.
+                </CardDescription>
+                <CardAction>
+                  <Badge
+                    variant="outline"
+                    size="sm"
+                    className="font-mono text-xs"
+                  >
+                    Sizes & Semantic Colors
+                  </Badge>
+                </CardAction>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <div className="text-muted-foreground text-xs font-medium">
+                    Standardized Badge Sizes:
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge size="compact" variant="outline">
+                      compact (18px)
+                    </Badge>
+                    <Badge size="sm" variant="outline">
+                      sm (22px)
+                    </Badge>
+                    <Badge size="default" variant="outline">
+                      default (24px)
+                    </Badge>
+                    <Badge size="pill" variant="secondary">
+                      pill (24px)
+                    </Badge>
+                  </div>
+                </div>
+
+                <div className="border-border/50 space-y-2 border-t pt-3">
+                  <div className="text-muted-foreground text-xs font-medium">
+                    Semantic Status Variants:
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant="default">Default</Badge>
+                    <Badge variant="secondary">Secondary</Badge>
+                    <Badge variant="outline">Outline</Badge>
+                    <Badge variant="success">Success / Verified</Badge>
+                    <Badge variant="warning">Warning / Pending</Badge>
+                    <Badge variant="coral">Coral / High-Priority</Badge>
+                    <Badge variant="destructive">Destructive / Failed</Badge>
+                  </div>
+                </div>
+
+                <ValueBox>
+                  Badges use squircle curvature and high-contrast OKLCH semantic
+                  tints for optimal readability across themes.
+                </ValueBox>
+              </CardContent>
+            </Card>
+
+            {/* Card 5: ValueBox Types & Semantic Diagnostics */}
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>ValueBox Types & Semantic States</CardTitle>
+                <CardDescription>
+                  100% tokenized telemetry readouts with warning, error, info,
+                  and success color tokens.
+                </CardDescription>
+                <CardAction>
+                  <Badge
+                    variant="outline"
+                    size="sm"
+                    className="font-mono text-xs"
+                  >
+                    5 Semantic Types
+                  </Badge>
+                </CardAction>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Type Switcher */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-muted-foreground mr-1 text-xs font-medium">
+                    Select Type:
+                  </span>
+                  {(
+                    [
+                      "default",
+                      "info",
+                      "warning",
+                      "error",
+                      "success",
+                    ] as ValueBoxType[]
+                  ).map((type) => (
+                    <Button
+                      key={type}
+                      size="xs"
+                      variant={
+                        valueBoxTypeDemo === type ? "default" : "outline"
+                      }
+                      onClick={() => setValueBoxTypeDemo(type)}
+                      className="capitalize"
+                    >
+                      {type}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Live Preview */}
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <ValueBox
+                    type={valueBoxTypeDemo}
+                    label={`Telemetry [${valueBoxTypeDemo}]`}
+                    value={
+                      valueBoxTypeDemo === "error"
+                        ? "E.164 Invalid Length"
+                        : valueBoxTypeDemo === "warning"
+                          ? "94% Storage Quota"
+                          : valueBoxTypeDemo === "success"
+                            ? "Sync Complete (200 OK)"
+                            : valueBoxTypeDemo === "info"
+                              ? "WebSocket Connected"
+                              : "EVT-8921 Active"
+                    }
+                  />
+
+                  <ValueBox type={valueBoxTypeDemo}>
+                    {valueBoxTypeDemo === "error" &&
+                      "Validation error: Digits must match selected country code."}
+                    {valueBoxTypeDemo === "warning" &&
+                      "Warning: Gallery size exceeds 90% of allocated photographer plan."}
+                    {valueBoxTypeDemo === "success" &&
+                      "Success: All high-resolution assets were compiled into WebP."}
+                    {valueBoxTypeDemo === "info" &&
+                      "Info: Origin-aware positioning scales from the trigger point."}
+                    {valueBoxTypeDemo === "default" &&
+                      "Default: Neutral diagnostic output with 100% tokenized colors."}
+                  </ValueBox>
+                </div>
+
+                {/* Comparison Row */}
+                <div className="border-border/50 space-y-2 border-t pt-3">
+                  <div className="text-muted-foreground text-xs font-medium">
+                    All Semantic Types Side-by-Side:
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    <ValueBox
+                      type="default"
+                      label="Neutral"
+                      value="Status: Idle"
+                    />
+                    <ValueBox
+                      type="info"
+                      label="Notice"
+                      value="Update Available"
+                    />
+                    <ValueBox
+                      type="warning"
+                      label="Warning"
+                      value="High Latency"
+                    />
+                    <ValueBox
+                      type="error"
+                      label="Error"
+                      value="Upload Failed"
+                    />
+                    <ValueBox
+                      type="success"
+                      label="Success"
+                      value="Synced (67/67)"
+                    />
+                    <ValueBox
+                      type="outline"
+                      label="Outline"
+                      value="Draft Mode"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            SECTION 5: DATE & FIELD CONTROLS
             ========================================================================= */}
         <section id="inputs" className="scroll-mt-28 space-y-6">
           <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
             <div>
               <h2 className="section-title text-2xl font-semibold">
-                3. Inputs & Form Controls
+                5. Date & Field Controls
               </h2>
               <p className="text-muted-foreground mt-0.5 text-sm">
                 Every input state tuned with instant feedback, tactile focus
@@ -857,468 +1694,526 @@ function ShowcasePage() {
 
           <div className="grid gap-6 sm:grid-cols-2">
             {/* String / Text Input */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label htmlFor="string-input" className="text-sm font-semibold">
-                  String / Text Input
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>String / Text Input</CardTitle>
+                <CardDescription>
                   With leading icon, clearable state, and active focus halo.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="relative">
+                  <Input
+                    id="string-input"
+                    value={textValue}
+                    onChange={(e) => setTextValue(e.target.value)}
+                    placeholder="Enter text..."
+                    className="pr-10"
+                  />
+                  {textValue && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-xs"
+                      onClick={() => setTextValue("")}
+                      className="text-muted-foreground hover:text-foreground absolute top-1/2 right-2.5 size-5 -translate-y-1/2 rounded-sm p-0 text-xs"
+                      title="Clear"
+                    >
+                      ✕
+                    </Button>
+                  )}
+                </div>
 
-              <div className="relative">
-                <Input
-                  id="string-input"
-                  value={textValue}
-                  onChange={(e) => setTextValue(e.target.value)}
-                  placeholder="Enter text..."
-                  className="pr-10"
-                />
-                {textValue && (
-                  <button
-                    onClick={() => setTextValue("")}
-                    className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 text-xs"
-                    title="Clear"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Value: "{textValue}"
-              </div>
+                <ValueBox label="Value" value={`"${textValue}"`} />
+              </CardContent>
             </Card>
 
             {/* Number Input (No Scroll & No Auto-Zero) */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label htmlFor="number-input" className="text-sm font-semibold">
-                  Number Input (No Scroll & No Auto-Zero)
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Number Input (No Scroll & No Auto-Zero)</CardTitle>
+                <CardDescription>
                   Can be completely cleared without forcing 0. Wheel scroll
                   disabled, no clunky browser spin arrows.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <NumberInput
+                  id="number-input"
+                  value={numberValue}
+                  onChange={setNumberValue}
+                  min={0}
+                  max={10000}
+                  step={25}
+                  placeholder="Enter a number..."
+                />
 
-              <NumberInput
-                id="number-input"
-                value={numberValue}
-                onChange={setNumberValue}
-                min={0}
-                max={10000}
-                step={25}
-                placeholder="Enter a number..."
-              />
-
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Value:{" "}
-                {numberValue === ""
-                  ? "(empty / cleared)"
-                  : `${numberValue} units`}
-              </div>
+                <ValueBox
+                  label="Value"
+                  value={
+                    numberValue === ""
+                      ? "(empty / cleared)"
+                      : `${numberValue} units`
+                  }
+                />
+              </CardContent>
             </Card>
 
             {/* Single Date Picker */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label className="text-sm font-semibold">
-                  Date Input (Choose One Date)
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Date Input (Choose One Date)</CardTitle>
+                <CardDescription>
                   Interactive Asana calendar popover with quick day presets and
                   clear button.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <DateInput
+                    mode="single"
+                    value={singleDate}
+                    onChange={setSingleDate}
+                    placeholder="Select event date..."
+                  />
+                </div>
 
-              <div>
-                <DateInput
-                  mode="single"
-                  value={singleDate}
-                  onChange={setSingleDate}
-                  placeholder="Select event date..."
+                <ValueBox
+                  label="Selected"
+                  value={
+                    singleDate
+                      ? singleDate.toLocaleDateString("en-US", {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })
+                      : "None"
+                  }
                 />
-              </div>
-
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Selected:{" "}
-                {singleDate
-                  ? singleDate.toLocaleDateString("en-US", {
-                      weekday: "short",
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })
-                  : "None"}
-              </div>
+              </CardContent>
             </Card>
 
             {/* Date Range Picker */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label className="text-sm font-semibold">
-                  Date Range Input (Choose Date Range)
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Date Range Input (Choose Date Range)</CardTitle>
+                <CardDescription>
                   Select start and end date with continuous track highlight, day
                   counter, and presets.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <DateInput
+                    mode="range"
+                    value={rangeDate}
+                    onChange={setRangeDate}
+                    placeholder="Select upload window..."
+                  />
+                </div>
 
-              <div>
-                <DateInput
-                  mode="range"
-                  value={rangeDate}
-                  onChange={setRangeDate}
-                  placeholder="Select upload window..."
+                <ValueBox
+                  label="Range"
+                  value={
+                    rangeDate?.from
+                      ? `${rangeDate.from.toLocaleDateString()} – ${rangeDate.to ? rangeDate.to.toLocaleDateString() : "…"}`
+                      : "None"
+                  }
                 />
-              </div>
-
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Range:{" "}
-                {rangeDate?.from
-                  ? `${rangeDate.from.toLocaleDateString()} – ${rangeDate.to ? rangeDate.to.toLocaleDateString() : "…"}`
-                  : "None"}
-              </div>
+              </CardContent>
             </Card>
 
             {/* Time Input */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label className="text-sm font-semibold">
-                  Time Input (Choose Time)
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Time Input (Choose Time)</CardTitle>
+                <CardDescription>
                   Scrollable hour and minute columns with AM/PM toggle and quick
                   time presets.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <TimeInput
+                    value={timeValue}
+                    onChange={setTimeValue}
+                    placeholder="Select event time..."
+                  />
+                </div>
 
-              <div>
-                <TimeInput
-                  value={timeValue}
-                  onChange={setTimeValue}
-                  placeholder="Select event time..."
-                />
-              </div>
-
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Selected Time: {timeValue || "None"}
-              </div>
+                <ValueBox label="Selected Time" value={timeValue || "None"} />
+              </CardContent>
             </Card>
 
             {/* Date & Time Input */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label className="text-sm font-semibold">
-                  Date & Time Input (Combined Date & Time)
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Date & Time Input (Combined Date & Time)</CardTitle>
+                <CardDescription>
                   Integrated Asana calendar with synchronized time picker panel
                   and chip shortcuts.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <DateTimeInput
+                    value={dateTimeValue}
+                    onChange={setDateTimeValue}
+                    placeholder="Select ceremony start..."
+                  />
+                </div>
 
-              <div>
-                <DateTimeInput
-                  value={dateTimeValue}
-                  onChange={setDateTimeValue}
-                  placeholder="Select ceremony start..."
+                <ValueBox
+                  label="Selected"
+                  value={
+                    dateTimeValue
+                      ? dateTimeValue.toLocaleString("en-US", {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })
+                      : "None"
+                  }
                 />
-              </div>
-
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Selected:{" "}
-                {dateTimeValue
-                  ? dateTimeValue.toLocaleString("en-US", {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    })
-                  : "None"}
-              </div>
+              </CardContent>
             </Card>
 
             {/* Phone Number Input (with Country Selector & Validation) */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
+            <Card size="sm">
+              <CardHeader>
                 <div className="flex items-center justify-between">
-                  <Label
-                    htmlFor="phone-input"
-                    className="text-sm font-semibold"
-                  >
+                  <CardTitle>
                     Phone Input (Country Dropdown & Validation)
-                  </Label>
+                  </CardTitle>
                   <Badge
                     variant={phoneMeta?.isValid ? "success" : "coral"}
+                    size="sm"
                     className="font-mono text-xs"
                   >
                     {phoneMeta?.isValid ? "Valid" : "Incomplete"}
                   </Badge>
                 </div>
-                <p className="text-muted-foreground text-xs">
+                <CardDescription>
                   Searchable country selector, Google libphonenumber formatting,
                   and live E.164 validation.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
 
-              <div className="space-y-2">
-                <PhoneInput
-                  id="phone-input"
-                  country={phoneCountry}
-                  onCountryChange={(c) => setPhoneCountry(c.code)}
-                  value={phoneValue}
-                  onChange={(val, meta) => {
-                    setPhoneValue(val);
-                    setPhoneMeta(meta);
-                  }}
-                  showValidationState
-                  placeholder="Enter phone number..."
-                />
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <PhoneInput
+                    id="phone-input"
+                    country={phoneCountry}
+                    onCountryChange={(c) => setPhoneCountry(c.code)}
+                    value={phoneValue}
+                    onChange={(val, meta) => {
+                      setPhoneValue(val);
+                      setPhoneMeta(meta);
+                    }}
+                    showValidationState
+                    placeholder="Enter phone number..."
+                  />
 
-                {/* Quick Switcher Pills */}
-                <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                  <span className="text-muted-foreground text-[11px] font-medium">
-                    Quick test:
-                  </span>
-                  {[
-                    { code: "US", dial: "+1" },
-                    { code: "ID", dial: "+62" },
-                    { code: "GB", dial: "+44" },
-                    { code: "JP", dial: "+81" },
-                    { code: "AU", dial: "+61" },
-                  ].map((preset) => (
-                    <button
-                      key={preset.code}
-                      type="button"
-                      onClick={() => setPhoneCountry(preset.code)}
+                  {/* Quick Switcher Pills */}
+                  <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                    <span className="text-muted-foreground text-[11px] font-medium">
+                      Quick test:
+                    </span>
+                    {[
+                      { code: "US", dial: "+1" },
+                      { code: "ID", dial: "+62" },
+                      { code: "GB", dial: "+44" },
+                      { code: "JP", dial: "+81" },
+                      { code: "AU", dial: "+61" },
+                    ].map((preset) => (
+                      <Button
+                        key={preset.code}
+                        type="button"
+                        variant={
+                          phoneCountry === preset.code ? "default" : "outline"
+                        }
+                        size="xs"
+                        onClick={() => setPhoneCountry(preset.code)}
+                        className="font-mono text-[11px]"
+                      >
+                        <CountryFlag code={preset.code} className="h-3 w-4" />
+                        <span>{preset.dial}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Real-time Telemetry Panel */}
+                <TelemetryBox className="space-y-1.5 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Country:</span>
+                    <span className="text-foreground flex items-center gap-1.5 font-medium">
+                      <CountryFlag
+                        code={phoneMeta?.country?.code || phoneCountry}
+                      />
+                      <span>
+                        {phoneMeta?.country
+                          ? `${phoneMeta.country.name} (${phoneMeta.dialCode})`
+                          : "United States (+1)"}
+                      </span>
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Formatted:</span>
+                    <span className="text-foreground tabular-nums">
+                      {phoneValue || "—"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">
+                      E.164 Payload:
+                    </span>
+                    <span className="text-foreground tabular-nums">
+                      {phoneMeta?.e164 || "—"}
+                    </span>
+                  </div>
+                  <div className="border-border/40 flex items-center justify-between border-t pt-1">
+                    <span className="text-muted-foreground">Validation:</span>
+                    <span
                       className={cn(
-                        "flex h-6 items-center gap-1.5 rounded-md px-2 font-mono text-[11px] transition-colors",
-                        phoneCountry === preset.code
-                          ? "bg-primary text-primary-foreground font-medium shadow-xs"
-                          : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                        "font-semibold",
+                        phoneMeta?.isValid ? "text-chart-2" : "text-destructive"
                       )}
                     >
-                      <CountryFlag code={preset.code} className="h-3 w-4" />
-                      <span>{preset.dial}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Real-time Telemetry Panel */}
-              <div className="border-border/60 bg-muted/20 space-y-1.5 rounded-lg border p-3 font-mono text-xs">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Country:</span>
-                  <span className="text-foreground flex items-center gap-1.5 font-medium">
-                    <CountryFlag
-                      code={phoneMeta?.country?.code || phoneCountry}
-                    />
-                    <span>
-                      {phoneMeta?.country
-                        ? `${phoneMeta.country.name} (${phoneMeta.dialCode})`
-                        : "United States (+1)"}
+                      {phoneMeta?.isValid
+                        ? "✓ Valid E.164 National Number"
+                        : "⚠ Incomplete digits"}
                     </span>
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Formatted:</span>
-                  <span className="text-foreground tabular-nums">
-                    {phoneValue || "—"}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">E.164 Payload:</span>
-                  <span className="text-foreground tabular-nums">
-                    {phoneMeta?.e164 || "—"}
-                  </span>
-                </div>
-                <div className="border-border/40 flex items-center justify-between border-t pt-1">
-                  <span className="text-muted-foreground">Validation:</span>
-                  <span
-                    className={cn(
-                      "font-semibold",
-                      phoneMeta?.isValid ? "text-chart-2" : "text-destructive"
-                    )}
-                  >
-                    {phoneMeta?.isValid
-                      ? "✓ Valid E.164 National Number"
-                      : "⚠ Incomplete digits"}
-                  </span>
-                </div>
-              </div>
+                  </div>
+                </TelemetryBox>
+              </CardContent>
             </Card>
 
             {/* Select (Radix Select) */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label className="text-sm font-semibold">
-                  Select (Single Option)
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Select (Single Option)</CardTitle>
+                <CardDescription>
                   Radix-powered custom select with origin-aware popover
                   animation.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Select value={selectValue} onValueChange={setSelectValue}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Choose a tier..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="starter">
+                        Starter Plan (500 Photos)
+                      </SelectItem>
+                      <SelectItem value="pro">
+                        Pro Photographer (Unlimited)
+                      </SelectItem>
+                      <SelectItem value="enterprise">
+                        Agency White-Label
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
 
-              <Select value={selectValue} onValueChange={setSelectValue}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Choose a tier..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="starter">
-                      Starter Plan (500 Photos)
-                    </SelectItem>
-                    <SelectItem value="pro">
-                      Pro Photographer (Unlimited)
-                    </SelectItem>
-                    <SelectItem value="enterprise">
-                      Agency White-Label
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+                <ValueBox
+                  label="Selected Tier"
+                  value={
+                    selectValue === "pro"
+                      ? "Pro Photographer (pro)"
+                      : selectValue === "starter"
+                        ? "Starter Plan (starter)"
+                        : "Agency White-Label (enterprise)"
+                  }
+                />
+              </CardContent>
+            </Card>
 
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Selected Tier: {selectValue}
-              </div>
+            {/* Combobox (Searchable Autocomplete Input) */}
+            <Card size="sm">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Combobox (Searchable Autocomplete)</CardTitle>
+                  {comboboxValue && (
+                    <Badge
+                      variant="outline"
+                      size="sm"
+                      className="font-mono text-xs"
+                    >
+                      {comboboxValue}
+                    </Badge>
+                  )}
+                </div>
+                <CardDescription>
+                  Keyboard-navigable searchable input with grouped options and
+                  one-click selection.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Combobox
+                    id="combobox-demo"
+                    options={SAMPLE_VENUES}
+                    value={comboboxValue}
+                    onChange={(val) => setComboboxValue(val)}
+                    placeholder="Select or search wedding venue..."
+                    searchPlaceholder="Filter venues or locations..."
+                  />
+                </div>
+
+                <ValueBox className="space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">
+                      Selected Value:
+                    </span>
+                    <span className="text-foreground font-medium">
+                      {comboboxValue || "None"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Venue:</span>
+                    <span className="text-foreground">
+                      {SAMPLE_VENUES.find((v) => v.value === comboboxValue)
+                        ?.label || "—"}
+                    </span>
+                  </div>
+                </ValueBox>
+              </CardContent>
             </Card>
 
             {/* Dropdown Select / Menu */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label className="text-sm font-semibold">
-                  Dropdown Menu / Action Menu
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Dropdown Menu / Action Menu</CardTitle>
+                <CardDescription>
                   Multi-action menu with keyboard shortcuts, destructive items,
                   and separators.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-between"
+                    >
+                      <span>Manage Album Actions</span>
+                      <ChevronDown className="size-4 opacity-50" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="start">
+                    <DropdownMenuLabel>Album Options</DropdownMenuLabel>
+                    <DropdownMenuItem
+                      onClick={() => toast.info("Opening photo manager")}
+                    >
+                      <Eye className="mr-2 size-4" />
+                      <span>View Gallery</span>
+                      <DropdownMenuShortcut>⌘V</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => toast.info("Link copied to clipboard")}
+                    >
+                      <Copy className="mr-2 size-4" />
+                      <span>Copy Share URL</span>
+                      <DropdownMenuShortcut>⌘C</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => toast.error("Album marked for deletion")}
+                    >
+                      <Trash2 className="mr-2 size-4" />
+                      <span>Archive Event</span>
+                      <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full justify-between">
-                    <span>Manage Album Actions</span>
-                    <ChevronDown className="size-4 opacity-50" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="start">
-                  <DropdownMenuLabel>Album Options</DropdownMenuLabel>
-                  <DropdownMenuItem
-                    onClick={() => toast.info("Opening photo manager")}
-                  >
-                    <Eye className="mr-2 size-4" />
-                    <span>View Gallery</span>
-                    <DropdownMenuShortcut>⌘V</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => toast.info("Link copied to clipboard")}
-                  >
-                    <Copy className="mr-2 size-4" />
-                    <span>Copy Share URL</span>
-                    <DropdownMenuShortcut>⌘C</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onClick={() => toast.error("Album marked for deletion")}
-                  >
-                    <Trash2 className="mr-2 size-4" />
-                    <span>Archive Event</span>
-                    <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Origin-aware: scales from the trigger point, not center.
-              </div>
+                <ValueBox>
+                  Origin-aware: scales from the trigger point, not center.
+                </ValueBox>
+              </CardContent>
             </Card>
 
             {/* Checkbox with Label */}
-            <Card className="space-y-4 p-6">
-              <div className="space-y-1">
-                <Label className="text-sm font-semibold">
-                  Checkbox with Description
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm">
+              <CardHeader>
+                <CardTitle>Checkbox with Description</CardTitle>
+                <CardDescription>
                   Accessible Radix Checkbox with check icon animation and toggle
                   state.
-                </p>
-              </div>
-
-              <div className="border-border/60 bg-muted/20 flex items-start gap-3 rounded-xl border p-4">
-                <Checkbox
-                  id="demo-checkbox"
-                  checked={checkboxValue}
-                  onCheckedChange={(checked) =>
-                    setCheckboxValue(Boolean(checked))
-                  }
-                  className="mt-0.5"
-                />
-                <div className="space-y-1">
-                  <Label
-                    htmlFor="demo-checkbox"
-                    className="cursor-pointer text-sm font-medium"
-                  >
-                    Enable High-Resolution RAW uploads
-                  </Label>
-                  <p className="text-muted-foreground text-xs leading-relaxed">
-                    Automatically converts HEIC/CR3 camera formats directly into
-                    WebP and JPEG.
-                  </p>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="border-border/60 bg-muted/20 flex items-start gap-3 rounded-xl border p-4">
+                  <Checkbox
+                    id="demo-checkbox"
+                    checked={checkboxValue}
+                    onCheckedChange={(checked) =>
+                      setCheckboxValue(Boolean(checked))
+                    }
+                    className="mt-0.5"
+                  />
+                  <div className="space-y-1">
+                    <Label
+                      htmlFor="demo-checkbox"
+                      className="cursor-pointer text-sm font-medium"
+                    >
+                      Enable High-Resolution RAW uploads
+                    </Label>
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      Automatically converts HEIC/CR3 camera formats directly
+                      into WebP and JPEG.
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Status: {checkboxValue ? "Enabled" : "Disabled"}
-              </div>
+                <ValueBox
+                  label="Status"
+                  value={checkboxValue ? "Enabled" : "Disabled"}
+                />
+              </CardContent>
             </Card>
 
             {/* Textarea */}
-            <Card className="space-y-4 p-6 sm:col-span-2">
-              <div className="space-y-1">
-                <Label
-                  htmlFor="textarea-demo"
-                  className="text-sm font-semibold"
-                >
-                  Textarea (Multi-line Input)
-                </Label>
-                <p className="text-muted-foreground text-xs">
+            <Card size="sm" className="sm:col-span-2">
+              <CardHeader>
+                <CardTitle>Textarea (Multi-line Input)</CardTitle>
+                <CardDescription>
                   Comfortable text canvas with character counting and 14px
                   padding.
-                </p>
-              </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Textarea
+                  id="textarea-demo"
+                  value={textareaValue}
+                  onChange={(e) => setTextareaValue(e.target.value)}
+                  placeholder="Write your note here..."
+                  rows={3}
+                />
 
-              <Textarea
-                id="textarea-demo"
-                value={textareaValue}
-                onChange={(e) => setTextareaValue(e.target.value)}
-                placeholder="Write your note here..."
-                rows={3}
-              />
-
-              <div className="text-muted-foreground flex items-center justify-between text-xs">
-                <span>Auto-expanding, min-h-20 with squircle border.</span>
-                <span className="font-mono">
-                  {textareaValue.length} characters
-                </span>
-              </div>
+                <div className="text-muted-foreground flex items-center justify-between text-xs">
+                  <span>Auto-expanding, min-h-20 with squircle border.</span>
+                  <span className="font-mono">
+                    {textareaValue.length} characters
+                  </span>
+                </div>
+              </CardContent>
             </Card>
           </div>
         </section>
 
         {/* =========================================================================
-            SECTION 4: DATA TABLE
+            SECTION 6: DATA TABLE
             ========================================================================= */}
         <section id="table" className="scroll-mt-28 space-y-6">
           <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
             <div>
               <h2 className="section-title text-2xl font-semibold">
-                4. Data Table Component
+                6. Data Table Component
               </h2>
               <p className="text-muted-foreground mt-0.5 text-sm">
                 Engineered with 16px cell padding rhythm, row selection, search,
@@ -1516,41 +2411,22 @@ function ShowcasePage() {
             </div>
 
             {/* Table Pagination Footer */}
-            <div className="border-border/60 text-muted-foreground bg-muted/10 flex flex-col items-center justify-between gap-3 border-t p-4 text-xs sm:flex-row">
-              <div>
-                Showing 1 to {filteredEvents.length} of {SAMPLE_EVENTS.length}{" "}
-                events
-              </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled
-                  className="h-8 text-xs"
-                >
-                  Previous
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled
-                  className="h-8 text-xs"
-                >
-                  Next
-                </Button>
-              </div>
-            </div>
+            <DataTablePagination
+              rowCount={SAMPLE_EVENTS.length}
+              pageIndex={0}
+              pageSize={filteredEvents.length}
+            />
           </Card>
         </section>
 
         {/* =========================================================================
-            SECTION 5: INTERACTIVE REAL-WORLD FORM
+            SECTION 7: INTERACTIVE REAL-WORLD FORM
             ========================================================================= */}
         <section id="form" className="scroll-mt-28 space-y-6">
           <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
             <div>
               <h2 className="section-title text-2xl font-semibold">
-                5. Production Form Composition
+                7. Production Form Composition
               </h2>
               <p className="text-muted-foreground mt-0.5 text-sm">
                 Demonstrates how all inputs integrate into an Asana-grade,
@@ -1766,13 +2642,13 @@ function ShowcasePage() {
         </section>
 
         {/* =========================================================================
-            SECTION 6: EMIL KOWALSKI DESIGN ENGINEERING AUDIT TABLE
+            SECTION 8: EMIL KOWALSKI DESIGN ENGINEERING AUDIT TABLE
             ========================================================================= */}
         <section id="components" className="scroll-mt-28 space-y-6">
           <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
             <div>
               <h2 className="section-title text-2xl font-semibold">
-                6. Design Engineering Review Format
+                8. Design Engineering Review Format
               </h2>
               <p className="text-muted-foreground mt-0.5 text-sm">
                 Before & After audit standards mandated by Emil Kowalski's

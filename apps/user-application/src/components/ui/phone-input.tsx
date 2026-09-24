@@ -86,6 +86,7 @@ export interface PhoneInputProps {
   showValidationState?: boolean;
   className?: string;
   autoComplete?: string;
+  "aria-invalid"?: boolean | "true" | "false";
 }
 
 export function PhoneInput({
@@ -105,6 +106,7 @@ export function PhoneInput({
   showValidationState = false,
   className,
   autoComplete = "tel-national",
+  "aria-invalid": ariaInvalidProp,
 }: PhoneInputProps) {
   // Selected country state
   const [internalCountry, setInternalCountry] = React.useState<Country>(() => {
@@ -144,7 +146,11 @@ export function PhoneInput({
   const isValid = isValidPhoneNumber(nationalDigits, selectedCountry);
   const isInvalid = Boolean(
     error ||
-    (isTouched && showValidationState && nationalDigits.length > 0 && !isValid)
+    ariaInvalidProp === true ||
+    ariaInvalidProp === "true" ||
+    (required && isTouched && nationalDigits.length === 0) ||
+    (showValidationState && nationalDigits.length > 0 && !isValid) ||
+    (isTouched && nationalDigits.length > 0 && !isValid)
   );
 
   const filteredCountries = React.useMemo(() => {
@@ -183,6 +189,7 @@ export function PhoneInput({
   React.useEffect(() => {
     if (prevCountryCodeRef.current !== selectedCountry.code) {
       prevCountryCodeRef.current = selectedCountry.code;
+      setIsTouched(true);
       const currentDigits = extractDigits(
         isControlled ? (controlledValue ?? "") : uncontrolledValue
       );
@@ -201,6 +208,7 @@ export function PhoneInput({
   ]);
 
   const handleCountrySelect = (country: Country) => {
+    setIsTouched(true);
     prevCountryCodeRef.current = country.code;
     if (!controlledCountryCode) {
       setInternalCountry(country);
@@ -219,6 +227,7 @@ export function PhoneInput({
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsTouched(true);
     const rawInput = e.target.value;
 
     // Check if user pasted an international number starting with "+"
@@ -264,8 +273,10 @@ export function PhoneInput({
       data-slot="phone-input-root"
       aria-invalid={isInvalid ? "true" : undefined}
       className={cn(
-        "group border-input bg-background relative flex h-9.5 w-full items-center rounded-md border shadow-xs transition-all duration-120",
-        "focus-within:border-primary focus-within:ring-ring/25 focus-within:ring-2",
+        "group bg-background relative flex h-9.5 w-full items-center rounded-md border shadow-xs transition-all duration-120",
+        isInvalid
+          ? "border-destructive ring-destructive/20 dark:ring-destructive/40 focus-within:border-destructive focus-within:ring-destructive/20 dark:focus-within:ring-destructive/40 ring-2"
+          : "border-input focus-within:border-primary focus-within:ring-ring/25 focus-within:ring-2",
         "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:ring-2",
         disabled &&
           "bg-muted/20 pointer-events-none cursor-not-allowed opacity-50",
@@ -281,6 +292,7 @@ export function PhoneInput({
             aria-label={`Select country, current: ${selectedCountry.name}`}
             className={cn(
               "border-border/70 flex h-full shrink-0 items-center gap-1.5 rounded-l-[calc(var(--radius)-1px)] border-r px-2.5 transition-colors outline-none",
+              isInvalid && "border-destructive/30",
               "hover:bg-muted/50 active:bg-muted/80 focus-visible:bg-muted/60",
               disabled && "pointer-events-none"
             )}
@@ -395,6 +407,7 @@ export function PhoneInput({
         readOnly={readOnly}
         required={required}
         autoComplete={autoComplete}
+        aria-invalid={isInvalid ? "true" : undefined}
         className={cn(
           "text-foreground placeholder:text-muted-foreground/70 h-full min-w-0 flex-1 bg-transparent px-3 text-sm font-normal tabular-nums outline-none"
         )}
