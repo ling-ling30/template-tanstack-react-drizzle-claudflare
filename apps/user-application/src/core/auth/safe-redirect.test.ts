@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { safeRedirectPath } from "./safe-redirect";
+import { safeRedirectPath, validateLoginSearch } from "./safe-redirect";
 
 describe("safeRedirectPath", () => {
   it.each([
@@ -26,5 +26,21 @@ describe("safeRedirectPath", () => {
   it("rejects non-strings", () => {
     expect(safeRedirectPath(undefined)).toBeNull();
     expect(safeRedirectPath(["/dashboard"])).toBeNull();
+  });
+});
+
+describe("validateLoginSearch", () => {
+  it("keeps a safe redirect", () => {
+    expect(validateLoginSearch({ redirect: "/dashboard/users" })).toEqual({
+      redirect: "/dashboard/users",
+    });
+  });
+
+  it("returns the key as undefined for an unsafe value, so it overrides the raw URL param", () => {
+    const raw = { redirect: "//evil.com" };
+    const result = validateLoginSearch(raw);
+    expect(result).toHaveProperty("redirect", undefined);
+    // Simulates TanStack Router merging validated search over raw params:
+    expect({ ...raw, ...result }.redirect).toBeUndefined();
   });
 });

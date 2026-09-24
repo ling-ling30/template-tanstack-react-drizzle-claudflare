@@ -28,3 +28,14 @@ function hasControlChars(value: string): boolean {
   }
   return false;
 }
+
+/**
+ * `validateSearch` for /login. Returns the `redirect` key EVEN WHEN INVALID
+ * (as undefined): TanStack Router merges a route's validated search over the
+ * raw URL params, so omitting the key would let the raw, unchecked value through.
+ */
+export function validateLoginSearch(search: Record<string, unknown>): {
+  redirect?: string | undefined;
+} {
+  return { redirect: safeRedirectPath(search.redirect) ?? undefined };
+}

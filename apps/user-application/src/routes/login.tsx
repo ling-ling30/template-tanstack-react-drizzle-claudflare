@@ -3,18 +3,18 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { safeRedirectPath } from "@/core/auth/safe-redirect";
+import {
+  safeRedirectPath,
+  validateLoginSearch,
+} from "@/core/auth/safe-redirect";
 import { checkPlatformAdminStatusFn } from "@/core/functions/auth-status";
 import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   // `redirect` is where a route guard sent the user from. Untrusted input:
-  // only same-site paths survive (see safeRedirectPath).
-  validateSearch: (search: Record<string, unknown>): { redirect?: string } => {
-    const redirect = safeRedirectPath(search.redirect);
-    return redirect ? { redirect } : {};
-  },
+  // only same-site paths survive (see validateLoginSearch).
+  validateSearch: validateLoginSearch,
   component: LoginPage,
 });
 
@@ -37,9 +37,11 @@ function LoginPage() {
           });
 
           if (!error) {
-            if (redirect) {
-              // Back to the page the guard bounced them from (re-checked there).
-              navigate({ href: redirect });
+            // Back to the page the guard bounced them from. Checked again here
+            // (defense in depth); the target route re-checks access itself.
+            const target = safeRedirectPath(redirect);
+            if (target) {
+              navigate({ href: target });
               return;
             }
             // Platform admins go to the platform dashboard; everyone else
