@@ -3,6 +3,7 @@ import tseslint from "typescript-eslint";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import i18next from "eslint-plugin-i18next";
+import { plugin as shadcn } from "@shadcn/lint";
 import globals from "globals";
 
 export default tseslint.config(
@@ -35,7 +36,10 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ],
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-empty-object-type": "off",
       // Downgraded to a warning: a few intentional effect-driven state updates
@@ -68,7 +72,17 @@ export default tseslint.config(
         "warn",
         {
           markupOnly: true,
-          ignoreAttribute: ["className", "id", "to", "href", "type", "name", "key", "variant", "size"],
+          ignoreAttribute: [
+            "className",
+            "id",
+            "to",
+            "href",
+            "type",
+            "name",
+            "key",
+            "variant",
+            "size",
+          ],
         },
       ],
     },
@@ -84,10 +98,7 @@ export default tseslint.config(
       "apps/user-application/src/routes/**/*.tsx",
       "apps/user-application/src/components/**/*.tsx",
     ],
-    ignores: [
-      "apps/user-application/src/components/ui/**",
-      "**/*.stories.tsx",
-    ],
+    ignores: ["apps/user-application/src/components/ui/**", "**/*.stories.tsx"],
     rules: {
       "no-restricted-syntax": [
         "warn",
@@ -100,4 +111,67 @@ export default tseslint.config(
       ],
     },
   },
+  // ---------------------------------------------------------------------------
+  // @shadcn/lint: Agent-first design system enforcement.
+  // Enforces theme tokens, prevents arbitrary raw colors & arbitrary values,
+  // and maintains component contracts according to Asana DESIGN.md.
+  // ---------------------------------------------------------------------------
+  {
+    files: [
+      "apps/user-application/src/routes/**/*.{ts,tsx}",
+      "apps/user-application/src/components/**/*.{ts,tsx}",
+    ],
+    ignores: [
+      "apps/user-application/src/components/ui/**",
+      "apps/user-application/src/routes/showcase.tsx",
+      "**/*.stories.tsx",
+      "**/*.test.tsx",
+    ],
+    plugins: {
+      shadcn,
+    },
+    settings: {
+      shadcn: {
+        ui: "@/components/ui",
+        note: "Follow the Asana design system rules in DESIGN.md. Use theme tokens and component variants.",
+      },
+    },
+    rules: {
+      "shadcn/no-raw-colors": "warn",
+      "shadcn/no-arbitrary-values": "warn",
+      "shadcn/no-restyle": [
+        "warn",
+        {
+          allow: ["layout"],
+          contracts: [
+            {
+              pattern: "^(?:TableCell|TableHead)$",
+              allow: ["text-*", "font-*", "w-*"],
+            },
+            {
+              pattern: "^Button$",
+              allow: [
+                "w-*",
+                "sm:w-*",
+                "md:w-*",
+                "lg:w-*",
+                "mt-*",
+                "mb-*",
+                "gap-*",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["apps/user-application/src/routes/showcase.tsx"],
+    plugins: {
+      shadcn,
+    },
+    rules: {
+      "shadcn/no-raw-colors": "warn",
+    },
+  }
 );
