@@ -8,3 +8,12 @@ expect.extend(matchers);
 afterEach(() => {
   cleanup();
 });
+
+// Mock ResizeObserver for Radix UI components in JSDOM
+if (typeof window !== "undefined" && !window.ResizeObserver) {
+  window.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}

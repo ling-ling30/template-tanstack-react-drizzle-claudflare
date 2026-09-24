@@ -25,7 +25,14 @@ import {
   Send,
   Loader2,
   Type,
+  RotateCcw,
 } from "lucide-react";
+import {
+  ScrollReveal,
+  ScrollRevealGroup,
+  type ScrollRevealVariant,
+} from "@/components/ui/scroll-reveal";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -836,6 +843,11 @@ function ShowcasePage() {
     useState("Asana Design Token");
   const [valueBoxTypeDemo, setValueBoxTypeDemo] =
     useState<ValueBoxType>("info");
+
+  // Interactive ScrollReveal Demo States
+  const [demoScrollVariant, setDemoScrollVariant] =
+    useState<ScrollRevealVariant>("blur-up");
+  const [demoScrollKey, setDemoScrollKey] = useState(0);
 
   // Interactive Typography Component Playground
   const [typographyVariant, setTypographyVariant] =
@@ -3203,10 +3215,405 @@ function ShowcasePage() {
                       effortless scanning.
                     </TableCell>
                   </TableRow>
+
+                  <TableRow>
+                    <TableCell className="text-destructive font-mono text-xs">
+                      ease-linear on drawers / sidebar
+                    </TableCell>
+                    <TableCell className="text-primary font-mono text-xs font-semibold">
+                      --ease-out & --ease-drawer (cubic-bezier)
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-xs">
+                      Linear motion feels robotic; deceleration curves mimic
+                      natural physical friction.
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell className="text-destructive font-mono text-xs">
+                      transition-none on checkbox check
+                    </TableCell>
+                    <TableCell className="text-primary font-mono text-xs font-semibold">
+                      160ms celebratory spring zoom-in-75
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-xs">
+                      Immediate tactile gratification for completed
+                      micro-actions.
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell className="text-destructive font-mono text-xs">
+                      width: progress% layout reflow
+                    </TableCell>
+                    <TableCell className="text-primary font-mono text-xs font-semibold">
+                      scaleX(progress/100) origin-left (GPU)
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-xs">
+                      Composite-only transform preserves 60/120fps with zero
+                      layout recalculation.
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell className="text-destructive font-mono text-xs">
+                      Wildcard duration: 0.01ms on reduced-motion
+                    </TableCell>
+                    <TableCell className="text-primary font-mono text-xs font-semibold">
+                      Suppress transforms, preserve 150ms opacity/color
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-xs">
+                      Accessibility means eliminating vestibular movement, not
+                      blinding the user to state changes.
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </div>
           </Card>
+
+          {/* Scroll-Triggered Reveal System Playground */}
+          <ScrollReveal variant="blur-up">
+            <Card className="overflow-hidden">
+              <CardHeader>
+                <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+                  <div>
+                    <CardTitle className="flex items-center gap-2 text-base font-semibold">
+                      <Sparkles className="text-coral size-4.5" />
+                      <span>
+                        Scroll-Triggered Reveal Primitive (&lt;ScrollReveal
+                        /&gt;)
+                      </span>
+                    </CardTitle>
+                    <CardDescription>
+                      Sequenced viewport entrance animations powered by
+                      IntersectionObserver, CSS hardware acceleration, and
+                      --ease-out physics.
+                    </CardDescription>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setDemoScrollKey((k) => k + 1)}
+                    className="gap-2 self-start sm:self-auto"
+                  >
+                    <RotateCcw className="size-3.5" />
+                    <span>Replay Sequence</span>
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Controls */}
+                <div className="border-border/60 bg-muted/20 flex flex-wrap items-center gap-2 rounded-lg border p-3">
+                  <span className="text-muted-foreground font-mono text-xs font-semibold">
+                    VARIANT:
+                  </span>
+                  {(
+                    [
+                      "blur-up",
+                      "fade-up",
+                      "scale-up",
+                      "fade-in",
+                      "slide-left",
+                      "slide-right",
+                    ] as ScrollRevealVariant[]
+                  ).map((variant) => (
+                    <Button
+                      key={variant}
+                      variant={
+                        demoScrollVariant === variant ? "default" : "outline"
+                      }
+                      size="xs"
+                      onClick={() => {
+                        setDemoScrollVariant(variant);
+                        setDemoScrollKey((k) => k + 1);
+                      }}
+                      className="font-mono text-xs"
+                    >
+                      {variant}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Staggered Live Visual Preview */}
+                <ScrollRevealGroup
+                  key={demoScrollKey}
+                  staggerMs={80}
+                  variant={demoScrollVariant}
+                  triggerImmediate
+                  className="grid gap-4 sm:grid-cols-3"
+                >
+                  <div className="border-border/60 bg-card asana-card-shadow rounded-xl border p-5">
+                    <div className="bg-secondary text-primary flex size-8 items-center justify-center rounded-md font-mono text-xs font-semibold">
+                      01
+                    </div>
+                    <h4 className="mt-3 text-sm font-semibold">
+                      Deceleration Curve
+                    </h4>
+                    <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+                      Uses <code className="text-xs">--ease-out</code>{" "}
+                      cubic-bezier(0.23, 1, 0.32, 1) for rapid response and
+                      organic friction.
+                    </p>
+                  </div>
+
+                  <div className="border-border/60 bg-card asana-card-shadow rounded-xl border p-5">
+                    <div className="bg-secondary text-primary flex size-8 items-center justify-center rounded-md font-mono text-xs font-semibold">
+                      02
+                    </div>
+                    <h4 className="mt-3 text-sm font-semibold">
+                      Stagger Sequence
+                    </h4>
+                    <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+                      Cascading 80ms delay between cards creates spatial rhythm
+                      without delaying user interaction.
+                    </p>
+                  </div>
+
+                  <div className="border-border/60 bg-card asana-card-shadow rounded-xl border p-5">
+                    <div className="bg-secondary text-primary flex size-8 items-center justify-center rounded-md font-mono text-xs font-semibold">
+                      03
+                    </div>
+                    <h4 className="mt-3 text-sm font-semibold">
+                      Motion Accessibility
+                    </h4>
+                    <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+                      Includes <code className="text-xs">motion-reduce:*</code>{" "}
+                      fallbacks to suppress displacement for vestibular safety.
+                    </p>
+                  </div>
+                </ScrollRevealGroup>
+
+                {/* Telemetry Code Output */}
+                <ValueBox variant="info">
+                  <div className="flex items-center justify-between pb-1 font-mono text-[11px] font-semibold">
+                    <span>COMPONENT USAGE SYNTAX</span>
+                    <Badge variant="outline" className="font-mono text-[10px]">
+                      React 19 Primitive
+                    </Badge>
+                  </div>
+                  <div className="text-muted-foreground font-mono text-xs leading-relaxed">
+                    {`<ScrollRevealGroup staggerMs={80} variant="${demoScrollVariant}">\n  <Card>Card 1</Card>\n  <Card>Card 2</Card>\n  <Card>Card 3</Card>\n</ScrollRevealGroup>`}
+                  </div>
+                </ValueBox>
+              </CardContent>
+            </Card>
+          </ScrollReveal>
+
+          {/* =========================================================================
+              CUSTOM SCROLLBAR & RADIX SCROLLAREA SHOWCASE
+              ========================================================================= */}
+          <ScrollReveal variant="fade-up">
+            <Card className="border-border/80 mt-8 border shadow-md">
+              <CardHeader className="border-border/60 bg-muted/20 border-b p-6">
+                <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                  <div>
+                    <div className="text-primary flex items-center gap-2 font-mono text-xs font-semibold">
+                      <Sparkles className="size-3.5" />
+                      <span>Radix ScrollArea & Sleek Custom Scrollbar</span>
+                    </div>
+                    <CardTitle className="mt-1 text-xl font-semibold tracking-tight">
+                      Tactile Scrollable Containers
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground text-xs sm:text-sm">
+                      Replaces bulky OS scrollbars with modern 8px floating pill
+                      thumbs, inset border clips, and responsive hover
+                      transitions.
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="font-mono text-xs">
+                      Cross-Browser Standard
+                    </Badge>
+                  </div>
+                </div>
+              </CardHeader>
+
+              <CardContent className="space-y-6 p-6">
+                <div className="grid gap-6 md:grid-cols-2">
+                  {/* Vertical ScrollArea Demo */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground font-mono text-xs font-semibold">
+                        VERTICAL SCROLLAREA (LOGS / EVENTS)
+                      </span>
+                      <Badge
+                        variant="secondary"
+                        className="font-mono text-[10px]"
+                      >
+                        &lt;ScrollArea className="h-64" /&gt;
+                      </Badge>
+                    </div>
+                    <div className="border-border/70 bg-card rounded-xl border p-1 shadow-xs">
+                      <ScrollArea className="h-64 rounded-lg p-3">
+                        <div className="space-y-2 pr-3">
+                          {[
+                            {
+                              time: "10:42:15",
+                              title: "RAW photo batch uploaded",
+                              meta: "128 items · 4.2 GB",
+                              badge: "Sync Complete",
+                            },
+                            {
+                              time: "10:41:03",
+                              title: "Face clustering completed",
+                              meta: "Bride & Groom tagged",
+                              badge: "AI Vision",
+                            },
+                            {
+                              time: "10:39:50",
+                              title: "High-res thumbnails generated",
+                              meta: "WebP format · 100% quality",
+                              badge: "CDN Cached",
+                            },
+                            {
+                              time: "10:37:12",
+                              title: "VIP guest gallery link accessed",
+                              meta: "Token: #gl-9920",
+                              badge: "Auth OK",
+                            },
+                            {
+                              time: "10:34:00",
+                              title: "Color grade LUT preset applied",
+                              meta: "Preset: Fuji Natural Warm",
+                              badge: "Rendered",
+                            },
+                            {
+                              time: "10:30:22",
+                              title: "Cloudflare D1 metadata updated",
+                              meta: "Latency 18ms",
+                              badge: "D1 Edge",
+                            },
+                            {
+                              time: "10:28:45",
+                              title: "Storage quota snapshot saved",
+                              meta: "45.8 GB / 100 GB used",
+                              badge: "Telemetry",
+                            },
+                            {
+                              time: "10:25:10",
+                              title: "Wedding event session initialized",
+                              meta: "Session ID #wed-2026-09",
+                              badge: "Session",
+                            },
+                          ].map((item, idx) => (
+                            <div
+                              key={idx}
+                              className="border-border/50 bg-background/50 hover:bg-muted/40 flex items-center justify-between rounded-lg border p-2.5 text-xs transition-colors"
+                            >
+                              <div className="space-y-0.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-muted-foreground font-mono text-[11px]">
+                                    {item.time}
+                                  </span>
+                                  <span className="text-foreground font-medium">
+                                    {item.title}
+                                  </span>
+                                </div>
+                                <p className="text-muted-foreground text-[11px]">
+                                  {item.meta}
+                                </p>
+                              </div>
+                              <Badge
+                                variant="outline"
+                                className="font-mono text-[10px]"
+                              >
+                                {item.badge}
+                              </Badge>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    </div>
+                  </div>
+
+                  {/* Horizontal ScrollArea Demo & Scrollbar Variants */}
+                  <div className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground font-mono text-xs font-semibold">
+                          HORIZONTAL SCROLLSTRIP (PHOTO TAGS)
+                        </span>
+                        <Badge
+                          variant="secondary"
+                          className="font-mono text-[10px]"
+                        >
+                          &lt;ScrollBar orientation="horizontal" /&gt;
+                        </Badge>
+                      </div>
+                      <div className="border-border/70 bg-card rounded-xl border p-1 shadow-xs">
+                        <ScrollArea className="w-full rounded-lg p-3 whitespace-nowrap">
+                          <div className="flex gap-2.5 pb-2">
+                            {[
+                              "All Photos (1,248)",
+                              "Ceremony & Vows (245)",
+                              "Golden Hour Portraits (189)",
+                              "Reception Dinner (312)",
+                              "First Dance (74)",
+                              "Drone Aerials (52)",
+                              "Family Groups (180)",
+                              "Candid Moments (196)",
+                            ].map((tag, idx) => (
+                              <div
+                                key={idx}
+                                className="border-border/60 bg-muted/40 hover:bg-accent hover:text-accent-foreground text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors"
+                              >
+                                <span className="bg-coral size-1.5 rounded-full" />
+                                {tag}
+                              </div>
+                            ))}
+                          </div>
+                          <ScrollBar orientation="horizontal" />
+                        </ScrollArea>
+                      </div>
+                    </div>
+
+                    {/* Native Utility Comparison */}
+                    <ValueBox variant="info">
+                      <div className="flex items-center justify-between pb-1 font-mono text-[11px] font-semibold">
+                        <span>GLOBAL SCROLLBAR SPECS & UTILITIES</span>
+                        <Badge
+                          variant="outline"
+                          className="font-mono text-[10px]"
+                        >
+                          CSS Layer Base
+                        </Badge>
+                      </div>
+                      <div className="text-muted-foreground space-y-1.5 font-mono text-[11px]">
+                        <p>
+                          • <strong>Global default</strong>: 8px WebKit track
+                          with 4px floating pill thumb (
+                          <code className="text-foreground">border-box</code>{" "}
+                          clip).
+                        </p>
+                        <p>
+                          •{" "}
+                          <code className="text-foreground">
+                            .thin-scrollbar
+                          </code>
+                          : 5px ultra-compact track for tight sidebars and code
+                          blocks.
+                        </p>
+                        <p>
+                          •{" "}
+                          <code className="text-foreground">.no-scrollbar</code>
+                          : Hides scrollbars while preserving touch/trackpad
+                          swipe momentum.
+                        </p>
+                        <p>
+                          • <strong>Firefox standard</strong>: Native{" "}
+                          <code className="text-foreground">
+                            scrollbar-width: thin; scrollbar-color: ...
+                          </code>{" "}
+                          support.
+                        </p>
+                      </div>
+                    </ValueBox>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </ScrollReveal>
         </section>
       </main>
 

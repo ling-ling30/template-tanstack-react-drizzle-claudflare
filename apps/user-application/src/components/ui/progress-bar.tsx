@@ -14,7 +14,7 @@ export function GlobalProgressBar() {
     if (isPending) {
       setVisible(true);
       setProgress(10);
-      
+
       // Simulate progress
       interval = setInterval(() => {
         setProgress((prev) => {
@@ -41,13 +41,15 @@ export function GlobalProgressBar() {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 right-0 z-[100] h-1 bg-transparent transition-opacity duration-300",
+        "fixed top-0 right-0 left-0 z-[100] h-1 bg-transparent transition-opacity duration-300",
         visible ? "opacity-100" : "opacity-0"
       )}
     >
       <div
-        className="h-full bg-primary transition-all duration-300 ease-out"
-        style={{ width: `${progress}%` }}
+        className="bg-primary h-full w-full origin-left transition-transform duration-300 ease-out will-change-transform"
+        style={{
+          transform: `scaleX(${Math.min(100, Math.max(0, progress)) / 100})`,
+        }}
       />
     </div>
   );

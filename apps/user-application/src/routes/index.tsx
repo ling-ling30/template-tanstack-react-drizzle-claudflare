@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { ScrollReveal, ScrollRevealGroup } from "@/components/ui/scroll-reveal";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -228,7 +229,7 @@ function LandingPage() {
         </section>
 
         {/* Asana Work Management Stage Preview */}
-        <section className="mt-16 sm:mt-24">
+        <ScrollReveal as="section" variant="fade-up" className="mt-16 sm:mt-24">
           <div className="border-border bg-card asana-card-shadow overflow-hidden rounded-lg border">
             {/* Asana Workspace Header */}
             <div className="border-border bg-secondary/50 flex flex-col justify-between gap-3 border-b px-5 py-3.5 sm:flex-row sm:items-center">
@@ -281,7 +282,7 @@ function LandingPage() {
                     <button
                       type="button"
                       aria-label="Toggle task completion"
-                      className="border-border asana-check hover:border-destructive flex size-4.5 shrink-0 items-center justify-center rounded-full border transition-all"
+                      className="border-border asana-check hover:border-destructive flex size-4.5 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,transform] duration-150 ease-out"
                       style={{
                         backgroundColor: task.completed
                           ? "var(--destructive)"
@@ -292,13 +293,13 @@ function LandingPage() {
                       }}
                     >
                       {task.completed ? (
-                        <Check className="text-destructive-foreground size-3 stroke-2" />
+                        <Check className="text-destructive-foreground animate-in zoom-in-75 size-3 stroke-2 duration-150" />
                       ) : (
                         <Circle className="size-3 text-transparent" />
                       )}
                     </button>
                     <span
-                      className={`truncate text-sm tracking-tight transition-all ${
+                      className={`truncate text-sm tracking-tight transition-[color,text-decoration] duration-150 ease-out ${
                         task.completed
                           ? "text-muted-foreground line-through"
                           : "text-foreground font-medium"
@@ -377,17 +378,23 @@ function LandingPage() {
               </div>
             </div>
           </div>
-        </section>
+        </ScrollReveal>
 
         {/* Features Grid (Strict 4px/8px Geometry) */}
         <section className="mt-24 sm:mt-32">
-          <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
-            <h2 className="section-title text-2xl font-semibold tracking-tight sm:text-4xl">
-              {t("landing.featuresTitle")}
-            </h2>
-          </div>
+          <ScrollReveal variant="blur-up">
+            <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
+              <h2 className="section-title text-2xl font-semibold tracking-tight sm:text-4xl">
+                {t("landing.featuresTitle")}
+              </h2>
+            </div>
+          </ScrollReveal>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ScrollRevealGroup
+            staggerMs={70}
+            variant="blur-up"
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          >
             {features.map((f) => {
               const Icon = f.icon;
               return (
@@ -407,18 +414,24 @@ function LandingPage() {
                 </Card>
               );
             })}
-          </div>
+          </ScrollRevealGroup>
         </section>
 
         {/* Step-by-Step Developer Workflow */}
         <section className="mt-24 sm:mt-32">
-          <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
-            <h2 className="section-title text-2xl font-semibold tracking-tight sm:text-4xl">
-              {t("landing.guideTitle")}
-            </h2>
-          </div>
+          <ScrollReveal variant="blur-up">
+            <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
+              <h2 className="section-title text-2xl font-semibold tracking-tight sm:text-4xl">
+                {t("landing.guideTitle")}
+              </h2>
+            </div>
+          </ScrollReveal>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <ScrollRevealGroup
+            staggerMs={70}
+            variant="fade-up"
+            className="grid gap-4 sm:grid-cols-2"
+          >
             {steps.map((step, idx) => (
               <div
                 key={step}
@@ -438,7 +451,7 @@ function LandingPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </ScrollRevealGroup>
         </section>
       </main>
 

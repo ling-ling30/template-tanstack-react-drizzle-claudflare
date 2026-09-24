@@ -40,6 +40,8 @@
   --sidebar-accent-foreground: oklch(0.18 0.014 260);
   --sidebar-border: oklch(0.92 0.006 250);
   --sidebar-ring: oklch(0.65 0.22 27.5);
+  --scrollbar-thumb: oklch(0.2 0.014 260 / 18%);
+  --scrollbar-thumb-hover: oklch(0.2 0.014 260 / 35%);
 }
 
 .dark {
@@ -77,6 +79,8 @@
   --sidebar-accent-foreground: oklch(0.98 0.004 250);
   --sidebar-border: oklch(1 0 0 / 11%);
   --sidebar-ring: oklch(0.68 0.21 27.5);
+  --scrollbar-thumb: oklch(0.98 0.004 250 / 20%);
+  --scrollbar-thumb-hover: oklch(0.98 0.004 250 / 40%);
 }
 
 @theme inline {
@@ -123,12 +127,45 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/40;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
   }
+
+  /* WebKit custom scrollbar (Chrome, Safari, Edge) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color 150ms var(--ease-out, ease);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
   html {
     scroll-behavior: smooth;
     font-family:
@@ -155,6 +192,27 @@
   }
 }
 
+/* Scrollbar utility classes */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+.thin-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+}
+
 /* Asana Design System Utilities */
 .asana-glass,
 .apple-glass {
@@ -176,13 +234,17 @@
 .asana-press,
 .apple-press {
   transition:
-    transform 120ms cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 120ms ease;
+    transform 120ms var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+    opacity 120ms var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
   will-change: transform;
 }
 .asana-press:active,
 .apple-press:active {
-  transform: scale(0.985);
+  transform: scale(0.97);
+}
+.asana-press:disabled:active,
+.apple-press:disabled:active {
+  transform: none;
 }
 
 /* Asana crisp neutral elevation */
@@ -242,11 +304,35 @@ input[type="number"] {
 .asana-check {
   transition:
     transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    background-color 150ms ease,
-    border-color 150ms ease;
+    background-color 150ms var(--ease-out, ease),
+    border-color 150ms var(--ease-out, ease);
+  will-change: transform;
 }
 .asana-check:active {
-  transform: scale(0.9);
+  transform: scale(0.96);
+}
+
+/* Radix Collapsible accordion animation */
+@keyframes collapsible-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
 }
 
 /* Reduced Motion & Transparency */
@@ -256,11 +342,19 @@ input[type="number"] {
   ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* Suppress movement and transforms, preserve soft opacity/color cross-fades */
   .asana-press:active,
-  .apple-press:active {
+  .apple-press:active,
+  .asana-check:active {
+    transform: none !important;
+  }
+
+  [data-state="open"],
+  [data-state="closed"] {
+    animation-duration: 150ms !important;
     transform: none !important;
   }
 }

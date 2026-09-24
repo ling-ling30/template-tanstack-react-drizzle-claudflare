@@ -224,7 +224,7 @@ Located in `apps/user-application/src/components/ui/value-box.tsx`, the `<ValueB
    - Default: `h-9.5 px-4 text-sm rounded-md font-medium`
    - Large: `h-11 px-5 text-sm sm:text-base rounded-lg font-medium`
    - Pill: `h-7 px-3 text-xs rounded-full variant="pill"`
-   - Interactive: `.asana-press` gives active `scale(0.97)` tactile rebound.
+   - Interactive: `.asana-press` gives active `scale(0.97)` tactile rebound with `120ms` spring physics.
 2. **Phone Input (`<PhoneInput />`)**:
    - Built on `libphonenumber-js` with automated E.164 normalization and country metadata.
    - When invalid: explicitly binds `aria-invalid="true"`, triggering `ring-2 ring-destructive/20 border-destructive text-destructive` indicators.
@@ -236,7 +236,64 @@ Located in `apps/user-application/src/components/ui/value-box.tsx`, the `<ValueB
 
 ---
 
-## 8. Design System Enforcement (@shadcn/lint)
+## 8. Motion, Physicality & Easing Standards
+
+Engineered under the design principles of Emil Kowalski ([AUDIT.md]):
+
+### Global Easing Curves (`@theme inline`)
+
+```css
+--ease-out: cubic-bezier(
+  0.23,
+  1,
+  0.32,
+  1
+); /* Responsive deceleration for entering UI */
+--ease-in-out: cubic-bezier(
+  0.77,
+  0,
+  0.175,
+  1
+); /* Fluid repositioning & morphing */
+--ease-drawer: cubic-bezier(
+  0.32,
+  0.72,
+  0,
+  1
+); /* iOS-grade sheet drawer slide */
+--ease-spring: cubic-bezier(
+  0.16,
+  1,
+  0.3,
+  1
+); /* Tactile press & release feedback */
+```
+
+### Core Physicality Laws
+
+1. **Trigger Transform Origin**: Popovers, dropdowns, and tooltips must scale from their trigger using `origin-(--radix-popover-content-transform-origin)`. Center scaling is reserved exclusively for modal dialogs.
+2. **No `scale(0)`**: Elements appear by combining `scale(0.96)` or `scale(0.75)` with `opacity: 0`. Nothing in reality materializes from a zero-pixel singularity.
+3. **Targeted Composited Properties**: Never use `transition-all`. Target explicit properties (`transform`, `opacity`, `background-color`, `border-color`, `box-shadow`) to maintain 60/120fps GPU performance without layout reflows.
+4. **Celebratory Completion Feedback**: Checkboxes animate with a 160ms spring zoom (`scale-75` to `scale-100`) and a subtle `scale(0.96)` tactile press dip.
+5. **Principled Reduced Motion**: Under `prefers-reduced-motion: reduce`, displacement transforms are suppressed (`transform: none !important`), while calming 150ms opacity and color transitions are preserved to maintain interface feedback.
+
+### Sleek Scrollbar Specifications
+
+To eliminate clunky 17px default OS scrollbars on desktop browsers, the system provides cross-browser scrollbar styling:
+
+- **Tokens**:
+  - Light mode: `--scrollbar-thumb: oklch(0.2 0.014 260 / 18%)`, hover `--scrollbar-thumb-hover: oklch(0.2 0.014 260 / 35%)`
+  - Dark mode: `--scrollbar-thumb: oklch(0.98 0.004 250 / 20%)`, hover `--scrollbar-thumb-hover: oklch(0.98 0.004 250 / 40%)`
+- **Global Track**: 8px width with `2px solid transparent` border and `background-clip: content-box`, yielding a refined 4px floating pill thumb with smooth 150ms hover transition.
+- **Firefox & Standards**: `scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) transparent;` applied globally across all elements.
+- **Utilities**:
+  - `.thin-scrollbar`: 5px compact track for dense sidebars, code panels, and flyouts.
+  - `.no-scrollbar`: Suppresses visible scrollbars while preserving touch, mouse wheel, and trackpad swipe physics.
+  - `<ScrollArea>` & `<ScrollBar>`: Radix UI virtualized scrollbar primitive styled with matching design tokens and smooth transitions.
+
+---
+
+## 9. Design System Enforcement (@shadcn/lint)
 
 The design system is strictly guarded by `@shadcn/lint`:
 
