@@ -2168,7 +2168,7 @@ function ShowcasePage() {
         {/* =========================================================================
             SECTION 5: DATE & FIELD CONTROLS
             ========================================================================= */}
-        <section id="inputs" className="scroll-mt-28 space-y-6">
+        <section id="inputs" className="min-w-0 scroll-mt-28 space-y-6">
           <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
             <div>
               <h2 className="section-title text-2xl font-semibold">
@@ -2184,9 +2184,9 @@ function ShowcasePage() {
             </Badge>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             {/* String / Text Input */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>String / Text Input</CardTitle>
                 <CardDescription>
@@ -2221,7 +2221,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Number Input (No Scroll & No Auto-Zero) */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Number Input (No Scroll & No Auto-Zero)</CardTitle>
                 <CardDescription>
@@ -2252,7 +2252,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Single Date Picker */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Date Input (Choose One Date)</CardTitle>
                 <CardDescription>
@@ -2287,7 +2287,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Date Range Picker */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Date Range Input (Choose Date Range)</CardTitle>
                 <CardDescription>
@@ -2317,7 +2317,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Time Input */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Time Input (Choose Time)</CardTitle>
                 <CardDescription>
@@ -2339,7 +2339,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Date & Time Input */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Date & Time Input (Combined Date & Time)</CardTitle>
                 <CardDescription>
@@ -2371,16 +2371,16 @@ function ShowcasePage() {
             </Card>
 
             {/* Phone Number Input (with Country Selector & Validation) */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>
+                <div className="flex items-center justify-between gap-2">
+                  <CardTitle className="truncate">
                     Phone Input (Country Dropdown & Validation)
                   </CardTitle>
                   <Badge
                     variant={phoneMeta?.isValid ? "success" : "coral"}
                     size="sm"
-                    className="font-mono text-xs"
+                    className="shrink-0 font-mono text-xs"
                   >
                     {phoneMeta?.isValid ? "Valid" : "Incomplete"}
                   </Badge>
@@ -2408,7 +2408,7 @@ function ShowcasePage() {
 
                   {/* Quick Switcher Pills */}
                   <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-                    <span className="text-muted-foreground text-[11px] font-medium">
+                    <span className="text-muted-foreground shrink-0 text-[11px] font-medium">
                       Quick test:
                     </span>
                     {[
@@ -2436,44 +2436,50 @@ function ShowcasePage() {
                 </div>
 
                 {/* Real-time Telemetry Panel */}
-                <TelemetryBox className="space-y-1.5 p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Country:</span>
-                    <span className="text-foreground flex items-center gap-1.5 font-medium">
+                <TelemetryBox className="space-y-1.5 overflow-hidden p-3">
+                  <div className="flex min-w-0 items-center justify-between gap-2 text-xs">
+                    <span className="text-muted-foreground shrink-0">
+                      Country:
+                    </span>
+                    <span className="text-foreground flex min-w-0 items-center gap-1.5 font-medium">
                       <CountryFlag
                         code={phoneMeta?.country?.code || phoneCountry}
                       />
-                      <span>
+                      <span className="truncate">
                         {phoneMeta?.country
                           ? `${phoneMeta.country.name} (${phoneMeta.dialCode})`
                           : "United States (+1)"}
                       </span>
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Formatted:</span>
-                    <span className="text-foreground tabular-nums">
+                  <div className="flex min-w-0 items-center justify-between gap-2 text-xs">
+                    <span className="text-muted-foreground shrink-0">
+                      Formatted:
+                    </span>
+                    <span className="text-foreground truncate tabular-nums">
                       {phoneValue || "—"}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
+                  <div className="flex min-w-0 items-center justify-between gap-2 text-xs">
+                    <span className="text-muted-foreground shrink-0">
                       E.164 Payload:
                     </span>
-                    <span className="text-foreground tabular-nums">
+                    <span className="text-foreground truncate tabular-nums">
                       {phoneMeta?.e164 || "—"}
                     </span>
                   </div>
-                  <div className="border-border/40 flex items-center justify-between border-t pt-1">
-                    <span className="text-muted-foreground">Validation:</span>
+                  <div className="border-border/40 flex min-w-0 flex-wrap items-center justify-between gap-1 border-t pt-1 text-xs">
+                    <span className="text-muted-foreground shrink-0">
+                      Validation:
+                    </span>
                     <span
                       className={cn(
-                        "font-semibold",
+                        "truncate font-semibold",
                         phoneMeta?.isValid ? "text-chart-2" : "text-destructive"
                       )}
                     >
                       {phoneMeta?.isValid
-                        ? "✓ Valid E.164 National Number"
+                        ? "✓ Valid E.164 Number"
                         : "⚠ Incomplete digits"}
                     </span>
                   </div>
@@ -2482,7 +2488,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Select (Radix Select) */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Select (Single Option)</CardTitle>
                 <CardDescription>
@@ -2524,15 +2530,17 @@ function ShowcasePage() {
             </Card>
 
             {/* Combobox (Searchable Autocomplete Input) */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Combobox (Searchable Autocomplete)</CardTitle>
+                <div className="flex items-center justify-between gap-2">
+                  <CardTitle className="truncate">
+                    Combobox (Searchable Autocomplete)
+                  </CardTitle>
                   {comboboxValue && (
                     <Badge
                       variant="outline"
                       size="sm"
-                      className="font-mono text-xs"
+                      className="shrink-0 font-mono text-xs"
                     >
                       {comboboxValue}
                     </Badge>
@@ -2555,18 +2563,20 @@ function ShowcasePage() {
                   />
                 </div>
 
-                <ValueBox className="space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">
+                <ValueBox className="space-y-1 overflow-hidden">
+                  <div className="flex min-w-0 items-center justify-between gap-2 text-xs">
+                    <span className="text-muted-foreground shrink-0">
                       Selected Value:
                     </span>
-                    <span className="text-foreground font-medium">
+                    <span className="text-foreground truncate font-medium">
                       {comboboxValue || "None"}
                     </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Venue:</span>
-                    <span className="text-foreground">
+                  <div className="flex min-w-0 items-center justify-between gap-2 text-xs">
+                    <span className="text-muted-foreground shrink-0">
+                      Venue:
+                    </span>
+                    <span className="text-foreground truncate">
                       {SAMPLE_VENUES.find((v) => v.value === comboboxValue)
                         ?.label || "—"}
                     </span>
@@ -2576,7 +2586,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Dropdown Select / Menu */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Dropdown Menu / Action Menu</CardTitle>
                 <CardDescription>
@@ -2630,7 +2640,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Checkbox with Label */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0 overflow-hidden">
               <CardHeader>
                 <CardTitle>Checkbox with Description</CardTitle>
                 <CardDescription>
@@ -2646,9 +2656,9 @@ function ShowcasePage() {
                     onCheckedChange={(checked) =>
                       setCheckboxValue(Boolean(checked))
                     }
-                    className="mt-0.5"
+                    className="mt-0.5 shrink-0"
                   />
-                  <div className="space-y-1">
+                  <div className="min-w-0 space-y-1">
                     <Label
                       htmlFor="demo-checkbox"
                       className="cursor-pointer text-sm font-medium"
@@ -2670,7 +2680,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Textarea */}
-            <Card size="sm" className="sm:col-span-2">
+            <Card size="sm" className="min-w-0 overflow-hidden md:col-span-2">
               <CardHeader>
                 <CardTitle>Textarea (Multi-line Input)</CardTitle>
                 <CardDescription>
