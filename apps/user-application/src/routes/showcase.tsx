@@ -28,7 +28,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { NumberInput } from "@/components/ui/number-input";
-import { DateInput, type DateRange } from "@/components/ui/date-input";
+import {
+  DateInput,
+  type DateRange,
+  DateTimeInput,
+  TimeInput,
+} from "@/components/ui/date-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -521,6 +526,10 @@ function ShowcasePage() {
     from: new Date(2026, 9, 20),
     to: new Date(2026, 9, 27),
   }));
+  const [timeValue, setTimeValue] = useState<string | null>("14:30");
+  const [dateTimeValue, setDateTimeValue] = useState<Date | null>(
+    () => new Date(2026, 9, 24, 15, 30)
+  );
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [selectValue, setSelectValue] = useState("pro");
   const [selectedRows, setSelectedRows] = useState<string[]>(["EVT-8921"]);
@@ -950,6 +959,62 @@ function ShowcasePage() {
                 Range:{" "}
                 {rangeDate?.from
                   ? `${rangeDate.from.toLocaleDateString()} – ${rangeDate.to ? rangeDate.to.toLocaleDateString() : "…"}`
+                  : "None"}
+              </div>
+            </Card>
+
+            {/* Time Input */}
+            <Card className="space-y-4 p-6">
+              <div className="space-y-1">
+                <Label className="text-sm font-semibold">
+                  Time Input (Choose Time)
+                </Label>
+                <p className="text-muted-foreground text-xs">
+                  Scrollable hour and minute columns with AM/PM toggle and quick
+                  time presets.
+                </p>
+              </div>
+
+              <div>
+                <TimeInput
+                  value={timeValue}
+                  onChange={setTimeValue}
+                  placeholder="Select event time..."
+                />
+              </div>
+
+              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
+                Selected Time: {timeValue || "None"}
+              </div>
+            </Card>
+
+            {/* Date & Time Input */}
+            <Card className="space-y-4 p-6">
+              <div className="space-y-1">
+                <Label className="text-sm font-semibold">
+                  Date & Time Input (Combined Date & Time)
+                </Label>
+                <p className="text-muted-foreground text-xs">
+                  Integrated Asana calendar with synchronized time picker panel
+                  and chip shortcuts.
+                </p>
+              </div>
+
+              <div>
+                <DateTimeInput
+                  value={dateTimeValue}
+                  onChange={setDateTimeValue}
+                  placeholder="Select ceremony start..."
+                />
+              </div>
+
+              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
+                Selected:{" "}
+                {dateTimeValue
+                  ? dateTimeValue.toLocaleString("en-US", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })
                   : "None"}
               </div>
             </Card>
