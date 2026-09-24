@@ -2813,7 +2813,7 @@ function ShowcasePage() {
                             {evt.date}
                           </TableCell>
                           <TableCell className="font-mono text-xs font-medium">
-                            {evt.photos.toLocaleString()}
+                            {evt.photos.toLocaleString("en-US")}
                           </TableCell>
                           <TableCell className="text-muted-foreground font-mono text-xs">
                             {evt.storage}
