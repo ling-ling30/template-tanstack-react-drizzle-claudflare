@@ -51,8 +51,14 @@ function formatDateDisplay(d?: Date | string | null): string {
 
 function calculateDays(from?: Date | null, to?: Date | null): number {
   if (!from || !to) return 0;
-  const diffTime = Math.abs(to.getTime() - from.getTime());
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  const d1 = new Date(
+    from.getFullYear(),
+    from.getMonth(),
+    from.getDate()
+  ).getTime();
+  const d2 = new Date(to.getFullYear(), to.getMonth(), to.getDate()).getTime();
+  const diffTime = Math.abs(d2 - d1);
+  return Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1;
 }
 
 function SingleDateInputInternal({
@@ -122,48 +128,85 @@ function SingleDateInputInternal({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent align="start" className="w-auto p-0">
-        {showPresets && (
-          <div className="border-border bg-secondary/30 flex items-center gap-1.5 border-b p-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => setPreset(0)}
-            >
-              Today
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => setPreset(1)}
-            >
-              Tomorrow
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => setPreset(7)}
-            >
-              In 1 Week
-            </Button>
-          </div>
-        )}
+      <PopoverContent
+        align="start"
+        className="border-border w-auto p-0 shadow-lg"
+      >
+        <div className="flex flex-col sm:flex-row">
+          {showPresets && (
+            <div className="border-border bg-secondary/30 flex shrink-0 flex-col gap-1 border-b p-2.5 sm:w-36 sm:border-r sm:border-b-0">
+              <div className="text-muted-foreground px-2 py-1 text-[11px] font-semibold tracking-wider uppercase">
+                Presets
+              </div>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={() => setPreset(0)}
+              >
+                Today
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={() => setPreset(1)}
+              >
+                Tomorrow
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={() => setPreset(7)}
+              >
+                In 1 Week
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={() => setPreset(14)}
+              >
+                In 2 Weeks
+              </Button>
 
-        <Calendar
-          mode="single"
-          selected={selectedDate}
-          onSelect={(d: Date | DateRange | null) => {
-            if (d instanceof Date || d === null) {
-              onChange?.(d);
-              setOpen(false);
-            }
-          }}
-          minDate={minDate}
-          maxDate={maxDate}
-        />
+              {selectedDate && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="hover:text-destructive text-muted-foreground border-border/60 mt-auto h-7 justify-start border-t px-2 pt-2 text-xs font-medium"
+                  onClick={() => {
+                    onChange?.(null);
+                    setOpen(false);
+                  }}
+                >
+                  Clear Date
+                </Button>
+              )}
+            </div>
+          )}
+
+          <div className="p-3">
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={(d: Date | DateRange | null) => {
+                if (d instanceof Date || d === null) {
+                  onChange?.(d);
+                  setOpen(false);
+                }
+              }}
+              minDate={minDate}
+              maxDate={maxDate}
+            />
+          </div>
+        </div>
       </PopoverContent>
     </Popover>
   );
@@ -218,7 +261,7 @@ function DateRangeInputInternal({
     const from = new Date();
     from.setHours(0, 0, 0, 0);
     const to = new Date();
-    to.setDate(to.getDate() + days);
+    to.setDate(to.getDate() + (days - 1));
     to.setHours(0, 0, 0, 0);
     onChange?.({ from, to });
     setOpen(false);
@@ -228,6 +271,14 @@ function DateRangeInputInternal({
     const now = new Date();
     const from = new Date(now.getFullYear(), now.getMonth(), 1);
     const to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    onChange?.({ from, to });
+    setOpen(false);
+  };
+
+  const applyNextMonthPreset = () => {
+    const now = new Date();
+    const from = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const to = new Date(now.getFullYear(), now.getMonth() + 2, 0);
     onChange?.({ from, to });
     setOpen(false);
   };
@@ -274,57 +325,107 @@ function DateRangeInputInternal({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent align="start" className="w-auto p-0">
-        {showPresets && (
-          <div className="border-border bg-secondary/30 flex items-center gap-1.5 border-b p-2">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => applyRangePreset(7)}
-            >
-              Next 7 Days
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => applyRangePreset(14)}
-            >
-              Next 14 Days
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => applyRangePreset(30)}
-            >
-              Next 30 Days
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={applyMonthPreset}
-            >
-              This Month
-            </Button>
-          </div>
-        )}
+      <PopoverContent
+        align="start"
+        className="border-border w-auto p-0 shadow-lg"
+      >
+        <div className="flex flex-col sm:flex-row">
+          {showPresets && (
+            <div className="border-border bg-secondary/30 flex shrink-0 flex-col gap-1 border-b p-2.5 sm:w-36 sm:border-r sm:border-b-0">
+              <div className="text-muted-foreground px-2 py-1 text-[11px] font-semibold tracking-wider uppercase">
+                Range Presets
+              </div>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={() => applyRangePreset(7)}
+              >
+                Next 7 Days
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={() => applyRangePreset(14)}
+              >
+                Next 14 Days
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={() => applyRangePreset(30)}
+              >
+                Next 30 Days
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={applyMonthPreset}
+              >
+                This Month
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="hover:bg-secondary h-8 justify-start px-2 text-xs font-medium"
+                onClick={applyNextMonthPreset}
+              >
+                Next Month
+              </Button>
 
-        <Calendar
-          mode="range"
-          selected={{ from: fromDate, to: toDate }}
-          onSelect={(r: Date | DateRange | null) => {
-            const rangeVal = r as DateRange;
-            onChange?.(rangeVal);
-            if (rangeVal?.from && rangeVal?.to) {
-              setOpen(false);
-            }
-          }}
-          minDate={minDate}
-          maxDate={maxDate}
-        />
+              {(fromDate || toDate) && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="hover:text-destructive text-muted-foreground border-border/60 mt-auto h-7 justify-start border-t px-2 pt-2 text-xs font-medium"
+                  onClick={() => {
+                    onChange?.(null);
+                    setOpen(false);
+                  }}
+                >
+                  Clear Range
+                </Button>
+              )}
+            </div>
+          )}
+
+          <div className="p-3">
+            <Calendar
+              mode="range"
+              selected={{ from: fromDate, to: toDate }}
+              onSelect={(r: Date | DateRange | null) => {
+                const rangeVal = r as DateRange;
+                onChange?.(rangeVal);
+                if (rangeVal?.from && rangeVal?.to) {
+                  setOpen(false);
+                }
+              }}
+              minDate={minDate}
+              maxDate={maxDate}
+            />
+
+            {/* Range Selection Status Footer */}
+            {rangeText && (
+              <div className="border-border text-muted-foreground mt-3 flex items-center justify-between border-t pt-2 font-mono text-xs">
+                <span>
+                  {daysCount} {daysCount === 1 ? "day" : "days"}
+                </span>
+                <span className="text-foreground max-w-[170px] truncate font-medium">
+                  {rangeText}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
       </PopoverContent>
     </Popover>
   );

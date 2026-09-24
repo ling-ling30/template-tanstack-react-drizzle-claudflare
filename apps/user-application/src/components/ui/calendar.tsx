@@ -37,11 +37,22 @@ const MONTH_NAMES = [
 
 function isSameDay(d1?: Date | null, d2?: Date | null): boolean {
   if (!d1 || !d2) return false;
+  const date1 = new Date(d1);
+  const date2 = new Date(d2);
   return (
-    d1.getFullYear() === d2.getFullYear() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getDate() === d2.getDate()
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
   );
+}
+
+function normalizeTime(d: Date | string): number {
+  const date = typeof d === "string" ? new Date(d) : d;
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  ).getTime();
 }
 
 function isDateInRange(
@@ -50,10 +61,10 @@ function isDateInRange(
   to?: Date | null
 ): boolean {
   if (!from || !to) return false;
-  const time = date.setHours(0, 0, 0, 0);
-  const startTime = new Date(from).setHours(0, 0, 0, 0);
-  const endTime = new Date(to).setHours(0, 0, 0, 0);
-  return time > startTime && time < endTime;
+  const target = normalizeTime(date);
+  const start = Math.min(normalizeTime(from), normalizeTime(to));
+  const end = Math.max(normalizeTime(from), normalizeTime(to));
+  return target > start && target < end;
 }
 
 function Calendar({
@@ -65,7 +76,7 @@ function Calendar({
   maxDate,
   disabledDates,
 }: CalendarProps) {
-  // Initial display month based on selected date or today
+  // Sync initial month
   const initialDate = React.useMemo(() => {
     if (mode === "single" && selected instanceof Date) {
       return new Date(selected);
@@ -88,6 +99,33 @@ function Calendar({
 
   const [hoveredDate, setHoveredDate] = React.useState<Date | null>(null);
 
+  // Sync current month when selected changes externally (e.g. from preset buttons)
+  const [prevSelected, setPrevSelected] = React.useState(selected);
+  if (selected !== prevSelected) {
+    setPrevSelected(selected);
+    const targetDate =
+      mode === "single" && selected instanceof Date
+        ? selected
+        : mode === "range" &&
+            selected &&
+            typeof selected === "object" &&
+            "from" in selected &&
+            selected.from
+          ? new Date(selected.from)
+          : null;
+
+    if (targetDate) {
+      if (
+        currentMonth.getFullYear() !== targetDate.getFullYear() ||
+        currentMonth.getMonth() !== targetDate.getMonth()
+      ) {
+        setCurrentMonth(
+          new Date(targetDate.getFullYear(), targetDate.getMonth(), 1)
+        );
+      }
+    }
+  }
+
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
 
@@ -99,7 +137,7 @@ function Calendar({
     setCurrentMonth(new Date(year, month + 1, 1));
   };
 
-  // Days calculations
+  // Day calculations
   const firstDayOfWeek = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const daysInPrevMonth = new Date(year, month, 0).getDate();
@@ -123,8 +161,9 @@ function Calendar({
       });
     }
 
-    // Next month padding days to complete 6 rows (42 days) or 5 rows
-    const remainingDays = 42 - days.length;
+    // Next month padding days to complete a consistent 6-row (42 cells) or 5-row grid
+    const totalCells = days.length > 35 ? 42 : 35;
+    const remainingDays = totalCells - days.length;
     for (let i = 1; i <= remainingDays; i++) {
       days.push({
         date: new Date(year, month + 1, i),
@@ -135,16 +174,21 @@ function Calendar({
     return days;
   }, [year, month, firstDayOfWeek, daysInMonth, daysInPrevMonth]);
 
-  const handleDateClick = (date: Date) => {
+  const handleDateClick = (date: Date, isCurrent: boolean) => {
+    if (!isCurrent) {
+      // Navigate to clicked month if outside current
+      setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1));
+    }
+
     if (mode === "single") {
       onSelect?.(date);
     } else if (mode === "range") {
       const range = (selected as DateRange) || {};
       if (!range.from || (range.from && range.to)) {
-        // Start new range
+        // Start fresh range
         onSelect?.({ from: date, to: null });
       } else if (range.from && !range.to) {
-        if (date < range.from) {
+        if (normalizeTime(date) < normalizeTime(range.from)) {
           // If clicked date is before start date, make it the new start
           onSelect?.({ from: date, to: range.from });
         } else {
@@ -155,24 +199,40 @@ function Calendar({
   };
 
   const isDayDisabled = (date: Date) => {
-    if (minDate && date < new Date(minDate.setHours(0, 0, 0, 0))) return true;
-    if (maxDate && date > new Date(maxDate.setHours(23, 59, 59, 999)))
-      return true;
+    if (minDate && normalizeTime(date) < normalizeTime(minDate)) return true;
+    if (maxDate && normalizeTime(date) > normalizeTime(maxDate)) return true;
     if (disabledDates && disabledDates(date)) return true;
     return false;
   };
 
   const today = new Date();
 
+  // Active range resolution
+  const activeRange = React.useMemo(() => {
+    if (mode !== "range") return null;
+    const range = (selected as DateRange) || {};
+    const from = range.from || null;
+    const to = range.to || (range.from && hoveredDate ? hoveredDate : null);
+    if (!from) return null;
+    const start = normalizeTime(from) <= normalizeTime(to || from) ? from : to;
+    const end = normalizeTime(from) <= normalizeTime(to || from) ? to : from;
+    return {
+      start,
+      end,
+      isResolved: Boolean(range.from && range.to),
+    };
+  }, [mode, selected, hoveredDate]);
+
   return (
-    <div className={cn("w-fit p-3 select-none", className)}>
+    <div className={cn("w-64 select-none sm:w-72", className)}>
       {/* Calendar Header */}
-      <div className="border-border flex items-center justify-between gap-2 border-b pb-3">
+      <div className="border-border flex items-center justify-between border-b pb-3">
         <Button
           type="button"
           variant="ghost"
           size="icon"
           onClick={prevMonth}
+          className="size-8 rounded-md"
           aria-label="Previous month"
         >
           <ChevronLeft className="size-4" />
@@ -187,27 +247,29 @@ function Calendar({
           variant="ghost"
           size="icon"
           onClick={nextMonth}
+          className="size-8 rounded-md"
           aria-label="Next month"
         >
           <ChevronRight className="size-4" />
         </Button>
       </div>
 
-      {/* Weekdays Row */}
-      <div className="grid grid-cols-7 gap-1 pt-2 pb-1 text-center">
+      {/* Weekdays Row — perfectly aligned 7 columns */}
+      <div className="grid grid-cols-7 pt-2 pb-1 text-center">
         {WEEKDAYS.map((wd) => (
           <div
             key={wd}
-            className="text-muted-foreground flex size-8 items-center justify-center text-xs font-semibold uppercase"
+            className="text-muted-foreground flex h-8 items-center justify-center text-[11px] font-semibold tracking-wider uppercase"
           >
             {wd}
           </div>
         ))}
       </div>
 
-      {/* Days Grid */}
+      {/* Days Grid — 7 columns with zero horizontal offset */}
       <div className="grid grid-cols-7 gap-y-1">
         {calendarDays.map(({ date, isCurrentMonth }, idx) => {
+          const colIndex = idx % 7;
           const disabled = isDayDisabled(date);
           const isToday = isSameDay(date, today);
 
@@ -216,62 +278,86 @@ function Calendar({
           let isRangeEnd = false;
           let isInRange = false;
 
-          if (mode === "single") {
-            isSelected = isSameDay(date, selected as Date);
-          } else if (mode === "range") {
-            const range = (selected as DateRange) || {};
-            isRangeStart = isSameDay(date, range.from);
-            isRangeEnd = isSameDay(date, range.to);
-            isSelected = isRangeStart || isRangeEnd;
-
-            // Check if inside defined range
-            if (range.from && range.to) {
-              isInRange = isDateInRange(date, range.from, range.to);
-            } else if (range.from && !range.to && hoveredDate) {
-              // Hover preview
-              const hoverStart =
-                range.from < hoveredDate ? range.from : hoveredDate;
-              const hoverEnd =
-                range.from < hoveredDate ? hoveredDate : range.from;
-              isInRange = isDateInRange(date, hoverStart, hoverEnd);
-              if (isSameDay(date, hoveredDate)) {
-                isRangeEnd = true;
-                isSelected = true;
-              }
+          if (isCurrentMonth) {
+            if (mode === "single") {
+              isSelected = isSameDay(date, selected as Date);
+            } else if (activeRange) {
+              isRangeStart = isSameDay(date, activeRange.start);
+              isRangeEnd = isSameDay(date, activeRange.end);
+              isSelected = isRangeStart || isRangeEnd;
+              isInRange = isDateInRange(
+                date,
+                activeRange.start,
+                activeRange.end
+              );
             }
           }
+
+          const hasRangeConnection =
+            activeRange &&
+            activeRange.start &&
+            activeRange.end &&
+            !isSameDay(activeRange.start, activeRange.end);
 
           return (
             <div
               key={idx}
-              className={cn(
-                "relative flex h-8 items-center justify-center",
-                isInRange && "bg-primary/10",
-                isRangeStart && "bg-primary/10 rounded-l-md",
-                isRangeEnd && "bg-primary/10 rounded-r-md"
-              )}
+              className="relative flex h-8 w-full items-center justify-center"
             >
+              {/* Continuous Track Ribbon for Range */}
+              {isCurrentMonth && hasRangeConnection && (
+                <>
+                  {/* Left half track leading into End Date */}
+                  {isRangeEnd && colIndex !== 0 && (
+                    <div className="bg-primary/10 absolute top-0 bottom-0 left-0 w-1/2" />
+                  )}
+
+                  {/* Right half track leading out of Start Date */}
+                  {isRangeStart && colIndex !== 6 && (
+                    <div className="bg-primary/10 absolute top-0 right-0 bottom-0 w-1/2" />
+                  )}
+
+                  {/* Full track for middle days */}
+                  {isInRange && (
+                    <div
+                      className={cn(
+                        "bg-primary/10 absolute inset-0",
+                        colIndex === 0 && "rounded-l-md",
+                        colIndex === 6 && "rounded-r-md"
+                      )}
+                    />
+                  )}
+                </>
+              )}
+
+              {/* Day Button */}
               <button
                 type="button"
                 disabled={disabled}
-                onClick={() => handleDateClick(date)}
-                onMouseEnter={() => setHoveredDate(date)}
-                onMouseLeave={() => setHoveredDate(null)}
+                onClick={() => handleDateClick(date, isCurrentMonth)}
+                onMouseEnter={() =>
+                  mode === "range" && isCurrentMonth && setHoveredDate(date)
+                }
+                onMouseLeave={() => mode === "range" && setHoveredDate(null)}
                 className={cn(
-                  "asana-press relative flex size-8 items-center justify-center rounded-md text-xs font-medium transition-colors outline-none",
-                  !isCurrentMonth && "text-muted-foreground/35",
+                  "asana-press relative z-10 flex size-8 items-center justify-center rounded-md text-xs font-medium transition-colors outline-none",
+                  !isCurrentMonth &&
+                    "text-muted-foreground/30 hover:text-muted-foreground/60",
                   isCurrentMonth &&
                     !isSelected &&
                     !isInRange &&
                     "text-foreground hover:bg-secondary",
+                  isCurrentMonth &&
+                    isInRange &&
+                    !isSelected &&
+                    "text-foreground hover:bg-primary/20 font-semibold",
                   isToday &&
                     !isSelected &&
                     "border-border border font-semibold",
                   isSelected &&
-                    "bg-primary text-primary-foreground hover:bg-primary/90 font-semibold shadow-xs",
-                  isInRange && !isSelected && "text-foreground font-medium",
+                    "bg-primary text-primary-foreground hover:bg-primary font-semibold shadow-xs",
                   disabled &&
-                    "pointer-events-none cursor-not-allowed opacity-30"
+                    "pointer-events-none cursor-not-allowed opacity-25"
                 )}
               >
                 {date.getDate()}
