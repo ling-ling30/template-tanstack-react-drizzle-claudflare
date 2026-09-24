@@ -448,9 +448,4 @@ export {
   DateTimeInput,
   type DateTimeInputProps,
 } from "@/components/ui/date-time-input";
-export {
-  TimeInput,
-  TimePicker,
-  type TimeInputProps,
-  type TimePickerProps,
-} from "@/components/ui/time-input";
+export { TimeInput, type TimeInputProps } from "@/components/ui/time-input";
