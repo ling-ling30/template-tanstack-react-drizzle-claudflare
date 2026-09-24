@@ -1646,7 +1646,7 @@ function ShowcasePage() {
         {/* =========================================================================
             SECTION 4: BASIC UI PRIMITIVES
             ========================================================================= */}
-        <section id="primitives" className="scroll-mt-28 space-y-6">
+        <section id="primitives" className="min-w-0 scroll-mt-28 space-y-6">
           <div className="border-border/60 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
             <div>
               <h2 className="section-title text-2xl font-semibold">
@@ -1664,7 +1664,7 @@ function ShowcasePage() {
 
           <div className="grid gap-6">
             {/* Card 1: Button Variants & Semantic Tiers */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Button Variants & Semantic Tiers</CardTitle>
                 <CardDescription>
@@ -1742,7 +1742,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Card 2: Button Sizes & Icon Controls */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Standardized Button Sizes & Icon Controls</CardTitle>
                 <CardDescription>
@@ -1804,7 +1804,7 @@ function ShowcasePage() {
 
                   <div className="bg-border/60 mx-2 hidden h-6 w-px sm:block" />
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="text-muted-foreground text-xs font-medium">
                       State Toggles:
                     </span>
@@ -1843,7 +1843,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Card 3: Standardized Input Sizes (CVA) & Height Parity */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>
                   Standardized Input Sizes (CVA) & Button Parity
@@ -1958,13 +1958,13 @@ function ShowcasePage() {
 
                 {/* Input States Comparison */}
                 <div className="border-border/50 grid gap-3 border-t pt-3 sm:grid-cols-2">
-                  <div className="space-y-1.5">
+                  <div className="min-w-0 space-y-1.5">
                     <Label className="text-muted-foreground text-xs">
                       Disabled Input State
                     </Label>
                     <Input disabled value="Read-only system token" />
                   </div>
-                  <div className="space-y-1.5">
+                  <div className="min-w-0 space-y-1.5">
                     <Label className="text-destructive text-xs">
                       Invalid Validation State (aria-invalid)
                     </Label>
@@ -1983,7 +1983,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Card 4: Badges & Semantic Status Tags */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Badge Sizes & Semantic Status Tags</CardTitle>
                 <CardDescription>
@@ -2044,7 +2044,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Card 5: ValueBox Types & Semantic Diagnostics */}
-            <Card size="sm">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>ValueBox Types & Semantic States</CardTitle>
                 <CardDescription>
@@ -2186,7 +2186,7 @@ function ShowcasePage() {
 
           <div className="grid gap-6 md:grid-cols-2">
             {/* String / Text Input */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>String / Text Input</CardTitle>
                 <CardDescription>
@@ -2221,7 +2221,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Number Input (No Scroll & No Auto-Zero) */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Number Input (No Scroll & No Auto-Zero)</CardTitle>
                 <CardDescription>
@@ -2252,7 +2252,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Single Date Picker */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Date Input (Choose One Date)</CardTitle>
                 <CardDescription>
@@ -2287,7 +2287,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Date Range Picker */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Date Range Input (Choose Date Range)</CardTitle>
                 <CardDescription>
@@ -2317,7 +2317,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Time Input */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Time Input (Choose Time)</CardTitle>
                 <CardDescription>
@@ -2339,7 +2339,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Date & Time Input */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Date & Time Input (Combined Date & Time)</CardTitle>
                 <CardDescription>
@@ -2371,7 +2371,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Phone Number Input (with Country Selector & Validation) */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <div className="flex items-center justify-between gap-2">
                   <CardTitle className="truncate">
@@ -2436,7 +2436,7 @@ function ShowcasePage() {
                 </div>
 
                 {/* Real-time Telemetry Panel */}
-                <TelemetryBox className="space-y-1.5 overflow-hidden p-3">
+                <TelemetryBox className="space-y-1.5 p-3">
                   <div className="flex min-w-0 items-center justify-between gap-2 text-xs">
                     <span className="text-muted-foreground shrink-0">
                       Country:
@@ -2488,7 +2488,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Select (Radix Select) */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Select (Single Option)</CardTitle>
                 <CardDescription>
@@ -2530,7 +2530,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Combobox (Searchable Autocomplete Input) */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <div className="flex items-center justify-between gap-2">
                   <CardTitle className="truncate">
@@ -2563,7 +2563,7 @@ function ShowcasePage() {
                   />
                 </div>
 
-                <ValueBox className="space-y-1 overflow-hidden">
+                <ValueBox className="space-y-1">
                   <div className="flex min-w-0 items-center justify-between gap-2 text-xs">
                     <span className="text-muted-foreground shrink-0">
                       Selected Value:
@@ -2586,7 +2586,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Dropdown Select / Menu */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Dropdown Menu / Action Menu</CardTitle>
                 <CardDescription>
@@ -2640,7 +2640,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Checkbox with Label */}
-            <Card size="sm" className="min-w-0 overflow-hidden">
+            <Card size="sm" className="min-w-0">
               <CardHeader>
                 <CardTitle>Checkbox with Description</CardTitle>
                 <CardDescription>
@@ -2680,7 +2680,7 @@ function ShowcasePage() {
             </Card>
 
             {/* Textarea */}
-            <Card size="sm" className="min-w-0 overflow-hidden md:col-span-2">
+            <Card size="sm" className="min-w-0 md:col-span-2">
               <CardHeader>
                 <CardTitle>Textarea (Multi-line Input)</CardTitle>
                 <CardDescription>

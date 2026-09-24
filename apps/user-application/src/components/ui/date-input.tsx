@@ -107,7 +107,7 @@ function SingleDateInputInternal({
             className
           )}
         >
-          <div className="flex items-center gap-2 truncate">
+          <div className="flex min-w-0 items-center gap-2">
             <CalendarIcon className="text-muted-foreground size-4 shrink-0" />
             <span className="truncate">
               {formatted || placeholder || "Select date"}
@@ -296,7 +296,7 @@ function DateRangeInputInternal({
             className
           )}
         >
-          <div className="flex items-center gap-2 truncate">
+          <div className="flex min-w-0 items-center gap-2">
             <CalendarIcon className="text-muted-foreground size-4 shrink-0" />
             <span className="truncate">
               {rangeText || placeholder || "Select date range"}

@@ -5,7 +5,7 @@ import { Info, AlertTriangle, AlertCircle, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const valueBoxVariants = cva(
-  "rounded-lg border font-mono text-xs transition-colors p-2.5 shadow-2xs",
+  "min-w-0 rounded-lg border font-mono text-xs transition-colors p-2.5 shadow-2xs",
   {
     variants: {
       variant: {
@@ -116,7 +116,7 @@ function ValueBox({
       {...props}
     >
       {label !== undefined ? (
-        <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 sm:flex-nowrap">
+        <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-2 gap-y-1">
           <div className="flex min-w-0 shrink-0 items-center gap-1.5">
             {shouldShowIcon && IconComponent && (
               <IconComponent className="size-3.5 shrink-0" />
@@ -133,7 +133,7 @@ function ValueBox({
           {typeof value === "string" || typeof value === "number" ? (
             <code
               className={cn(
-                "thin-scrollbar max-w-full overflow-x-auto rounded border px-2 py-0.5 font-mono text-xs font-semibold tracking-tight whitespace-nowrap shadow-2xs",
+                "max-w-full min-w-0 rounded border px-2 py-0.5 font-mono text-xs font-semibold tracking-tight break-words shadow-2xs",
                 valuePillVariants[resolvedVariant] ||
                   "text-foreground bg-background dark:bg-card border-border"
               )}
@@ -141,24 +141,24 @@ function ValueBox({
               {value}
             </code>
           ) : (
-            <span className="thin-scrollbar max-w-full overflow-x-auto font-mono font-semibold tracking-tight">
+            <div className="max-w-full min-w-0 font-mono text-xs font-semibold tracking-tight break-words">
               {value}
-            </span>
+            </div>
           )}
         </div>
       ) : value !== undefined ? (
-        <div className="flex items-center gap-1.5 font-mono font-semibold">
+        <div className="flex min-w-0 items-center gap-1.5 font-mono font-semibold">
           {shouldShowIcon && IconComponent && (
             <IconComponent className="size-3.5 shrink-0" />
           )}
-          <span>{value}</span>
+          <span className="min-w-0 break-words">{value}</span>
         </div>
       ) : (
-        <div className="flex items-start gap-2 font-mono text-xs leading-relaxed">
+        <div className="flex min-w-0 items-start gap-2 font-mono text-xs leading-relaxed">
           {shouldShowIcon && IconComponent && (
             <IconComponent className="mt-0.5 size-3.5 shrink-0" />
           )}
-          <div className="flex-1">{children}</div>
+          <div className="min-w-0 flex-1 break-words">{children}</div>
         </div>
       )}
     </div>
