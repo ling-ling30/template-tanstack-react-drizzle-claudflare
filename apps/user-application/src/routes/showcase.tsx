@@ -59,6 +59,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
+  Format,
+  FormattedCompactNumber,
+  FormattedDate,
+  FormattedDateRange,
+  FormattedDateTime,
+  FormattedDuration,
+  FormattedNumber,
+  FormattedPercent,
+  FormattedRelativeTime,
+  FormattedTime,
+} from "@/components/ui/formatted";
+import {
   Typography,
   Heading,
   Text,
@@ -2273,14 +2285,15 @@ function ShowcasePage() {
                 <ValueBox
                   label="Selected"
                   value={
-                    singleDate
-                      ? singleDate.toLocaleDateString("en-US", {
-                          weekday: "short",
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })
-                      : "None"
+                    singleDate ? (
+                      <FormattedDate
+                        value={singleDate}
+                        preset="weekday"
+                        locale="en-US"
+                      />
+                    ) : (
+                      "None"
+                    )
                   }
                 />
               </CardContent>
@@ -2308,9 +2321,15 @@ function ShowcasePage() {
                 <ValueBox
                   label="Range"
                   value={
-                    rangeDate?.from
-                      ? `${rangeDate.from.toLocaleDateString()} – ${rangeDate.to ? rangeDate.to.toLocaleDateString() : "…"}`
-                      : "None"
+                    rangeDate?.from ? (
+                      <FormattedDateRange
+                        from={rangeDate.from}
+                        to={rangeDate.to}
+                        locale="en-US"
+                      />
+                    ) : (
+                      "None"
+                    )
                   }
                 />
               </CardContent>
@@ -2359,12 +2378,11 @@ function ShowcasePage() {
                 <ValueBox
                   label="Selected"
                   value={
-                    dateTimeValue
-                      ? dateTimeValue.toLocaleString("en-US", {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })
-                      : "None"
+                    dateTimeValue ? (
+                      <FormattedDateTime value={dateTimeValue} locale="en-US" />
+                    ) : (
+                      "None"
+                    )
                   }
                 />
               </CardContent>
@@ -2705,6 +2723,201 @@ function ShowcasePage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Standardized Formatted Primitives Card */}
+            <Card size="sm" className="min-w-0 md:col-span-2">
+              <CardHeader>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <CardTitle>Standardized Formatting Primitives</CardTitle>
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    tabular-nums · semantic &lt;time&gt; · SSR-safe
+                  </Badge>
+                </div>
+                <CardDescription>
+                  Universal, hydration-safe formatters for dates, times,
+                  relative offsets, currencies, compact metrics, and file sizes.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {/* Date Formats */}
+                  <div className="border-border/60 bg-muted/20 space-y-2 rounded-lg border p-3">
+                    <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                      Dates & Times
+                    </div>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Default (Medium):
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedDate
+                            value="2026-09-24T14:30:00Z"
+                            locale="en-US"
+                          />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Weekday Preset:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedDate
+                            value="2026-09-24T14:30:00Z"
+                            preset="weekday"
+                            locale="en-US"
+                          />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Time (12h):
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedTime
+                            value="2026-09-24T14:30:00Z"
+                            preset="12h"
+                            locale="en-US"
+                          />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Date Range:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedDateRange
+                            from="2026-09-24"
+                            to="2026-09-28"
+                            locale="en-US"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Relative & Duration */}
+                  <div className="border-border/60 bg-muted/20 space-y-2 rounded-lg border p-3">
+                    <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                      Relative & Durations
+                    </div>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Recent Activity:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedRelativeTime
+                            value="2026-09-24T11:42:00Z"
+                            now={new Date("2026-09-24T12:00:00Z")}
+                            locale="en-US"
+                          />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Yesterday:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedRelativeTime
+                            value="2026-09-23T10:00:00Z"
+                            now={new Date("2026-09-24T12:00:00Z")}
+                            locale="en-US"
+                          />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Shoot Session:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedDuration value={7500} unit="s" />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Full Ceremony:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedDuration
+                            value={180}
+                            unit="m"
+                            durationStyle="long"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metrics & Storage */}
+                  <div className="border-border/60 bg-muted/20 space-y-2 rounded-lg border p-3 sm:col-span-2 lg:col-span-1">
+                    <div className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+                      Financials & Storage
+                    </div>
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Booking Fee:
+                        </span>
+                        <span className="text-primary font-mono font-semibold">
+                          <Format.Currency
+                            value={2450}
+                            currency="USD"
+                            locale="en-US"
+                          />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Quota Used:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedPercent
+                            value={0.784}
+                            decimals={1}
+                            locale="en-US"
+                          />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Client Gallery Size:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <Format.Bytes value={1073741824 * 18.4} />
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">
+                          Photos Delivered:
+                        </span>
+                        <span className="font-mono font-medium">
+                          <FormattedCompactNumber
+                            value={1420}
+                            decimals={1}
+                            locale="en-US"
+                          />{" "}
+                          photos
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <ValueBox type="info">
+                  All metrics apply{" "}
+                  <code className="bg-background/80 text-chart-3 rounded px-1">
+                    tabular-nums
+                  </code>{" "}
+                  by default to guarantee vertical alignment in grids and data
+                  tables. Dates emit semantic{" "}
+                  <code className="bg-background/80 text-chart-3 rounded px-1">
+                    &lt;time dateTime=&quot;...&quot;&gt;
+                  </code>{" "}
+                  tags.
+                </ValueBox>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
@@ -2838,10 +3051,13 @@ function ShowcasePage() {
                             </div>
                           </TableCell>
                           <TableCell className="text-muted-foreground font-mono text-xs">
-                            {evt.date}
+                            <FormattedDate value={evt.date} locale="en-US" />
                           </TableCell>
                           <TableCell className="font-mono text-xs font-medium">
-                            {evt.photos.toLocaleString("en-US")}
+                            <FormattedNumber
+                              value={evt.photos}
+                              locale="en-US"
+                            />
                           </TableCell>
                           <TableCell className="text-muted-foreground font-mono text-xs">
                             {evt.storage}
