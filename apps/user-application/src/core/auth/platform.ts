@@ -15,7 +15,9 @@ import { isPlatformAdminEmail } from "./platform-admin-email";
  */
 /** Signed-in platform admin, or null. Never throws for "not signed in". */
 export async function getPlatformAdmin() {
-  const session = await getAuth().api.getSession(getRequest());
+  const session = await getAuth().api.getSession({
+    headers: getRequest().headers,
+  });
   if (!session) return null;
   return isPlatformAdminEmail(session.user.email, env.PLATFORM_ADMIN_EMAILS)
     ? session.user
@@ -24,7 +26,9 @@ export async function getPlatformAdmin() {
 
 /** Throws AUTH_REQUIRED / FORBIDDEN unless the caller is a platform admin. */
 export async function requirePlatformAdmin() {
-  const session = await getAuth().api.getSession(getRequest());
+  const session = await getAuth().api.getSession({
+    headers: getRequest().headers,
+  });
 
   if (!session) {
     throw appError("AUTH_REQUIRED", "Please sign in first.");
