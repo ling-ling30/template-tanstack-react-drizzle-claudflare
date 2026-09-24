@@ -28,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { NumberInput } from "@/components/ui/number-input";
+import { DateInput, type DateRange } from "@/components/ui/date-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -513,7 +514,13 @@ function ShowcasePage() {
   const [textareaValue, setTextareaValue] = useState(
     "Please upload high-resolution candid shots from the cocktail reception. Photos will be compiled into the couple's commemorative album."
   );
-  const [dateValue, setDateValue] = useState("2026-10-24");
+  const [singleDate, setSingleDate] = useState<Date | null>(
+    () => new Date(2026, 9, 24)
+  );
+  const [rangeDate, setRangeDate] = useState<DateRange | null>(() => ({
+    from: new Date(2026, 9, 20),
+    to: new Date(2026, 9, 27),
+  }));
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [selectValue, setSelectValue] = useState("pro");
   const [selectedRows, setSelectedRows] = useState<string[]>(["EVT-8921"]);
@@ -523,7 +530,9 @@ function ShowcasePage() {
   // Form states
   const [formEventName, setFormEventName] = useState("");
   const [formGuestLimit, setFormGuestLimit] = useState<number | "">(150);
-  const [formDate, setFormDate] = useState("2026-11-15");
+  const [formDate, setFormDate] = useState<Date | null>(
+    () => new Date(2026, 10, 15)
+  );
   const [formPackage, setFormPackage] = useState("unlimited");
   const [formNotes, setFormNotes] = useState("");
   const [formAllowGuestUpload, setFormAllowGuestUpload] = useState(true);
@@ -882,30 +891,66 @@ function ShowcasePage() {
               </div>
             </Card>
 
-            {/* Date Input */}
+            {/* Single Date Picker */}
             <Card className="space-y-4 p-6">
               <div className="space-y-1">
-                <Label htmlFor="date-input" className="text-sm font-semibold">
-                  Date Input
+                <Label className="text-sm font-semibold">
+                  Date Input (Choose One Date)
                 </Label>
                 <p className="text-muted-foreground text-xs">
-                  Native ISO date picker formatted to user locale.
+                  Interactive Asana calendar popover with quick day presets and
+                  clear button.
                 </p>
               </div>
 
-              <div className="relative">
-                <Input
-                  id="date-input"
-                  type="date"
-                  value={dateValue}
-                  onChange={(e) => setDateValue(e.target.value)}
-                  className="block"
+              <div>
+                <DateInput
+                  mode="single"
+                  value={singleDate}
+                  onChange={setSingleDate}
+                  placeholder="Select event date..."
                 />
               </div>
 
               <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
-                Selected Date:{" "}
-                {dateValue ? new Date(dateValue).toLocaleDateString() : "None"}
+                Selected:{" "}
+                {singleDate
+                  ? singleDate.toLocaleDateString("en-US", {
+                      weekday: "short",
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })
+                  : "None"}
+              </div>
+            </Card>
+
+            {/* Date Range Picker */}
+            <Card className="space-y-4 p-6">
+              <div className="space-y-1">
+                <Label className="text-sm font-semibold">
+                  Date Range Input (Choose Date Range)
+                </Label>
+                <p className="text-muted-foreground text-xs">
+                  Select start and end date with continuous track highlight, day
+                  counter, and presets.
+                </p>
+              </div>
+
+              <div>
+                <DateInput
+                  mode="range"
+                  value={rangeDate}
+                  onChange={setRangeDate}
+                  placeholder="Select upload window..."
+                />
+              </div>
+
+              <div className="text-muted-foreground bg-muted/30 rounded-lg p-2 font-mono text-xs">
+                Range:{" "}
+                {rangeDate?.from
+                  ? `${rangeDate.from.toLocaleDateString()} – ${rangeDate.to ? rangeDate.to.toLocaleDateString() : "…"}`
+                  : "None"}
               </div>
             </Card>
 
@@ -1388,11 +1433,12 @@ function ShowcasePage() {
                     >
                       Wedding Date
                     </Label>
-                    <Input
+                    <DateInput
                       id="form-date"
-                      type="date"
+                      mode="single"
                       value={formDate}
-                      onChange={(e) => setFormDate(e.target.value)}
+                      onChange={setFormDate}
+                      placeholder="Select wedding date..."
                     />
                   </div>
                 </div>
