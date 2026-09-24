@@ -18,62 +18,70 @@ export interface TimeInputProps {
   value?: string | null;
   onChange?: (time: string | null) => void;
   format?: "12h" | "24h";
+  onFormatChange?: (format: "12h" | "24h") => void;
+  allowFormatToggle?: boolean;
   stepMinutes?: number;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
-  showPresets?: boolean;
 }
 
-const COMMON_QUICK_PRESETS = [
-  { label: "Now", isNow: true },
-  { label: "09:00 AM", hours: 9, minutes: 0 },
-  { label: "01:00 PM", hours: 13, minutes: 0 },
-  { label: "05:00 PM", hours: 17, minutes: 0 },
-];
-
 /**
- * Linear / Asana style TimeInput:
- * Supports direct typing (e.g. "3p", "330", "14:30", "now") and
- * single-click selection from an auto-scrolling slot dropdown.
+ * Modern TimeInput with direct typing and single-click slot dropdown.
+ * Supports both 12-hour (AM/PM) and 24-hour modes with an interactive format toggle.
  */
 export function TimeInput({
   id,
   value,
   onChange,
-  format = "12h",
+  format: controlledFormat = "12h",
+  onFormatChange,
+  allowFormatToggle = true,
   stepMinutes = 30,
-  placeholder = "e.g. 2:30 PM",
+  placeholder,
   disabled = false,
   className,
-  showPresets = true,
 }: TimeInputProps) {
   const [open, setOpen] = React.useState(false);
+  const [activeFormat, setActiveFormat] = React.useState<"12h" | "24h">(
+    controlledFormat
+  );
+
+  // Sync format state if controlled format prop changes
+  const [prevControlledFormat, setPrevControlledFormat] =
+    React.useState(controlledFormat);
+  if (controlledFormat !== prevControlledFormat) {
+    setPrevControlledFormat(controlledFormat);
+    setActiveFormat(controlledFormat);
+  }
 
   // Parse current value
   const parsedValue = React.useMemo(() => {
-    return parseTimeString(value);
-  }, [value]);
+    return parseTimeString(value, activeFormat);
+  }, [value, activeFormat]);
 
   const formattedDisplay = React.useMemo(() => {
     if (!parsedValue) return value || "";
-    return formatTimeDisplay(parsedValue.hours, parsedValue.minutes, format);
-  }, [parsedValue, value, format]);
+    return formatTimeDisplay(
+      parsedValue.hours,
+      parsedValue.minutes,
+      activeFormat
+    );
+  }, [parsedValue, value, activeFormat]);
 
   // Internal text state for direct typing
   const [text, setText] = React.useState(formattedDisplay);
 
-  // Sync internal text when external value changes
   const [prevFormatted, setPrevFormatted] = React.useState(formattedDisplay);
   if (formattedDisplay !== prevFormatted) {
     setPrevFormatted(formattedDisplay);
     setText(formattedDisplay);
   }
 
-  // Generate slots for dropdown
+  // Generate slots for dropdown in active format
   const slots = React.useMemo(() => {
-    return generateTimeSlots(stepMinutes, format);
-  }, [stepMinutes, format]);
+    return generateTimeSlots(stepMinutes, activeFormat);
+  }, [stepMinutes, activeFormat]);
 
   // Ref to active slot item to auto-scroll when dropdown opens
   const activeSlotRef = React.useRef<HTMLButtonElement | null>(null);
@@ -81,7 +89,6 @@ export function TimeInput({
 
   React.useEffect(() => {
     if (open && activeSlotRef.current && listContainerRef.current) {
-      // Scroll active item to middle of container
       const container = listContainerRef.current;
       const element = activeSlotRef.current;
       const topOffset =
@@ -92,19 +99,37 @@ export function TimeInput({
     }
   }, [open]);
 
+  const handleToggleFormat = (newFmt: "12h" | "24h") => {
+    if (newFmt === activeFormat) return;
+    setActiveFormat(newFmt);
+    onFormatChange?.(newFmt);
+    if (parsedValue) {
+      const reformatted = formatTimeDisplay(
+        parsedValue.hours,
+        parsedValue.minutes,
+        newFmt
+      );
+      setText(reformatted);
+      onChange?.(reformatted);
+    }
+  };
+
   const commitText = (inputText: string) => {
     if (!inputText.trim()) {
       onChange?.(null);
       setText("");
       return;
     }
-    const parsed = parseTimeString(inputText);
+    const parsed = parseTimeString(inputText, activeFormat);
     if (parsed) {
-      const formatted = formatTimeDisplay(parsed.hours, parsed.minutes, format);
+      const formatted = formatTimeDisplay(
+        parsed.hours,
+        parsed.minutes,
+        activeFormat
+      );
       setText(formatted);
       onChange?.(formatted);
     } else {
-      // Revert if invalid
       setText(formattedDisplay);
     }
   };
@@ -125,7 +150,7 @@ export function TimeInput({
   };
 
   const handleSlotSelect = (slot: TimeSlot) => {
-    const formatted = formatTimeDisplay(slot.hours, slot.minutes, format);
+    const formatted = formatTimeDisplay(slot.hours, slot.minutes, activeFormat);
     setText(formatted);
     onChange?.(formatted);
     setOpen(false);
@@ -137,32 +162,15 @@ export function TimeInput({
     setText("");
   };
 
-  const applyQuickPreset = (preset: {
-    isNow?: boolean;
-    hours?: number;
-    minutes?: number;
-  }) => {
-    if (preset.isNow) {
-      const now = new Date();
-      const roundedMin = Math.round(now.getMinutes() / 5) * 5;
-      const finalMin = roundedMin >= 60 ? 55 : roundedMin;
-      const formatted = formatTimeDisplay(now.getHours(), finalMin, format);
-      setText(formatted);
-      onChange?.(formatted);
-    } else if (preset.hours !== undefined && preset.minutes !== undefined) {
-      const formatted = formatTimeDisplay(preset.hours, preset.minutes, format);
-      setText(formatted);
-      onChange?.(formatted);
-    }
-    setOpen(false);
-  };
-
   const isCurrentSlot = (slot: TimeSlot) => {
     if (!parsedValue) return false;
     return (
       slot.hours === parsedValue.hours && slot.minutes === parsedValue.minutes
     );
   };
+
+  const defaultPlaceholder =
+    activeFormat === "12h" ? "e.g. 02:30 PM" : "e.g. 14:30";
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -181,7 +189,7 @@ export function TimeInput({
             type="text"
             value={text}
             disabled={disabled}
-            placeholder={placeholder}
+            placeholder={placeholder || defaultPlaceholder}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
@@ -204,23 +212,43 @@ export function TimeInput({
 
       <PopoverContent
         align="start"
-        className="border-border w-56 p-1.5 shadow-md"
+        className="border-border w-52 p-1.5 shadow-md"
       >
-        {/* Quick Presets Pills */}
-        {showPresets && (
-          <div className="border-border/60 mb-1 flex items-center justify-between gap-1 border-b px-1 pb-1.5">
-            {COMMON_QUICK_PRESETS.map((p) => (
+        {/* Header with 12h / 24h Segmented Mode Switch */}
+        <div className="border-border/60 mb-1.5 flex items-center justify-between border-b px-1 pb-1.5">
+          <span className="text-muted-foreground font-mono text-[10px] font-semibold tracking-wider uppercase">
+            {activeFormat === "12h" ? "AM / PM" : "24-Hour"}
+          </span>
+
+          {allowFormatToggle && (
+            <div className="border-border bg-secondary/40 flex items-center rounded-md border p-0.5">
               <button
-                key={p.label}
                 type="button"
-                onClick={() => applyQuickPreset(p)}
-                className="asana-press hover:bg-secondary text-muted-foreground hover:text-foreground rounded-md px-1.5 py-0.5 font-mono text-[11px] font-medium transition-colors outline-none"
+                onClick={() => handleToggleFormat("12h")}
+                className={cn(
+                  "asana-press rounded px-1.5 py-0.5 font-mono text-[10px] font-medium transition-colors outline-none",
+                  activeFormat === "12h"
+                    ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
-                {p.label}
+                12h
               </button>
-            ))}
-          </div>
-        )}
+              <button
+                type="button"
+                onClick={() => handleToggleFormat("24h")}
+                className={cn(
+                  "asana-press rounded px-1.5 py-0.5 font-mono text-[10px] font-medium transition-colors outline-none",
+                  activeFormat === "24h"
+                    ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                24h
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Scrollable Single-Click Slot List */}
         <div

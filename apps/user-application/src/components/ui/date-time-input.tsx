@@ -20,13 +20,14 @@ export interface DateTimeInputProps {
   value?: Date | string | null;
   onChange?: (date: Date | null) => void;
   format?: "12h" | "24h";
+  onFormatChange?: (format: "12h" | "24h") => void;
+  allowFormatToggle?: boolean;
   stepMinutes?: number;
   placeholder?: string;
   disabled?: boolean;
   className?: string;
   minDate?: Date;
   maxDate?: Date;
-  showPresets?: boolean;
 }
 
 function formatDateTimeDisplay(
@@ -52,31 +53,36 @@ function formatDateTimeDisplay(
   return `${datePart} · ${timePart}`;
 }
 
-const COMMON_QUICK_PRESETS = [
-  { label: "Now", isNow: true },
-  { label: "09:00 AM", hours: 9, minutes: 0 },
-  { label: "01:00 PM", hours: 13, minutes: 0 },
-  { label: "05:00 PM", hours: 17, minutes: 0 },
-];
-
 /**
- * Linear / Asana style DateTimeInput:
- * Integrates clean Calendar with a single-click time slot list and direct typing.
+ * Modern DateTimeInput combining Asana Calendar with direct typing and single-click time slots.
+ * Supports both 12-hour (AM/PM) and 24-hour time formatting with an interactive switch.
  */
 export function DateTimeInput({
   id,
   value,
   onChange,
-  format = "12h",
+  format: controlledFormat = "12h",
+  onFormatChange,
+  allowFormatToggle = true,
   stepMinutes = 30,
-  placeholder = "Select date and time...",
+  placeholder,
   disabled = false,
   className,
   minDate,
   maxDate,
-  showPresets = true,
 }: DateTimeInputProps) {
   const [open, setOpen] = React.useState(false);
+  const [activeFormat, setActiveFormat] = React.useState<"12h" | "24h">(
+    controlledFormat
+  );
+
+  // Sync format state if prop changes
+  const [prevControlledFormat, setPrevControlledFormat] =
+    React.useState(controlledFormat);
+  if (controlledFormat !== prevControlledFormat) {
+    setPrevControlledFormat(controlledFormat);
+    setActiveFormat(controlledFormat);
+  }
 
   const currentDate = React.useMemo(() => {
     if (!value) return null;
@@ -84,11 +90,15 @@ export function DateTimeInput({
     return isNaN(d.getTime()) ? null : d;
   }, [value]);
 
-  const displayString = formatDateTimeDisplay(currentDate, format);
+  const displayString = formatDateTimeDisplay(currentDate, activeFormat);
 
   const currentHours = currentDate ? currentDate.getHours() : 12;
   const currentMinutes = currentDate ? currentDate.getMinutes() : 0;
-  const timeFormatted = formatTimeDisplay(currentHours, currentMinutes, format);
+  const timeFormatted = formatTimeDisplay(
+    currentHours,
+    currentMinutes,
+    activeFormat
+  );
 
   const [timeTypedText, setTimeTypedText] = React.useState(timeFormatted);
 
@@ -100,8 +110,8 @@ export function DateTimeInput({
   }
 
   const slots = React.useMemo(() => {
-    return generateTimeSlots(stepMinutes, format);
-  }, [stepMinutes, format]);
+    return generateTimeSlots(stepMinutes, activeFormat);
+  }, [stepMinutes, activeFormat]);
 
   // Ref to active slot item to auto-scroll when dropdown opens
   const activeSlotRef = React.useRef<HTMLButtonElement | null>(null);
@@ -118,6 +128,12 @@ export function DateTimeInput({
       container.scrollTo({ top: Math.max(0, topOffset), behavior: "instant" });
     }
   }, [open]);
+
+  const handleToggleFormat = (newFmt: "12h" | "24h") => {
+    if (newFmt === activeFormat) return;
+    setActiveFormat(newFmt);
+    onFormatChange?.(newFmt);
+  };
 
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -141,7 +157,7 @@ export function DateTimeInput({
   };
 
   const commitTimeInput = (val: string) => {
-    const parsed = parseTimeString(val);
+    const parsed = parseTimeString(val, activeFormat);
     if (parsed) {
       const base = currentDate ? new Date(currentDate) : new Date();
       base.setHours(parsed.hours, parsed.minutes, 0, 0);
@@ -151,27 +167,15 @@ export function DateTimeInput({
     }
   };
 
-  const applyQuickPreset = (preset: {
-    isNow?: boolean;
-    hours?: number;
-    minutes?: number;
-  }) => {
-    const base = currentDate ? new Date(currentDate) : new Date();
-    if (preset.isNow) {
-      const now = new Date();
-      const roundedMin = Math.round(now.getMinutes() / 5) * 5;
-      const finalMin = roundedMin >= 60 ? 55 : roundedMin;
-      base.setHours(now.getHours(), finalMin, 0, 0);
-    } else if (preset.hours !== undefined && preset.minutes !== undefined) {
-      base.setHours(preset.hours, preset.minutes, 0, 0);
-    }
-    onChange?.(base);
-  };
-
   const isCurrentSlot = (slot: TimeSlot) => {
     if (!currentDate) return false;
     return slot.hours === currentHours && slot.minutes === currentMinutes;
   };
+
+  const defaultPlaceholder =
+    activeFormat === "12h"
+      ? "Select date and time (AM/PM)..."
+      : "Select date and time (24h)...";
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -188,7 +192,9 @@ export function DateTimeInput({
         >
           <div className="flex items-center gap-2 truncate">
             <CalendarClock className="text-muted-foreground size-4 shrink-0" />
-            <span className="truncate">{displayString || placeholder}</span>
+            <span className="truncate">
+              {displayString || placeholder || defaultPlaceholder}
+            </span>
           </div>
 
           {currentDate && !disabled && (
@@ -225,17 +231,47 @@ export function DateTimeInput({
             />
           </div>
 
-          {/* Time Picker Right Pane — Asana / Linear single-click slot list */}
-          <div className="border-border/60 bg-secondary/15 flex flex-col justify-between border-t p-3 sm:w-56 sm:border-t-0 sm:border-l">
+          {/* Time Picker Right Pane */}
+          <div className="border-border/60 bg-secondary/15 flex flex-col justify-between border-t p-3 sm:w-52 sm:border-t-0 sm:border-l">
             <div>
+              {/* Header with 12h / 24h Toggle */}
+              <div className="border-border/60 mb-2 flex items-center justify-between border-b pb-2">
+                <span className="text-muted-foreground font-mono text-[10px] font-semibold tracking-wider uppercase">
+                  {activeFormat === "12h" ? "AM / PM" : "24-Hour"}
+                </span>
+
+                {allowFormatToggle && (
+                  <div className="border-border bg-secondary/40 flex items-center rounded-md border p-0.5">
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFormat("12h")}
+                      className={cn(
+                        "asana-press rounded px-1.5 py-0.5 font-mono text-[10px] font-medium transition-colors outline-none",
+                        activeFormat === "12h"
+                          ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      12h
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFormat("24h")}
+                      className={cn(
+                        "asana-press rounded px-1.5 py-0.5 font-mono text-[10px] font-medium transition-colors outline-none",
+                        activeFormat === "24h"
+                          ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      24h
+                    </button>
+                  </div>
+                )}
+              </div>
+
               {/* Direct Typing Input */}
               <div className="mb-2">
-                <div className="text-muted-foreground mb-1 flex items-center justify-between text-[11px] font-semibold tracking-wider uppercase">
-                  <span>Time</span>
-                  <span className="text-primary font-mono font-bold">
-                    {timeFormatted}
-                  </span>
-                </div>
                 <div className="border-input bg-background focus-within:border-primary focus-within:ring-primary/25 flex h-8 items-center rounded-md border px-2 focus-within:ring-1">
                   <Clock className="text-muted-foreground mr-1.5 size-3.5 shrink-0" />
                   <input
@@ -248,32 +284,18 @@ export function DateTimeInput({
                       }
                     }}
                     onBlur={() => commitTimeInput(timeTypedText)}
-                    placeholder="e.g. 2:30 PM"
+                    placeholder={
+                      activeFormat === "12h" ? "e.g. 02:30 PM" : "e.g. 14:30"
+                    }
                     className="text-foreground placeholder:text-muted-foreground w-full bg-transparent font-mono text-xs outline-none"
                   />
                 </div>
               </div>
 
-              {/* Quick Preset Chips */}
-              {showPresets && (
-                <div className="border-border/50 mb-2 flex flex-wrap gap-1 border-b pb-2">
-                  {COMMON_QUICK_PRESETS.map((p) => (
-                    <button
-                      key={p.label}
-                      type="button"
-                      onClick={() => applyQuickPreset(p)}
-                      className="asana-press hover:bg-secondary text-muted-foreground hover:text-foreground rounded-md px-1.5 py-0.5 font-mono text-[10px] font-medium transition-colors outline-none"
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-
               {/* Scrollable Slots List */}
               <div
                 ref={listContainerRef}
-                className="h-44 space-y-0.5 overflow-y-auto pr-1"
+                className="h-48 space-y-0.5 overflow-y-auto pr-1"
               >
                 {slots.map((slot) => {
                   const active = isCurrentSlot(slot);

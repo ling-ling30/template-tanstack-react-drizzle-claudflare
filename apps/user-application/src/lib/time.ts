@@ -17,7 +17,10 @@ export interface TimeSlot {
  * Smart time parser supporting both standard formats (14:30, 2:30 PM)
  * and productivity shorthand (3p, 3pm, 9a, 330p, 1430, now, 3, 3:30)
  */
-export function parseTimeString(val?: string | null): ParsedTime | null {
+export function parseTimeString(
+  val?: string | null,
+  format: "12h" | "24h" = "12h"
+): ParsedTime | null {
   if (!val || typeof val !== "string") return null;
   const trimmed = val.trim().toLowerCase();
   if (!trimmed) return null;
@@ -72,14 +75,15 @@ export function parseTimeString(val?: string | null): ParsedTime | null {
   if (matchColon && matchColon[1] && matchColon[2]) {
     let h = parseInt(matchColon[1], 10);
     const m = parseInt(matchColon[2], 10);
-    // If h is between 1 and 6, assume afternoon PM in business contexts
-    if (h >= 1 && h <= 6) h += 12;
+    if (format === "12h" && h >= 1 && h <= 6) {
+      h += 12; // In 12h mode, bare 1-6 defaults to afternoon
+    }
     if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
       return { hours: h, minutes: m };
     }
   }
 
-  // 4. Compact 4-digit or 3-digit number e.g. "1430" (14:30), "0930", "330" (15:30)
+  // 4. Compact 4-digit or 3-digit number e.g. "1430" (14:30), "0930", "330"
   const matchDigits = trimmed.match(/^(\d{3,4})$/);
   if (matchDigits && matchDigits[1]) {
     const raw = matchDigits[1];
@@ -91,17 +95,21 @@ export function parseTimeString(val?: string | null): ParsedTime | null {
       raw.length === 3
         ? parseInt(raw.slice(1), 10)
         : parseInt(raw.slice(2), 10);
-    if (h >= 1 && h <= 6) h += 12;
+    if (format === "12h" && h >= 1 && h <= 6) {
+      h += 12;
+    }
     if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
       return { hours: h, minutes: m };
     }
   }
 
-  // 5. Bare single/double digit hour e.g. "3" -> 15:00, "9" -> 09:00, "11" -> 11:00
+  // 5. Bare single/double digit hour e.g. "3" -> 15:00 in 12h, or 03:00 in 24h
   const matchSingleHour = trimmed.match(/^(\d{1,2})$/);
   if (matchSingleHour && matchSingleHour[1]) {
     let h = parseInt(matchSingleHour[1], 10);
-    if (h >= 1 && h <= 6) h += 12;
+    if (format === "12h" && h >= 1 && h <= 6) {
+      h += 12;
+    }
     if (h >= 0 && h <= 23) {
       return { hours: h, minutes: 0 };
     }
