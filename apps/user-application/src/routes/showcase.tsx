@@ -34,6 +34,7 @@ import {
   DateTimeInput,
   TimeInput,
 } from "@/components/ui/date-input";
+import { PhoneInput, type PhoneValueMeta } from "@/components/ui/phone-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -530,6 +531,8 @@ function ShowcasePage() {
   const [dateTimeValue, setDateTimeValue] = useState<Date | null>(
     () => new Date(2026, 9, 24, 15, 30)
   );
+  const [phoneValue, setPhoneValue] = useState("2025550123");
+  const [phoneMeta, setPhoneMeta] = useState<PhoneValueMeta | null>(null);
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [selectValue, setSelectValue] = useState("pro");
   const [selectedRows, setSelectedRows] = useState<string[]>(["EVT-8921"]);
@@ -539,6 +542,7 @@ function ShowcasePage() {
   // Form states
   const [formEventName, setFormEventName] = useState("");
   const [formGuestLimit, setFormGuestLimit] = useState<number | "">(150);
+  const [formPhone, setFormPhone] = useState("");
   const [formDate, setFormDate] = useState<Date | null>(
     () => new Date(2026, 10, 15)
   );
@@ -1016,6 +1020,69 @@ function ShowcasePage() {
                       timeStyle: "short",
                     })
                   : "None"}
+              </div>
+            </Card>
+
+            {/* Phone Number Input (with Country Selector & Validation) */}
+            <Card className="space-y-4 p-6">
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <Label
+                    htmlFor="phone-input"
+                    className="text-sm font-semibold"
+                  >
+                    Phone Input (Country Dropdown & Validation)
+                  </Label>
+                  {phoneMeta && (
+                    <Badge
+                      variant={phoneMeta.isValid ? "success" : "coral"}
+                      className="font-mono text-xs"
+                    >
+                      {phoneMeta.isValid ? "Valid" : "Incomplete"}
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-muted-foreground text-xs">
+                  Searchable country selector, Google libphonenumber formatting,
+                  and live E.164 validation.
+                </p>
+              </div>
+
+              <div>
+                <PhoneInput
+                  id="phone-input"
+                  defaultCountry="US"
+                  value={phoneValue}
+                  onChange={(val, meta) => {
+                    setPhoneValue(val);
+                    setPhoneMeta(meta);
+                  }}
+                  showValidationState
+                  placeholder="Enter phone number..."
+                />
+              </div>
+
+              <div className="text-muted-foreground bg-muted/30 space-y-1 rounded-lg p-2 font-mono text-xs">
+                <div className="flex justify-between">
+                  <span>Country:</span>
+                  <span className="text-foreground">
+                    {phoneMeta?.country
+                      ? `${phoneMeta.country.flag} ${phoneMeta.country.name} (${phoneMeta.dialCode})`
+                      : "🇺🇸 United States (+1)"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Formatted:</span>
+                  <span className="text-foreground">
+                    {phoneValue || "None"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>E.164 Output:</span>
+                  <span className="text-foreground">
+                    {phoneMeta?.e164 || "+12025550123"}
+                  </span>
+                </div>
               </div>
             </Card>
 
@@ -1506,6 +1573,25 @@ function ShowcasePage() {
                       placeholder="Select wedding date..."
                     />
                   </div>
+                </div>
+
+                {/* Contact Phone Number */}
+                <div className="space-y-2">
+                  <Label htmlFor="form-phone" className="text-sm font-semibold">
+                    Contact Phone Number
+                  </Label>
+                  <PhoneInput
+                    id="form-phone"
+                    defaultCountry="US"
+                    value={formPhone}
+                    onChange={(val) => setFormPhone(val)}
+                    showValidationState
+                    placeholder="Organizer phone number..."
+                  />
+                  <p className="text-muted-foreground text-[11px]">
+                    Receive real-time SMS status updates when guests upload new
+                    photo galleries.
+                  </p>
                 </div>
 
                 {/* Package Tier Select */}
