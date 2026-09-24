@@ -8,7 +8,13 @@ import {
   getSiteSettingsFn,
   updateSiteSettingsFn,
 } from "@/core/functions/site-settings";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -97,6 +103,7 @@ function SettingsPage() {
         </CardHeader>
         <CardContent>
           <form
+            method="post"
             className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
@@ -155,7 +162,7 @@ function SettingsPage() {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-xs">
                     {t("settings.ogImageHint")}
                   </p>
                 </div>
@@ -189,13 +196,13 @@ function SettingsPage() {
                     className="aspect-[1200/630] w-full object-cover"
                   />
                 ) : (
-                  <div className="flex aspect-[1200/630] w-full items-center justify-center bg-muted text-xs text-muted-foreground">
+                  <div className="bg-muted text-muted-foreground flex aspect-[1200/630] w-full items-center justify-center text-xs">
                     {`${1200} × ${630}`}
                   </div>
                 )}
                 <div className="space-y-1 p-3">
                   <p className="text-sm font-medium">{values.ogTitle || "—"}</p>
-                  <p className="line-clamp-2 text-xs text-muted-foreground">
+                  <p className="text-muted-foreground line-clamp-2 text-xs">
                     {values.ogDescription || "—"}
                   </p>
                 </div>

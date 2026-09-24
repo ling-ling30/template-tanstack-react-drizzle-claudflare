@@ -5,18 +5,15 @@ import { organization } from "better-auth/plugins/organization";
 import { username } from "better-auth/plugins";
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import {
-  accessControl,
-  adminRoles,
-  ownerRole,
-} from "../src/auth/access-control";
+import { adminRoles } from "../src/auth/access-control";
+import { organizationPluginOptions } from "../src/auth/organization-options";
 
 const sqlite = new Database(":memory:");
 const db = drizzle(sqlite);
 
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET ?? "development-schema-secret",
-  baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3000",
+  baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3030",
   database: drizzleAdapter(db, {
     provider: "sqlite",
   }),
@@ -29,13 +26,7 @@ export const auth = betterAuth({
       adminRoles: ["platform_admin"],
       roles: adminRoles,
     }),
-    organization({
-      ac: accessControl,
-      roles: {
-        owner: ownerRole,
-      },
-      allowUserToCreateOrganization: false,
-    }),
+    organization(organizationPluginOptions),
     username(),
   ],
 });

@@ -54,6 +54,7 @@ export function TodoForm() {
 
   return (
     <form
+      method="post"
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -81,9 +82,7 @@ export function TodoForm() {
                   aria-invalid={isInvalid}
                   autoComplete="off"
                 />
-                {isInvalid && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
           }}
@@ -104,9 +103,7 @@ export function TodoForm() {
                   <FieldLabel htmlFor={field.name}>
                     {t("todos.priority")}
                   </FieldLabel>
-                  {isInvalid && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </FieldContent>
                 <Select
                   name={field.name}
@@ -119,7 +116,9 @@ export function TodoForm() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">{t("todos.priorityLow")}</SelectItem>
+                    <SelectItem value="low">
+                      {t("todos.priorityLow")}
+                    </SelectItem>
                     <SelectItem value="medium">
                       {t("todos.priorityMedium")}
                     </SelectItem>

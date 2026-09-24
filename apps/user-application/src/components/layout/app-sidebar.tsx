@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import {
   LayoutDashboard,
   Building2,
+  Users,
   Settings,
   User,
   LogOut,
@@ -23,8 +24,18 @@ import { useNavigate } from "@tanstack/react-router";
 
 /** Dashboard navigation. `to` is a typed TanStack route path. */
 const items = [
-  { to: "/dashboard", labelKey: "nav.dashboard", icon: LayoutDashboard, exact: true },
-  { to: "/dashboard/organizations", labelKey: "nav.organizations", icon: Building2 },
+  {
+    to: "/dashboard",
+    labelKey: "nav.dashboard",
+    icon: LayoutDashboard,
+    exact: true,
+  },
+  {
+    to: "/dashboard/organizations",
+    labelKey: "nav.organizations",
+    icon: Building2,
+  },
+  { to: "/dashboard/users", labelKey: "nav.users", icon: Users },
   { to: "/dashboard/settings", labelKey: "nav.settings", icon: Settings },
   { to: "/dashboard/account", labelKey: "nav.account", icon: User },
 ] as const;
@@ -37,7 +48,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+          <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
             <LayoutDashboard className="size-4" />
           </div>
           <span className="font-semibold group-data-[collapsible=icon]:hidden">
@@ -56,7 +67,9 @@ export function AppSidebar() {
                     <Link
                       to={item.to}
                       activeOptions={
-                        "exact" in item && item.exact ? { exact: true } : undefined
+                        "exact" in item && item.exact
+                          ? { exact: true }
+                          : undefined
                       }
                       activeProps={{ "data-active": "true" }}
                     >

@@ -14,15 +14,18 @@ see `apps/data-service` (`/api/v1`, OpenAPI). The CSRF + error middleware is app
 GLOBALLY via `src/start.ts` — do not add it per function.
 
 ## Pattern
+
 ```ts
 import { createServerFn } from "@tanstack/react-start";
 import { requireOrganizationContext } from "@/core/auth/context";
 import { someQuery } from "@repo/data-ops/queries/<feature>";
 import { someInputSchema } from "@repo/data-ops/zod-schema/<feature>";
+import { zodInput } from "@/core/validation/zod-input";
+import { z } from "zod";
 
 // GET (read)
 export const getThingFn = createServerFn({ method: "GET" })
-  .inputValidator((slug: string) => slug)
+  .inputValidator(zodInput(z.string().min(1))) // ALWAYS validate at runtime
   .handler(async ({ data: organizationSlug }) => {
     const ctx = await requireOrganizationContext(organizationSlug);
     return someQuery(ctx.db, ctx.organization.id);
@@ -30,27 +33,33 @@ export const getThingFn = createServerFn({ method: "GET" })
 
 // POST (mutation) — validate input with zod
 export const doThingFn = createServerFn({ method: "POST" })
-  .inputValidator((d: unknown) => someInputSchema.parse(d))
+  .inputValidator(zodInput(someInputSchema))
   .handler(async ({ data }) => {
     const ctx = await requireOrganizationContext(data.organizationSlug);
     // optionally: await requirePermission({ ... }) for finer RBAC
-    return someQuery(ctx.db, /* ... */);
+    return someQuery(ctx.db /* ... */);
   });
 ```
 
 ## Auth rules
-- **Org-scoped:** `requireOrganizationContext(slug)` → `{ db, organization, userId, userEmail }`.
-- **Finer RBAC:** `requirePermission({ userId, organizationId, resource, action })` (see `core/auth/guards.ts`).
+
+- **Org-scoped:** `requireOrganizationContext(slug)` → `{ db, organization, role, userId, userEmail }` (membership-checked).
+- **Finer RBAC:** `requirePermission({ role: ctx.role, resource, action })` (see `core/auth/guards.ts`).
 - **Platform admin:** check `checkPlatformAdminStatusFn` / the `requirePlatformAdmin` pattern.
 - **Intentionally public?** Allowed, but add a comment explaining why (see `getOrganizationBySlugFn`).
 
 ## Call it from the client
+
 ```ts
 import { useQuery } from "@tanstack/react-query";
-const { data } = useQuery({ queryKey: ["thing", slug], queryFn: () => getThingFn({ data: slug }) });
+const { data } = useQuery({
+  queryKey: ["thing", slug],
+  queryFn: () => getThingFn({ data: slug }),
+});
 ```
 
 ## Verify
+
 ```bash
 pnpm run build:data-ops && pnpm typecheck && pnpm lint
 ```

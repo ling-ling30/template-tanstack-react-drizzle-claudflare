@@ -18,13 +18,13 @@ pnpm check:env          # verify your config before starting
 pnpm db:migrate:local
 
 # 5. Start the app
-pnpm dev                # http://localhost:3000
+pnpm dev                # http://localhost:3030
 
 # 6. (optional) Seed demo data — run while the dev server is up
 pnpm seed               # demo org + admin + sample parties
 ```
 
-Sign in at `http://localhost:3000/login` with the seeded admin
+Sign in at `http://localhost:3030/login` with the seeded admin
 (`owner@example.com` / `admin123456` by default — change these).
 
 **Pages to explore:** `/` (landing), `/showcase` (live component gallery),
@@ -33,17 +33,17 @@ Sign in at `http://localhost:3000/login` with the seeded admin
 
 ## Everyday commands
 
-| Command | What |
-| --- | --- |
-| `pnpm dev` | Run the app (port 3000) |
-| `pnpm typecheck` | Typecheck all packages |
-| `pnpm test` | Run all tests |
-| `pnpm lint` | Lint (incl. no-hardcoded-string rule) |
-| `pnpm check:env` | Validate `.dev.vars` + bindings |
-| `pnpm seed` | Seed demo data |
-| `pnpm --filter user-application storybook` | Component playground (:6006) |
-| `pnpm --filter data-service dev` | Background/API worker (open `/docs` for Swagger) |
-| `pnpm deploy:user-application` | Build + deploy to Cloudflare |
+| Command                                    | What                                             |
+| ------------------------------------------ | ------------------------------------------------ |
+| `pnpm dev`                                 | Run the app (port 3030)                          |
+| `pnpm typecheck`                           | Typecheck all packages                           |
+| `pnpm test`                                | Run all tests                                    |
+| `pnpm lint`                                | Lint (incl. no-hardcoded-string rule)            |
+| `pnpm check:env`                           | Validate `.dev.vars` + bindings                  |
+| `pnpm seed`                                | Seed demo data                                   |
+| `pnpm --filter user-application storybook` | Component playground (:6006)                     |
+| `pnpm --filter data-service dev`           | Background/API worker (open `/docs` for Swagger) |
+| `pnpm deploy:user-application`             | Build + deploy to Cloudflare                     |
 
 ## First things you'll likely change
 

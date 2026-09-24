@@ -19,7 +19,7 @@
     }
   ],
   "vars": {
-    "BETTER_AUTH_URL": "http://localhost:3000",
+    "BETTER_AUTH_URL": "http://localhost:3030",
     "PLATFORM_ADMIN_EMAILS": "owner@example.com"
   }
 }

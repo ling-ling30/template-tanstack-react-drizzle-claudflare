@@ -1,18 +1,7 @@
-import { uniqueIndex, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const organizations = sqliteTable(
-  "organizations",
-  {
-    id: text("id").primaryKey(),
-    slug: text("slug").notNull(),
-    name: text("name").notNull(),
-    status: text("status", { enum: ["active", "disabled"] }).notNull(),
-    createdBy: text("created_by").notNull(),
-    createdAt: text("created_at").notNull(),
-    updatedAt: text("updated_at").notNull(),
-  },
-  (table) => [uniqueIndex("organizations_slug_idx").on(table.slug)],
-);
+// Organizations live in Better Auth's `organization` table (auth-schema.ts) — the
+// single source of truth for tenants, membership and roles. Do not add an app copy.
 
 /**
  * Single-row site settings (Open Graph / SEO metadata for the public site).

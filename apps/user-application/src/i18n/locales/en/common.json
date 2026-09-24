@@ -56,7 +56,8 @@
     "login": "Log in",
     "account": "Account",
     "orgs": "Organizations",
-    "organizations": "Organizations"
+    "organizations": "Organizations",
+    "users": "Clients"
   },
   "landing": {
     "tagline": "A production-ready SaaS starter on Cloudflare.",
@@ -90,7 +91,9 @@
     "metricUsers": "Users",
     "metricOrgs": "Organizations",
     "metricDocuments": "Documents",
-    "metricPlaceholder": "—"
+    "metricPlaceholder": "—",
+    "overview": "Platform overview.",
+    "metricActiveOrgs": "Active organizations"
   },
   "settings": {
     "title": "Settings",
@@ -193,24 +196,56 @@
     "title": "Platform management",
     "subtitle": "Manage organizations and the first owner.",
     "openOrgs": "Open organizations",
-    "loginTitle": "Platform sign in",
-    "loginSubtitle": "Platform admins only.",
+    "loginTitle": "Sign in",
+    "loginSubtitle": "Welcome back.",
     "email": "Email",
     "password": "Password",
     "signIn": "Sign in",
     "signInFailed": "Sign in failed. Check your email and password.",
     "orgsTitle": "Organizations",
     "createOrg": "Create organization",
-    "orgsSubtitle": "Create and manage application tenants.",
+    "orgsSubtitle": "Review tenants. Organizations are created by their owners.",
     "brand": "Platform",
-    "orgsEmpty": "No organizations yet."
+    "orgsEmpty": "No organizations yet.",
+    "members": "Members",
+    "created": "Created",
+    "createdOn": "Created {{date}}",
+    "actions": "Actions",
+    "enable": "Enable",
+    "disable": "Disable",
+    "disableTitle": "Disable {{name}}?",
+    "disableBody": "Every member loses access to this organization's workspace until you enable it again. No data is deleted.",
+    "orgDisabled": "{{name}} disabled.",
+    "orgEnabled": "{{name}} enabled.",
+    "statusChangeFailed": "Could not change the organization's status.",
+    "searchOrgs": "Search organizations",
+    "backToOrgs": "All organizations",
+    "memberCount_one": "{{count}} member",
+    "memberCount_other": "{{count}} members",
+    "noMembers": "This organization has no members.",
+    "signInId": "Email / username",
+    "role": "Role",
+    "joined": "Joined",
+    "username": "Username",
+    "organizationsCol": "Organizations",
+    "usersTitle": "Clients",
+    "usersSubtitle": "Every account on the platform.",
+    "searchUsers": "Search by name, email or username",
+    "usersEmpty": "No accounts found."
   },
   "auth": {
     "loginTitle": "Sign in",
     "email": "Email",
     "password": "Password",
     "signIn": "Sign in",
-    "signInFailed": "Sign in failed. Check your email and password."
+    "signInFailed": "Sign in failed. Check your email and password.",
+    "signUpTitle": "Create your account",
+    "signUpSubtitle": "Sign up, then create your organization.",
+    "name": "Name",
+    "signUp": "Sign up",
+    "signUpFailed": "Sign up failed. The email may already be in use, or the password is too short.",
+    "haveAccount": "Already have an account?",
+    "noAccount": "No account yet?"
   },
   "orgLogin": {
     "title": "Organization sign in",
@@ -223,9 +258,6 @@
     "name": "Name",
     "namePlaceholder": "Organization name",
     "nameRequired": "Name is required",
-    "slug": "Slug",
-    "slugPlaceholder": "organization-slug",
-    "slugInvalid": "Slug may contain only lowercase letters, numbers, and dashes.",
     "save": "Save",
     "create": "Create organization",
     "saveFailed": "Failed to save organization."
@@ -233,5 +265,24 @@
   "status": {
     "active": "Active",
     "disabled": "Disabled"
+  },
+  "onboarding": {
+    "title": "Your organizations",
+    "subtitle": "Open an organization or create a new one.",
+    "yourOrgs": "Organizations you belong to",
+    "createTitle": "Create an organization"
+  },
+  "roles": {
+    "owner": "Owner",
+    "admin": "Admin",
+    "member": "Member"
+  },
+  "table": {
+    "rows": "Rows {{first}}–{{last}} of {{total}}",
+    "page": "Page {{page}} of {{total}}",
+    "firstPage": "First page",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "lastPage": "Last page"
   }
 }

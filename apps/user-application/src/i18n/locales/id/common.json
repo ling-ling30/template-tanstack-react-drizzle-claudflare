@@ -56,7 +56,8 @@
     "login": "Masuk",
     "account": "Akun",
     "orgs": "Organisasi",
-    "organizations": "Organisasi"
+    "organizations": "Organisasi",
+    "users": "Klien"
   },
   "landing": {
     "tagline": "Starter SaaS siap produksi di Cloudflare.",
@@ -90,7 +91,9 @@
     "metricUsers": "Pengguna",
     "metricOrgs": "Organisasi",
     "metricDocuments": "Dokumen",
-    "metricPlaceholder": "—"
+    "metricPlaceholder": "—",
+    "overview": "Ringkasan platform.",
+    "metricActiveOrgs": "Organisasi aktif"
   },
   "settings": {
     "title": "Pengaturan",
@@ -193,24 +196,56 @@
     "title": "Manajemen Platform",
     "subtitle": "Kelola organisasi dan owner pertama.",
     "openOrgs": "Buka Organisasi",
-    "loginTitle": "Masuk Platform",
-    "loginSubtitle": "Khusus admin platform.",
+    "loginTitle": "Masuk",
+    "loginSubtitle": "Selamat datang kembali.",
     "email": "Email",
     "password": "Kata sandi",
     "signIn": "Masuk",
     "signInFailed": "Gagal masuk. Periksa email dan kata sandi.",
     "orgsTitle": "Organisasi",
     "createOrg": "Buat organisasi",
-    "orgsSubtitle": "Buat dan kelola tenant aplikasi.",
+    "orgsSubtitle": "Tinjau tenant. Organisasi dibuat oleh pemiliknya.",
     "brand": "Platform",
-    "orgsEmpty": "Belum ada organisasi."
+    "orgsEmpty": "Belum ada organisasi.",
+    "members": "Anggota",
+    "created": "Dibuat",
+    "createdOn": "Dibuat {{date}}",
+    "actions": "Aksi",
+    "enable": "Aktifkan",
+    "disable": "Nonaktifkan",
+    "disableTitle": "Nonaktifkan {{name}}?",
+    "disableBody": "Semua anggota kehilangan akses ke workspace organisasi ini sampai Anda mengaktifkannya lagi. Tidak ada data yang dihapus.",
+    "orgDisabled": "{{name}} dinonaktifkan.",
+    "orgEnabled": "{{name}} diaktifkan.",
+    "statusChangeFailed": "Gagal mengubah status organisasi.",
+    "searchOrgs": "Cari organisasi",
+    "backToOrgs": "Semua organisasi",
+    "memberCount_other": "{{count}} anggota",
+    "noMembers": "Organisasi ini belum punya anggota.",
+    "signInId": "Email / nama pengguna",
+    "role": "Peran",
+    "joined": "Bergabung",
+    "username": "Nama pengguna",
+    "organizationsCol": "Organisasi",
+    "usersTitle": "Klien",
+    "usersSubtitle": "Semua akun di platform.",
+    "searchUsers": "Cari nama, email, atau nama pengguna",
+    "usersEmpty": "Tidak ada akun.",
+    "memberCount_one": "{{count}} anggota"
   },
   "auth": {
     "loginTitle": "Masuk",
     "email": "Email",
     "password": "Kata sandi",
     "signIn": "Masuk",
-    "signInFailed": "Gagal masuk. Periksa email dan kata sandi."
+    "signInFailed": "Gagal masuk. Periksa email dan kata sandi.",
+    "signUpTitle": "Buat akun",
+    "signUpSubtitle": "Daftar, lalu buat organisasi Anda.",
+    "name": "Nama",
+    "signUp": "Daftar",
+    "signUpFailed": "Pendaftaran gagal. Email mungkin sudah dipakai, atau kata sandi terlalu pendek.",
+    "haveAccount": "Sudah punya akun?",
+    "noAccount": "Belum punya akun?"
   },
   "orgLogin": {
     "title": "Masuk Organisasi",
@@ -223,9 +258,6 @@
     "name": "Nama",
     "namePlaceholder": "Nama organisasi",
     "nameRequired": "Nama wajib diisi",
-    "slug": "Slug",
-    "slugPlaceholder": "slug-organisasi",
-    "slugInvalid": "Slug hanya huruf kecil, angka, dan strip.",
     "save": "Simpan",
     "create": "Buat organisasi",
     "saveFailed": "Gagal menyimpan organisasi."
@@ -233,5 +265,24 @@
   "status": {
     "active": "Aktif",
     "disabled": "Nonaktif"
+  },
+  "onboarding": {
+    "title": "Organisasi Anda",
+    "subtitle": "Buka organisasi atau buat yang baru.",
+    "yourOrgs": "Organisasi tempat Anda bergabung",
+    "createTitle": "Buat organisasi"
+  },
+  "roles": {
+    "owner": "Pemilik",
+    "admin": "Admin",
+    "member": "Anggota"
+  },
+  "table": {
+    "rows": "Baris {{first}}–{{last}} dari {{total}}",
+    "page": "Halaman {{page}} dari {{total}}",
+    "firstPage": "Halaman pertama",
+    "previousPage": "Halaman sebelumnya",
+    "nextPage": "Halaman berikutnya",
+    "lastPage": "Halaman terakhir"
   }
 }

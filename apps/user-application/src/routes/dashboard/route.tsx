@@ -17,10 +17,11 @@ import { ThemeToggle } from "@/components/theme";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 
 export const Route = createFileRoute("/dashboard")({
-  beforeLoad: async () => {
+  // UX gate only: every platform server function re-checks on its own.
+  beforeLoad: async ({ location }) => {
     const isAdmin = await checkPlatformAdminStatusFn();
     if (!isAdmin) {
-      throw redirect({ to: "/login" });
+      throw redirect({ to: "/login", search: { redirect: location.href } });
     }
   },
   component: DashboardLayout,
@@ -28,9 +29,16 @@ export const Route = createFileRoute("/dashboard")({
 
 /** Map the current pathname to a header title i18n key. */
 function titleKeyForPath(
-  pathname: string,
-): "nav.organizations" | "nav.settings" | "nav.account" | "nav.dashboard" {
-  if (pathname.startsWith("/dashboard/organizations")) return "nav.organizations";
+  pathname: string
+):
+  | "nav.organizations"
+  | "nav.users"
+  | "nav.settings"
+  | "nav.account"
+  | "nav.dashboard" {
+  if (pathname.startsWith("/dashboard/organizations"))
+    return "nav.organizations";
+  if (pathname.startsWith("/dashboard/users")) return "nav.users";
   if (pathname.startsWith("/dashboard/settings")) return "nav.settings";
   if (pathname.startsWith("/dashboard/account")) return "nav.account";
   return "nav.dashboard";
@@ -47,7 +55,9 @@ function DashboardLayout() {
         <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <h1 className="text-sm font-medium">{t(titleKeyForPath(pathname))}</h1>
+          <h1 className="text-sm font-medium">
+            {t(titleKeyForPath(pathname))}
+          </h1>
           <div className="ml-auto flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />

@@ -8,11 +8,11 @@ async function seedAdmin() {
   console.log(`Menyiapkan akun admin platform: ${email}...`);
 
   try {
-    const res = await fetch("http://localhost:3000/api/auth/sign-up/email", {
+    const res = await fetch("http://localhost:3030/api/auth/sign-up/email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Origin": "http://localhost:3000",
+        Origin: "http://localhost:3030",
       },
       body: JSON.stringify({
         email,
@@ -28,10 +28,12 @@ async function seedAdmin() {
     }
 
     console.log("Berhasil! Akun platform admin telah dibuat.");
-    console.log("Silakan login di http://localhost:3000/platform/login");
+    console.log("Silakan login di http://localhost:3030/platform/login");
   } catch (err) {
     console.error("Error menjalankan script seed:", err);
-    console.error("Pastikan dev server berjalan di http://localhost:3000 (jalankan `pnpm dev:user-application`)");
+    console.error(
+      "Pastikan dev server berjalan di http://localhost:3030 (jalankan `pnpm dev:user-application`)"
+    );
     process.exit(1);
   }
 }

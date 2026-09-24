@@ -40,43 +40,46 @@ official shadcn TanStack Form guide.
 ```tsx
 const form = useForm({
   defaultValues: { title: "", priority: "medium" as const },
-  validators: { onChange: sharedZodSchema },   // client validation
+  validators: { onChange: sharedZodSchema }, // client validation
   onSubmit: async ({ value }) => {
     try {
       await mutation.mutateAsync({ data: value }); // server re-validates
       toast.success(t("..."));
-      form.reset();                                // reset only on success
+      form.reset(); // reset only on success
     } catch {
-      toast.error(t("..."));                       // keep input on failure
+      toast.error(t("...")); // keep input on failure
     }
   },
 });
 ```
 
 ```tsx
-<form.Field name="title" children={(field) => {
-  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
-  return (
-    <Field data-invalid={isInvalid}>
-      <FieldLabel htmlFor={field.name}>{t("...")}</FieldLabel>
-      <Input
-        id={field.name}
-        value={field.state.value}
-        onBlur={field.handleBlur}
-        onChange={(e) => field.handleChange(e.target.value)}
-        aria-invalid={isInvalid}
-      />
-      {isInvalid && <FieldError errors={field.state.meta.errors} />}
-    </Field>
-  );
-}} />
+<form.Field
+  name="title"
+  children={(field) => {
+    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+    return (
+      <Field data-invalid={isInvalid}>
+        <FieldLabel htmlFor={field.name}>{t("...")}</FieldLabel>
+        <Input
+          id={field.name}
+          value={field.state.value}
+          onBlur={field.handleBlur}
+          onChange={(e) => field.handleChange(e.target.value)}
+          aria-invalid={isInvalid}
+        />
+        {isInvalid && <FieldError errors={field.state.meta.errors} />}
+      </Field>
+    );
+  }}
+/>
 ```
 
 ### Hard rules
 
 1. **Shared zod schema** from `data-ops` (or a local `zod-schema` file) — used on **both** client
    and server.
-2. **Server re-validates.** The server function calls `.inputValidator((d) => schema.parse(d))`.
+2. **Server re-validates.** The server function uses `.inputValidator(zodInput(schema))` (`core/validation/zod-input.ts`). Never a bare type annotation like `(slug: string) => slug` — that checks nothing at runtime. Don't pass the schema directly either: Start then throws a plain Error and the client gets INTERNAL instead of VALIDATION_FAILED.
 3. **Error display:** gate on `isTouched && !isValid`, `data-invalid` on `<Field>`,
    `aria-invalid` on the control, and pass `errors={field.state.meta.errors}` **directly** to
    `<FieldError />`. Never `String()` a zod issue — that renders `[object Object]`.
@@ -121,10 +124,23 @@ For atomicity, use **`db.batch([...])`** (D1 runs it as one SQLite transaction; 
 
 ```ts
 // data-ops query — atomic multi-write via batch
-export async function moveItem(db: AppDatabase, input: { id: string; toListId: string; now: string }) {
+export async function moveItem(
+  db: AppDatabase,
+  input: { id: string; toListId: string; now: string }
+) {
   return db.batch([
-    db.update(items).set({ listId: input.toListId, updatedAt: input.now }).where(eq(items.id, input.id)),
-    db.insert(activity).values({ id: crypto.randomUUID(), itemId: input.id, kind: "moved", at: input.now }),
+    db
+      .update(items)
+      .set({ listId: input.toListId, updatedAt: input.now })
+      .where(eq(items.id, input.id)),
+    db
+      .insert(activity)
+      .values({
+        id: crypto.randomUUID(),
+        itemId: input.id,
+        kind: "moved",
+        at: input.now,
+      }),
   ]);
 }
 ```
@@ -133,7 +149,9 @@ Make writes **idempotent** (retry-safe) — Workers can retry:
 
 ```ts
 // state predicate in WHERE, not a separate SELECT
-db.update(orders).set({ status: "paid" }).where(and(eq(orders.id, id), eq(orders.status, "pending")));
+db.update(orders)
+  .set({ status: "paid" })
+  .where(and(eq(orders.id, id), eq(orders.status, "pending")));
 // create-once
 db.insert(rows).values(v).onConflictDoNothing();
 ```

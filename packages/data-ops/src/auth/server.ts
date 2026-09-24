@@ -1,4 +1,5 @@
-import { accessControl, adminRoles, ownerRole } from "@/auth/access-control";
+import { adminRoles } from "@/auth/access-control";
+import { organizationPluginOptions } from "@/auth/organization-options";
 import type { AppDatabase } from "@/database/setup";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -26,8 +27,16 @@ type AuthConfig = {
   sendEmail?: SendEmailFn;
   /** Optional template builders so the app owns email copy/HTML. */
   emailTemplates?: {
-    verification: (url: string) => { subject: string; text: string; html?: string };
-    resetPassword: (url: string) => { subject: string; text: string; html?: string };
+    verification: (url: string) => {
+      subject: string;
+      text: string;
+      html?: string;
+    };
+    resetPassword: (url: string) => {
+      subject: string;
+      text: string;
+      html?: string;
+    };
   };
 };
 
@@ -50,7 +59,13 @@ export function createAuth(config: AuthConfig) {
       enabled: true,
       ...(config.sendEmail
         ? {
-            sendResetPassword: async ({ user, url }: { user: { email: string }; url: string }) => {
+            sendResetPassword: async ({
+              user,
+              url,
+            }: {
+              user: { email: string };
+              url: string;
+            }) => {
               const tpl = config.emailTemplates?.resetPassword(url) ?? {
                 subject: "Reset your password",
                 text: `Reset your password: ${url}`,
@@ -63,7 +78,13 @@ export function createAuth(config: AuthConfig) {
     ...(config.sendEmail
       ? {
           emailVerification: {
-            sendVerificationEmail: async ({ user, url }: { user: { email: string }; url: string }) => {
+            sendVerificationEmail: async ({
+              user,
+              url,
+            }: {
+              user: { email: string };
+              url: string;
+            }) => {
               const tpl = config.emailTemplates?.verification(url) ?? {
                 subject: "Verify your email",
                 text: `Verify your email: ${url}`,
@@ -79,13 +100,7 @@ export function createAuth(config: AuthConfig) {
         adminRoles: ["platform_admin"],
         roles: adminRoles,
       }),
-      organization({
-        ac: accessControl,
-        roles: {
-          owner: ownerRole,
-        },
-        allowUserToCreateOrganization: false,
-      }),
+      organization(organizationPluginOptions),
       username(),
     ],
   });

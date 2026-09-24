@@ -16,9 +16,10 @@ function OrganizationLoginPage() {
   const navigate = useNavigate();
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background p-6">
+    <main className="bg-background flex min-h-screen items-center justify-center p-6">
       <form
-        className="w-full max-w-sm space-y-4 rounded-md border bg-card p-6"
+        method="post"
+        className="bg-card w-full max-w-sm space-y-4 rounded-md border p-6"
         onSubmit={async (event) => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
@@ -39,7 +40,7 @@ function OrganizationLoginPage() {
       >
         <div className="space-y-1">
           <h1 className="text-2xl font-semibold">{t("orgLogin.title")}</h1>
-          <p className="text-sm text-muted-foreground">/{organizationSlug}</p>
+          <p className="text-muted-foreground text-sm">/{organizationSlug}</p>
         </div>
         <div className="space-y-1">
           <Label htmlFor="username">{t("orgLogin.username")}</Label>

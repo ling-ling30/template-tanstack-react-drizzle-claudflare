@@ -54,13 +54,13 @@ pnpm check:env                                   # validate before starting
 pnpm db:migrate:local
 
 # 4. Start the dev server (rebuilds data-ops first via predev)
-pnpm dev                                         # http://localhost:3000
+pnpm dev                                         # http://localhost:3030
 
 # 5. (optional) Seed a master admin + demo data — dev server must be running
 pnpm seed
 ```
 
-Then sign in at `http://localhost:3000/login` with the seeded admin
+Then sign in at `http://localhost:3030/login` with the seeded admin
 (`owner@example.com` / `admin123456` by default — change these).
 
 > **Note:** the app imports `@repo/data-ops` from its built `dist/`. That build runs
@@ -83,7 +83,7 @@ See **[docs/quickstart.md](docs/quickstart.md)** for the full command table.
 | `/dashboard`               | Admin dashboard shell                         | platform admin |
 | `/dashboard/account`       | Profile, change password, sign out            | platform admin |
 | `/dashboard/settings`      | Site settings + Open Graph editor             | platform admin |
-| `/dashboard/organizations` | Organization management                       | platform admin |
+| `/dashboard/organizations` | Organization oversight (list, status)         | platform admin |
 | `/health`, `/ready`        | Liveness / readiness probes                   | public         |
 | `/api/auth/$`              | Better Auth handler (rate-limited)            | —              |
 
@@ -119,7 +119,7 @@ the DB + Better Auth via the `createDatabase` / `createAuth` factories, and **me
 per worker isolate (no rebuilding auth per request). Read it anywhere on the server with
 `getRuntime()`; the legacy `getDb()` / `getAuth()` singletons are still populated.
 
-**Global CSRF + error pipeline** — `csrfAndErrorMiddleware` (`core/functions/base.ts`) is
+**Global CSRF + error pipeline** — `csrfAndErrorMiddleware` (`core/middleware/csrf-and-error.ts`) is
 registered globally in `src/start.ts` via `createStart({ functionMiddleware: [...] })`, so it
 runs on **every** server function automatically: it checks `Origin`/`Referer` on mutations and
 sanitizes unhandled errors so stack traces never leak.

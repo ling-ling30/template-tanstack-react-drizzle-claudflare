@@ -11,19 +11,23 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TodosRouteImport } from './routes/todos'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ShowcaseRouteImport } from './routes/showcase'
 import { Route as ReadyRouteImport } from './routes/ready'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardUsersRouteImport } from './routes/dashboard/users'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
-import { Route as DashboardOrganizationsRouteImport } from './routes/dashboard/organizations'
 import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as OrganizationSlugLoginRouteImport } from './routes/$organizationSlug/login'
 import { Route as OrganizationSlugAppRouteRouteImport } from './routes/$organizationSlug/app/route'
+import { Route as DashboardOrganizationsIndexRouteImport } from './routes/dashboard/organizations.index'
 import { Route as OrganizationSlugAppIndexRouteImport } from './routes/$organizationSlug/app/index'
+import { Route as DashboardOrganizationsOrganizationIdRouteImport } from './routes/dashboard/organizations.$organizationId'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
 
 const TodosRoute = TodosRouteImport.update({
@@ -36,6 +40,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShowcaseRoute = ShowcaseRouteImport.update({
   id: '/showcase',
   path: '/showcase',
@@ -44,6 +53,11 @@ const ShowcaseRoute = ShowcaseRouteImport.update({
 const ReadyRoute = ReadyRouteImport.update({
   id: '/ready',
   path: '/ready',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -71,14 +85,14 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardUsersRoute = DashboardUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardOrganizationsRoute = DashboardOrganizationsRouteImport.update({
-  id: '/organizations',
-  path: '/organizations',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardAccountRoute = DashboardAccountRouteImport.update({
@@ -97,11 +111,23 @@ const OrganizationSlugAppRouteRoute =
     path: '/$organizationSlug/app',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DashboardOrganizationsIndexRoute =
+  DashboardOrganizationsIndexRouteImport.update({
+    id: '/organizations/',
+    path: '/organizations/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 const OrganizationSlugAppIndexRoute =
   OrganizationSlugAppIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => OrganizationSlugAppRouteRoute,
+  } as any)
+const DashboardOrganizationsOrganizationIdRoute =
+  DashboardOrganizationsOrganizationIdRouteImport.update({
+    id: '/organizations/$organizationId',
+    path: '/organizations/$organizationId',
+    getParentRoute: () => DashboardRouteRoute,
   } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -114,34 +140,42 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/health': typeof HealthRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/ready': typeof ReadyRoute
   '/showcase': typeof ShowcaseRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/todos': typeof TodosRoute
   '/$organizationSlug/app': typeof OrganizationSlugAppRouteRouteWithChildren
   '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
   '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/organizations': typeof DashboardOrganizationsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
   '/$organizationSlug/app/': typeof OrganizationSlugAppIndexRoute
+  '/dashboard/organizations/': typeof DashboardOrganizationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/health': typeof HealthRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/ready': typeof ReadyRoute
   '/showcase': typeof ShowcaseRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/todos': typeof TodosRoute
   '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
   '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/organizations': typeof DashboardOrganizationsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
   '/$organizationSlug/app': typeof OrganizationSlugAppIndexRoute
+  '/dashboard/organizations': typeof DashboardOrganizationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -149,18 +183,22 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/health': typeof HealthRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/ready': typeof ReadyRoute
   '/showcase': typeof ShowcaseRoute
+  '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/todos': typeof TodosRoute
   '/$organizationSlug/app': typeof OrganizationSlugAppRouteRouteWithChildren
   '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
   '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/organizations': typeof DashboardOrganizationsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/users': typeof DashboardUsersRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
   '/$organizationSlug/app/': typeof OrganizationSlugAppIndexRoute
+  '/dashboard/organizations/': typeof DashboardOrganizationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -169,52 +207,64 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/health'
     | '/login'
+    | '/onboarding'
     | '/ready'
     | '/showcase'
+    | '/signup'
     | '/sitemap.xml'
     | '/todos'
     | '/$organizationSlug/app'
     | '/$organizationSlug/login'
     | '/dashboard/account'
-    | '/dashboard/organizations'
     | '/dashboard/settings'
+    | '/dashboard/users'
     | '/dashboard/'
     | '/api/auth/$'
+    | '/dashboard/organizations/$organizationId'
     | '/$organizationSlug/app/'
+    | '/dashboard/organizations/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/health'
     | '/login'
+    | '/onboarding'
     | '/ready'
     | '/showcase'
+    | '/signup'
     | '/sitemap.xml'
     | '/todos'
     | '/$organizationSlug/login'
     | '/dashboard/account'
-    | '/dashboard/organizations'
     | '/dashboard/settings'
+    | '/dashboard/users'
     | '/dashboard'
     | '/api/auth/$'
+    | '/dashboard/organizations/$organizationId'
     | '/$organizationSlug/app'
+    | '/dashboard/organizations'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
     | '/health'
     | '/login'
+    | '/onboarding'
     | '/ready'
     | '/showcase'
+    | '/signup'
     | '/sitemap.xml'
     | '/todos'
     | '/$organizationSlug/app'
     | '/$organizationSlug/login'
     | '/dashboard/account'
-    | '/dashboard/organizations'
     | '/dashboard/settings'
+    | '/dashboard/users'
     | '/dashboard/'
     | '/api/auth/$'
+    | '/dashboard/organizations/$organizationId'
     | '/$organizationSlug/app/'
+    | '/dashboard/organizations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -222,8 +272,10 @@ export interface RootRouteChildren {
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   HealthRoute: typeof HealthRoute
   LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
   ReadyRoute: typeof ReadyRoute
   ShowcaseRoute: typeof ShowcaseRoute
+  SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TodosRoute: typeof TodosRoute
   OrganizationSlugAppRouteRoute: typeof OrganizationSlugAppRouteRouteWithChildren
@@ -247,6 +299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/showcase': {
       id: '/showcase'
       path: '/showcase'
@@ -259,6 +318,13 @@ declare module '@tanstack/react-router' {
       path: '/ready'
       fullPath: '/ready'
       preLoaderRoute: typeof ReadyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -296,18 +362,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/users': {
+      id: '/dashboard/users'
+      path: '/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof DashboardUsersRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/settings': {
       id: '/dashboard/settings'
       path: '/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof DashboardSettingsRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/organizations': {
-      id: '/dashboard/organizations'
-      path: '/organizations'
-      fullPath: '/dashboard/organizations'
-      preLoaderRoute: typeof DashboardOrganizationsRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/account': {
@@ -331,12 +397,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationSlugAppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/organizations/': {
+      id: '/dashboard/organizations/'
+      path: '/organizations'
+      fullPath: '/dashboard/organizations/'
+      preLoaderRoute: typeof DashboardOrganizationsIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/$organizationSlug/app/': {
       id: '/$organizationSlug/app/'
       path: '/'
       fullPath: '/$organizationSlug/app/'
       preLoaderRoute: typeof OrganizationSlugAppIndexRouteImport
       parentRoute: typeof OrganizationSlugAppRouteRoute
+    }
+    '/dashboard/organizations/$organizationId': {
+      id: '/dashboard/organizations/$organizationId'
+      path: '/organizations/$organizationId'
+      fullPath: '/dashboard/organizations/$organizationId'
+      preLoaderRoute: typeof DashboardOrganizationsOrganizationIdRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -350,16 +430,21 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteRouteChildren {
   DashboardAccountRoute: typeof DashboardAccountRoute
-  DashboardOrganizationsRoute: typeof DashboardOrganizationsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardUsersRoute: typeof DashboardUsersRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardOrganizationsOrganizationIdRoute: typeof DashboardOrganizationsOrganizationIdRoute
+  DashboardOrganizationsIndexRoute: typeof DashboardOrganizationsIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardAccountRoute: DashboardAccountRoute,
-  DashboardOrganizationsRoute: DashboardOrganizationsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardUsersRoute: DashboardUsersRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardOrganizationsOrganizationIdRoute:
+    DashboardOrganizationsOrganizationIdRoute,
+  DashboardOrganizationsIndexRoute: DashboardOrganizationsIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
@@ -385,8 +470,10 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
   HealthRoute: HealthRoute,
   LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
   ReadyRoute: ReadyRoute,
   ShowcaseRoute: ShowcaseRoute,
+  SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TodosRoute: TodosRoute,
   OrganizationSlugAppRouteRoute: OrganizationSlugAppRouteRouteWithChildren,

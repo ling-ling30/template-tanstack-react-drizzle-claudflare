@@ -3,12 +3,7 @@ import { useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { authClient, useSession } from "@/lib/auth-client";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -71,6 +66,7 @@ function AccountPage() {
         </CardHeader>
         <CardContent>
           <form
+            method="post"
             className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
@@ -94,7 +90,9 @@ function AccountPage() {
                 </div>
               )}
             </profileForm.Field>
-            <profileForm.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
+            <profileForm.Subscribe
+              selector={(s) => [s.canSubmit, s.isSubmitting]}
+            >
               {([canSubmit, isSubmitting]) => (
                 <SubmitButton disabled={!canSubmit} isSubmitting={isSubmitting}>
                   {t("account.saveProfile")}
@@ -112,6 +110,7 @@ function AccountPage() {
         </CardHeader>
         <CardContent>
           <form
+            method="post"
             className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
@@ -147,7 +146,9 @@ function AccountPage() {
                 </div>
               )}
             </passwordForm.Field>
-            <passwordForm.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
+            <passwordForm.Subscribe
+              selector={(s) => [s.canSubmit, s.isSubmitting]}
+            >
               {([canSubmit, isSubmitting]) => (
                 <SubmitButton disabled={!canSubmit} isSubmitting={isSubmitting}>
                   {t("account.changePassword")}

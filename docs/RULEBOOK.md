@@ -76,7 +76,13 @@ packages/data-ops/src/
   `packages/data-ops` queries.
 - Queries in `data-ops` are **pure**: they take a `db` argument and return data, with no module
   globals — this is what makes them unit-testable (see `queries/organizations.test.ts`).
-- A mutation must invalidate **every** affected query key (list, detail, dashboard).
+- Define each query once with `queryOptions` in `core/queries/<area>.ts`, with a key factory
+  (see `core/queries/platform.ts`). Route loaders prefetch it (`context.queryClient.prefetchQuery`)
+  so SSR ships the data; components read the same options with `useQuery`.
+- Paginated / searchable lists use `placeholderData: keepPreviousData` so the table doesn't
+  flash a skeleton on every page or keystroke.
+- A mutation must invalidate **every** affected query key (list, detail, dashboard) — prefer the
+  key factory's root (e.g. `platformKeys.all`).
 - Do not use optimistic updates for state that must be authoritative (status, money, counts).
 
 **Hard rule:** all DB calls stay in `packages/data-ops/src/queries/`.
@@ -84,13 +90,22 @@ packages/data-ops/src/
 ## 5. Auth, session & CSRF rules
 
 - Auth is **server-side**. Org resolution + permission checks happen in server functions via
-  `requireOrganizationContext(slug)` → `{ db, organization, userId, userEmail }`, and finer
-  RBAC via `requirePermission({ userId, organizationId, resource, action })`.
+  `requireOrganizationContext(slug)` → `{ db, organization, role, userId, userEmail }`. It
+  rejects callers who are not **members** of an **active** org (`ORG_NOT_FOUND`, so slugs can't
+  be probed). Finer RBAC via `requirePermission({ role: ctx.role, resource, action })`, backed by
+  `organizationRoles` in `@repo/data-ops/auth/access-control` (owner / admin / member).
+- Organizations are Better Auth's `organization` table — the **only** org table. Create orgs and
+  change membership through Better Auth (`authClient.organization.create`, `auth.api.addMember`);
+  never add an app-level copy. Users sign up at `/signup` and create their own org at `/onboarding`.
 - Platform-admin access uses `checkPlatformAdminStatusFn` / the `requirePlatformAdmin` pattern,
   gated on `PLATFORM_ADMIN_EMAILS`.
 - Client-side auth checks (e.g. `<RequirePermission>`) are **UX only** — never the security boundary.
 - CSRF + error handling run **globally** on every server function via `csrfAndErrorMiddleware`
-  registered in `src/start.ts`. Do not re-add it per function.
+  (`core/middleware/csrf-and-error.ts`) registered in `src/start.ts`. Do not re-add it per function.
+  Middleware modules contain only `createMiddleware` — never `createServerFn` in the same file.
+- Every server function validates input at runtime with `.inputValidator(zodInput(schema))`.
+- Route guards redirect with `redirect({ to: "/login", search: { redirect: location.href } })`;
+  `/login` accepts it only through `safeRedirectPath` (no open redirects).
 - Auth mutation routes are rate-limited (`core/security/rate-limit.ts`).
 
 **Hard rule:** every state-changing server function must gate on auth (org context or platform

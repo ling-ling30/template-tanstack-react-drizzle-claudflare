@@ -9,9 +9,9 @@
 # Authentication (Better Auth)
 # ------------------------------------------------------------------------------
 # The base URL where your application is running. 
-# Local development: http://localhost:3000
+# Local development: http://localhost:3030
 # Production: https://your-production-domain.com
-BETTER_AUTH_URL="http://localhost:3000"
+BETTER_AUTH_URL="http://localhost:3030"
 
 # A secure random string used to hash tokens and sign cookies.
 # You can generate one via: `openssl rand -base64 32` or `npx auth secret`

@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { zodInput } from "@/core/validation/zod-input";
 
 /**
  * MOCK todos — demonstrates the form flow (server function + validation +
@@ -30,11 +31,11 @@ const todos: Todo[] = [];
 export const listTodosFn = createServerFn({ method: "GET" }).handler(
   async (): Promise<Todo[]> => {
     return [...todos].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  },
+  }
 );
 
 export const createTodoFn = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => createTodoSchema.parse(data))
+  .inputValidator(zodInput(createTodoSchema))
   .handler(async ({ data }): Promise<Todo> => {
     // Simulate latency so loading/submit states are visible.
     await new Promise((r) => setTimeout(r, 400));
@@ -50,7 +51,7 @@ export const createTodoFn = createServerFn({ method: "POST" })
   });
 
 export const toggleTodoFn = createServerFn({ method: "POST" })
-  .inputValidator((id: unknown) => z.string().parse(id))
+  .inputValidator(zodInput(z.string()))
   .handler(async ({ data: id }): Promise<Todo | null> => {
     const todo = todos.find((t) => t.id === id);
     if (!todo) return null;
@@ -59,7 +60,7 @@ export const toggleTodoFn = createServerFn({ method: "POST" })
   });
 
 export const deleteTodoFn = createServerFn({ method: "POST" })
-  .inputValidator((id: unknown) => z.string().parse(id))
+  .inputValidator(zodInput(z.string()))
   .handler(async ({ data: id }): Promise<{ id: string }> => {
     const idx = todos.findIndex((t) => t.id === id);
     if (idx >= 0) todos.splice(idx, 1);

@@ -1,6 +1,6 @@
 # Polar Integration Setup
 
-*Payment & Subscription Guide*
+_Payment & Subscription Guide_
 
 Integrate Polar for subscription management and payment processing with TanStack Start
 
@@ -114,7 +114,7 @@ export const createPaymentLink = baseFunction
     const checkout = await ctx.context.polar.checkouts.create({
       products: [ctx.data.productId],
       externalCustomerId: ctx.context.userId,
-      successUrl: `http://localhost:3000/app/polar/checkout/success?checkout_id={CHECKOUT_ID}`,
+      successUrl: `http://localhost:3030/app/polar/checkout/success?checkout_id={CHECKOUT_ID}`,
       customerIpAddress: ip,
       customerEmail: ctx.context.email,
     });
@@ -156,19 +156,23 @@ export const collectSubscription = baseFunction.handler(async (ctx) => {
 ### Function Breakdown
 
 **`getProducts`**
+
 - Fetches all active (non-archived) products from Polar
 - Used to display available subscription plans
 
 **`createPaymentLink`**
+
 - Creates a secure checkout session for a specific product
 - Links checkout to authenticated user via `externalCustomerId`
 - Includes customer IP for automatic country selection
 
 **`validPayment`**
+
 - Validates a completed checkout by checking its status
 - Returns boolean indicating if payment was successful
 
 **`collectSubscription`**
+
 - Retrieves active subscription for current user
 - Returns null if no subscription exists
 
