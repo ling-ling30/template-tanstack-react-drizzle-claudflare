@@ -40,4 +40,56 @@ describe("PhoneInput", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("United Kingdom")).toBeInTheDocument();
   });
+
+  it("immediately updates formatted value and calls onChange when country is selected in popover without typing", () => {
+    const handleChange = vi.fn();
+    render(
+      <PhoneInput
+        defaultCountry="US"
+        defaultValue="81234567890"
+        onChange={handleChange}
+      />
+    );
+
+    // Open popover
+    const trigger = screen.getByRole("button", { name: /select country/i });
+    fireEvent.click(trigger);
+
+    // Click Indonesia
+    const indonesiaOption = screen.getByText("Indonesia");
+    fireEvent.click(indonesiaOption);
+
+    // Check that onChange was immediately invoked with the new Indonesian country and dial code
+    expect(handleChange).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        dialCode: "+62",
+        country: expect.objectContaining({ code: "ID" }),
+        e164: expect.stringContaining("+62"),
+      })
+    );
+  });
+
+  it("immediately updates formatted value and calls onChange when country prop changes", () => {
+    const handleChange = vi.fn();
+    const { rerender } = render(
+      <PhoneInput country="US" value="2025550123" onChange={handleChange} />
+    );
+
+    handleChange.mockClear();
+
+    // Change country prop to ID
+    rerender(
+      <PhoneInput country="ID" value="2025550123" onChange={handleChange} />
+    );
+
+    expect(handleChange).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        dialCode: "+62",
+        country: expect.objectContaining({ code: "ID" }),
+        e164: "+622025550123",
+      })
+    );
+  });
 });

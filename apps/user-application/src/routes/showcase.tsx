@@ -40,6 +40,7 @@ import {
   CountryFlag,
   type PhoneValueMeta,
 } from "@/components/ui/phone-input";
+import { parsePhoneNumber } from "@/lib/phone";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -538,7 +539,17 @@ function ShowcasePage() {
   );
   const [phoneCountry, setPhoneCountry] = useState("US");
   const [phoneValue, setPhoneValue] = useState("2025550123");
-  const [phoneMeta, setPhoneMeta] = useState<PhoneValueMeta | null>(null);
+  const [phoneMeta, setPhoneMeta] = useState<PhoneValueMeta | null>(() => {
+    const parsed = parsePhoneNumber("2025550123", "US");
+    return {
+      country: parsed.country,
+      dialCode: parsed.dialCode,
+      nationalNumber: parsed.nationalNumber,
+      formatted: parsed.formatted,
+      e164: parsed.e164,
+      isValid: parsed.isValid,
+    };
+  });
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [selectValue, setSelectValue] = useState("pro");
   const [selectedRows, setSelectedRows] = useState<string[]>(["EVT-8921"]);

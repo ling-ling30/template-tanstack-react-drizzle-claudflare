@@ -177,7 +177,31 @@ export function PhoneInput({
     [onChange]
   );
 
+  const prevCountryCodeRef = React.useRef(selectedCountry.code);
+
+  // Synchronize when country changes externally via `country` prop
+  React.useEffect(() => {
+    if (prevCountryCodeRef.current !== selectedCountry.code) {
+      prevCountryCodeRef.current = selectedCountry.code;
+      const currentDigits = extractDigits(
+        isControlled ? (controlledValue ?? "") : uncontrolledValue
+      );
+      const reformatted = formatPhoneNumber(currentDigits, selectedCountry);
+      if (!isControlled) {
+        setUncontrolledValue(reformatted);
+      }
+      emitChange(reformatted, selectedCountry);
+    }
+  }, [
+    selectedCountry,
+    isControlled,
+    controlledValue,
+    uncontrolledValue,
+    emitChange,
+  ]);
+
   const handleCountrySelect = (country: Country) => {
+    prevCountryCodeRef.current = country.code;
     if (!controlledCountryCode) {
       setInternalCountry(country);
     }
@@ -186,13 +210,12 @@ export function PhoneInput({
     setSearchQuery("");
 
     // Reformat existing digits with the new country mask
-    if (nationalDigits) {
-      const reformatted = formatPhoneNumber(nationalDigits, country);
-      if (!isControlled) {
-        setUncontrolledValue(reformatted);
-      }
-      emitChange(reformatted, country);
+    const currentDigits = extractDigits(displayValue);
+    const reformatted = formatPhoneNumber(currentDigits, country);
+    if (!isControlled) {
+      setUncontrolledValue(reformatted);
     }
+    emitChange(reformatted, country);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
