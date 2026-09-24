@@ -35,7 +35,7 @@ export const listTodosFn = createServerFn({ method: "GET" }).handler(
 );
 
 export const createTodoFn = createServerFn({ method: "POST" })
-  .inputValidator(zodInput(createTodoSchema))
+  .validator(zodInput(createTodoSchema))
   .handler(async ({ data }): Promise<Todo> => {
     // Simulate latency so loading/submit states are visible.
     await new Promise((r) => setTimeout(r, 400));
@@ -51,7 +51,7 @@ export const createTodoFn = createServerFn({ method: "POST" })
   });
 
 export const toggleTodoFn = createServerFn({ method: "POST" })
-  .inputValidator(zodInput(z.string()))
+  .validator(zodInput(z.string()))
   .handler(async ({ data: id }): Promise<Todo | null> => {
     const todo = todos.find((t) => t.id === id);
     if (!todo) return null;
@@ -60,7 +60,7 @@ export const toggleTodoFn = createServerFn({ method: "POST" })
   });
 
 export const deleteTodoFn = createServerFn({ method: "POST" })
-  .inputValidator(zodInput(z.string()))
+  .validator(zodInput(z.string()))
   .handler(async ({ data: id }): Promise<{ id: string }> => {
     const idx = todos.findIndex((t) => t.id === id);
     if (idx >= 0) todos.splice(idx, 1);

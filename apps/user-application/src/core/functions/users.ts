@@ -19,7 +19,7 @@ const createUserSchema = z.object({
  * Gated on org membership + `users:manage`.
  */
 export const createOrganizationUserFn = createServerFn({ method: "POST" })
-  .inputValidator(zodInput(createUserSchema))
+  .validator(zodInput(createUserSchema))
   .handler(async ({ data }) => {
     const context = await requireOrganizationContext(data.organizationSlug);
     requirePermission({

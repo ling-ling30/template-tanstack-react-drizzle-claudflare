@@ -1,4 +1,5 @@
-import type { Table as ReactTable } from "@tanstack/react-table";
+import type { RowData, Table as ReactTable } from "@tanstack/react-table";
+import type { DataTableFeatures } from "./features";
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,15 +9,15 @@ import {
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
-export function DataTablePagination<TData>({
+export function DataTablePagination<TData extends RowData>({
   table,
   rowCount,
 }: {
-  table: ReactTable<TData>;
+  table: ReactTable<DataTableFeatures, TData>;
   rowCount: number;
 }) {
   const { t } = useTranslation();
-  const { pageIndex, pageSize } = table.getState().pagination;
+  const { pageIndex, pageSize } = table.atoms.pagination.get();
   const pageCount = table.getPageCount();
   const firstRow = rowCount === 0 ? 0 : pageIndex * pageSize + 1;
   const lastRow = Math.min((pageIndex + 1) * pageSize, rowCount);

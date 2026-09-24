@@ -103,7 +103,7 @@ packages/data-ops/src/
 - CSRF + error handling run **globally** on every server function via `csrfAndErrorMiddleware`
   (`core/middleware/csrf-and-error.ts`) registered in `src/start.ts`. Do not re-add it per function.
   Middleware modules contain only `createMiddleware` — never `createServerFn` in the same file.
-- Every server function validates input at runtime with `.inputValidator(zodInput(schema))`.
+- Every server function validates input at runtime with `.validator(zodInput(schema))`.
 - Route guards redirect with `redirect({ to: "/login", search: { redirect: location.href } })`;
   `/login` accepts it only through `safeRedirectPath` (no open redirects).
 - Auth mutation routes are rate-limited (`core/security/rate-limit.ts`).

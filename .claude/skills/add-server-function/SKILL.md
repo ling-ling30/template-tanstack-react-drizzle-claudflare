@@ -25,7 +25,7 @@ import { z } from "zod";
 
 // GET (read)
 export const getThingFn = createServerFn({ method: "GET" })
-  .inputValidator(zodInput(z.string().min(1))) // ALWAYS validate at runtime
+  .validator(zodInput(z.string().min(1))) // ALWAYS validate at runtime
   .handler(async ({ data: organizationSlug }) => {
     const ctx = await requireOrganizationContext(organizationSlug);
     return someQuery(ctx.db, ctx.organization.id);
@@ -33,7 +33,7 @@ export const getThingFn = createServerFn({ method: "GET" })
 
 // POST (mutation) — validate input with zod
 export const doThingFn = createServerFn({ method: "POST" })
-  .inputValidator(zodInput(someInputSchema))
+  .validator(zodInput(someInputSchema))
   .handler(async ({ data }) => {
     const ctx = await requireOrganizationContext(data.organizationSlug);
     // optionally: await requirePermission({ ... }) for finer RBAC

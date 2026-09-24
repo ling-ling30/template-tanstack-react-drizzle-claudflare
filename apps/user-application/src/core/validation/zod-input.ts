@@ -3,9 +3,9 @@ import type { z } from "zod";
 /**
  * Server-function input validator from a zod schema:
  *
- *   createServerFn({ method: "POST" }).inputValidator(zodInput(schema))
+ *   createServerFn({ method: "POST" }).validator(zodInput(schema))
  *
- * Why not pass the schema directly (`.inputValidator(schema)`)? Start then runs
+ * Why not pass the schema directly (`.validator(schema)`)? Start then runs
  * it as a Standard Schema and throws a plain `Error` with the issues as JSON,
  * which our error pipeline can only report as INTERNAL. Calling `schema.parse`
  * throws a real `ZodError`, which `toPublicError` turns into VALIDATION_FAILED

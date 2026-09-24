@@ -207,7 +207,7 @@ type ExampleInput = z.infer<typeof ExampleInputSchema>;
 const baseFunction = createServerFn().middleware([exampleMiddleware]);
 
 export const exampleFunction = baseFunction
-  .inputValidator((data: ExampleInput) => ExampleInputSchema.parse(data))
+  .validator((data: ExampleInput) => ExampleInputSchema.parse(data))
   .handler(async (ctx) => {
     // Access validated input: ctx.data
     // Access middleware context: ctx.context

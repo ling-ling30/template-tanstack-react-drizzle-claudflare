@@ -1,8 +1,8 @@
 import {
   flexRender,
   functionalUpdate,
-  getCoreRowModel,
-  useReactTable,
+  type RowData,
+  useTable,
 } from "@tanstack/react-table";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,9 +15,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
+import { dataTableFeatures } from "./features";
 import type { DataTableProps } from "./types";
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   rowCount,
@@ -26,12 +27,12 @@ export function DataTable<TData, TValue>({
   isLoading,
   errorMessage,
   emptyMessage,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const pageCount = Math.ceil(rowCount / state.pagination.pageSize);
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
     manualFiltering: true,
     manualPagination: true,
     manualSorting: true,
@@ -62,7 +63,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="overflow-hidden rounded-md border bg-background">
+    <div className="bg-background overflow-hidden rounded-md border">
       {errorMessage ? (
         <Alert className="m-3" variant="destructive">
           <AlertDescription>{errorMessage}</AlertDescription>
@@ -78,7 +79,7 @@ export function DataTable<TData, TValue>({
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext(),
+                        header.getContext()
                       )}
                 </TableHead>
               ))}
@@ -101,7 +102,7 @@ export function DataTable<TData, TValue>({
           ) : table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
+                {row.getAllCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

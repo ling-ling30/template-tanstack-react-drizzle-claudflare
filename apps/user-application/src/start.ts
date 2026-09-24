@@ -1,6 +1,4 @@
-// From start-client-core, not react-start, to dodge the react-start <-> start.ts
-// import cycle (see csrf-and-error.ts).
-import { createStart } from "@tanstack/start-client-core";
+import { createStart } from "@tanstack/react-start";
 import { csrfAndErrorMiddleware } from "@/core/middleware/csrf-and-error";
 
 /**

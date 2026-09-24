@@ -1,4 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/data-table/features";
 import type { TFunction } from "i18next";
 import { formatDate } from "@/lib/format";
 
@@ -14,7 +15,7 @@ export type PlatformUserRow = {
 export function userColumns(
   t: TFunction,
   locale: string
-): ColumnDef<PlatformUserRow>[] {
+): ColumnDef<DataTableFeatures, PlatformUserRow>[] {
   return [
     {
       accessorKey: "name",

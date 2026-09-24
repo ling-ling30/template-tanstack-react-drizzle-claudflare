@@ -125,14 +125,14 @@ import { zodInput } from "@/core/validation/zod-input";
 import { z } from "zod";
 
 export const listNotesFn = createServerFn({ method: "GET" })
-  .inputValidator(zodInput(z.string().min(1)))
+  .validator(zodInput(z.string().min(1)))
   .handler(async ({ data: organizationSlug }) => {
     const ctx = await requireOrganizationContext(organizationSlug);
     return listNotes(ctx.db, ctx.organization.id);
   });
 
 export const createNoteFn = createServerFn({ method: "POST" })
-  .inputValidator(zodInput(createNoteInputSchema))
+  .validator(zodInput(createNoteInputSchema))
   .handler(async ({ data }) => {
     const ctx = await requireOrganizationContext(data.organizationSlug);
     return createNote(ctx.db, {

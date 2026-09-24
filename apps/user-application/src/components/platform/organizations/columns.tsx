@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/data-table/features";
 import type { TFunction } from "i18next";
 import { Badge } from "@/components/ui/badge";
 import { OrganizationStatusToggle } from "@/components/platform/organizations/status-toggle";
@@ -31,7 +32,7 @@ export function OrganizationStatusBadge({
 export function organizationColumns(
   t: TFunction,
   locale: string
-): ColumnDef<PlatformOrganizationRow>[] {
+): ColumnDef<DataTableFeatures, PlatformOrganizationRow>[] {
   return [
     {
       accessorKey: "name",

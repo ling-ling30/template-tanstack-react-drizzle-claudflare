@@ -8,15 +8,15 @@ handles loading, empty, and error states for you. Reference implementation:
 ## Props
 
 ```ts
-type DataTableProps<TData, TValue> = {
-  columns: ColumnDef<TData, TValue>[];   // TanStack column defs
-  data: TData[];                          // current page rows
-  rowCount: number;                       // total rows (for pagination)
-  state: DataTableState;                  // sorting / filters / pagination
+type DataTableProps<TData extends RowData> = {
+  columns: ColumnDef<DataTableFeatures, TData>[]; // TanStack v9 column defs
+  data: TData[]; // current page rows
+  rowCount: number; // total rows (for pagination)
+  state: DataTableState; // sorting / filters / pagination
   onStateChange: (state: DataTableState) => void;
   isLoading: boolean;
-  errorMessage: string | null;           // already-translated message, or null
-  emptyMessage: string;                  // already-translated empty text
+  errorMessage: string | null; // already-translated message, or null
+  emptyMessage: string; // already-translated empty text
 };
 ```
 
@@ -28,17 +28,24 @@ header via a small wrapper component).
 
 ```tsx
 import type { ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/data-table/features";
 import { Badge } from "@/components/ui/badge";
 
-export type ThingRow = { id: string; name: string; status: "active" | "disabled" };
+export type ThingRow = {
+  id: string;
+  name: string;
+  status: "active" | "disabled";
+};
 
-export const thingColumns: ColumnDef<ThingRow>[] = [
+export const thingColumns: ColumnDef<DataTableFeatures, ThingRow>[] = [
   { accessorKey: "name", header: "Name" },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant={row.original.status === "active" ? "default" : "secondary"}>
+      <Badge
+        variant={row.original.status === "active" ? "default" : "secondary"}
+      >
         {row.original.status}
       </Badge>
     ),

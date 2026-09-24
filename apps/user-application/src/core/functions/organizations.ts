@@ -18,7 +18,7 @@ const slugSchema = z.string().min(1).max(64);
  * by the global CSRF/error middleware + you can add rate limiting at the edge.
  */
 export const getOrganizationBySlugFn = createServerFn({ method: "GET" })
-  .inputValidator(zodInput(slugSchema))
+  .validator(zodInput(slugSchema))
   .handler(async ({ data }) => {
     return getOrganizationBySlug(getDb(), data);
   });
@@ -28,7 +28,7 @@ export const getOrganizationBySlugFn = createServerFn({ method: "GET" })
  * a member of an active org. Returns the org and the caller's role.
  */
 export const getOrganizationWorkspaceFn = createServerFn({ method: "GET" })
-  .inputValidator(zodInput(slugSchema))
+  .validator(zodInput(slugSchema))
   .handler(async ({ data }) => {
     const { organization, role } = await requireOrganizationContext(data);
     return { organization, role };

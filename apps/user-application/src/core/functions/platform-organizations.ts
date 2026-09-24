@@ -23,14 +23,14 @@ const listSchema = z.object({
 });
 
 export const listPlatformOrganizationsFn = createServerFn({ method: "GET" })
-  .inputValidator(zodInput(listSchema))
+  .validator(zodInput(listSchema))
   .handler(async ({ data }) => {
     await requirePlatformAdmin();
     return listOrganizations(getDb(), data);
   });
 
 export const getPlatformOrganizationFn = createServerFn({ method: "GET" })
-  .inputValidator(zodInput(z.string().min(1)))
+  .validator(zodInput(z.string().min(1)))
   .handler(async ({ data }) => {
     await requirePlatformAdmin();
     const detail = await getOrganizationDetail(getDb(), data);
@@ -46,7 +46,7 @@ const updateStatusSchema = z.object({
 export const updatePlatformOrganizationStatusFn = createServerFn({
   method: "POST",
 })
-  .inputValidator(zodInput(updateStatusSchema))
+  .validator(zodInput(updateStatusSchema))
   .handler(async ({ data }) => {
     await requirePlatformAdmin();
     return updateOrganizationStatus(getDb(), data);

@@ -15,7 +15,7 @@ const listSchema = z.object({
 });
 
 export const listPlatformUsersFn = createServerFn({ method: "GET" })
-  .inputValidator(zodInput(listSchema))
+  .validator(zodInput(listSchema))
   .handler(async ({ data }) => {
     await requirePlatformAdmin();
     return listUsers(getDb(), data);

@@ -11,17 +11,17 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.8.19",
+    "@cloudflare/vitest-pool-workers": "^0.22.0",
     "@types/node": "^22.15.19",
-    "typescript": "^5.5.2",
-    "vitest": "~3.2.0",
-    "wrangler": "^4.24.3"
+    "typescript": "^6.0.3",
+    "vitest": "~4.1.7",
+    "wrangler": "^4.137.0"
   },
   "dependencies": {
     "@hono/swagger-ui": "^0.6.1",
-    "@hono/zod-openapi": "^1.4.0",
+    "@hono/zod-openapi": "^1.6.3",
     "@repo/data-ops": "workspace:*",
-    "hono": "^4.10.0",
-    "zod": "^4.4.3"
+    "hono": "^4.13.9",
+    "zod": "^4.6.5"
   }
 }

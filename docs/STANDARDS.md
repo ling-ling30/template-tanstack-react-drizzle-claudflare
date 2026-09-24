@@ -79,7 +79,7 @@ const form = useForm({
 
 1. **Shared zod schema** from `data-ops` (or a local `zod-schema` file) — used on **both** client
    and server.
-2. **Server re-validates.** The server function uses `.inputValidator(zodInput(schema))` (`core/validation/zod-input.ts`). Never a bare type annotation like `(slug: string) => slug` — that checks nothing at runtime. Don't pass the schema directly either: Start then throws a plain Error and the client gets INTERNAL instead of VALIDATION_FAILED.
+2. **Server re-validates.** The server function uses `.validator(zodInput(schema))` (`core/validation/zod-input.ts`). Never a bare type annotation like `(slug: string) => slug` — that checks nothing at runtime. Don't pass the schema directly either: Start then throws a plain Error and the client gets INTERNAL instead of VALIDATION_FAILED.
 3. **Error display:** gate on `isTouched && !isValid`, `data-invalid` on `<Field>`,
    `aria-invalid` on the control, and pass `errors={field.state.meta.errors}` **directly** to
    `<FieldError />`. Never `String()` a zod issue — that renders `[object Object]`.
@@ -133,14 +133,12 @@ export async function moveItem(
       .update(items)
       .set({ listId: input.toListId, updatedAt: input.now })
       .where(eq(items.id, input.id)),
-    db
-      .insert(activity)
-      .values({
-        id: crypto.randomUUID(),
-        itemId: input.id,
-        kind: "moved",
-        at: input.now,
-      }),
+    db.insert(activity).values({
+      id: crypto.randomUUID(),
+      itemId: input.id,
+      kind: "moved",
+      at: input.now,
+    }),
   ]);
 }
 ```

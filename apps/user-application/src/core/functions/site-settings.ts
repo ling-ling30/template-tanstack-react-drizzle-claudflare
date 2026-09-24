@@ -21,7 +21,7 @@ export const getSiteSettingsFn = createServerFn({ method: "GET" }).handler(
 
 /** Update site settings. Platform-admin only. */
 export const updateSiteSettingsFn = createServerFn({ method: "POST" })
-  .inputValidator(zodInput(siteSettingsInputSchema))
+  .validator(zodInput(siteSettingsInputSchema))
   .handler(async ({ data }) => {
     await requirePlatformAdmin();
     return upsertSiteSettings(getDb(), {
