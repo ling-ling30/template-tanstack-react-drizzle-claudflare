@@ -116,8 +116,8 @@ function ValueBox({
       {...props}
     >
       {label !== undefined ? (
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex min-w-0 items-center gap-1.5">
+        <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 sm:flex-nowrap">
+          <div className="flex min-w-0 shrink-0 items-center gap-1.5">
             {shouldShowIcon && IconComponent && (
               <IconComponent className="size-3.5 shrink-0" />
             )}
@@ -133,7 +133,7 @@ function ValueBox({
           {typeof value === "string" || typeof value === "number" ? (
             <code
               className={cn(
-                "shrink-0 rounded border px-2 py-0.5 font-mono text-xs font-semibold tracking-tight shadow-2xs",
+                "thin-scrollbar max-w-full overflow-x-auto rounded border px-2 py-0.5 font-mono text-xs font-semibold tracking-tight whitespace-nowrap shadow-2xs",
                 valuePillVariants[resolvedVariant] ||
                   "text-foreground bg-background dark:bg-card border-border"
               )}
@@ -141,7 +141,7 @@ function ValueBox({
               {value}
             </code>
           ) : (
-            <span className="shrink-0 font-mono font-semibold tracking-tight">
+            <span className="thin-scrollbar max-w-full overflow-x-auto font-mono font-semibold tracking-tight">
               {value}
             </span>
           )}

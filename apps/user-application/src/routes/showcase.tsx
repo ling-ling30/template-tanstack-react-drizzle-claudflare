@@ -1203,11 +1203,29 @@ function ShowcasePage() {
                 </div>
 
                 {/* Generated Code Readout */}
-                <ValueBox
-                  label="Generated Component Code"
-                  type="info"
-                  value={`<Typography variant="${typographyVariant}" color="${typographyColor}"${typographyTabular ? " tabular" : ""}${typographyBalance ? " balance" : ""}>${typographySampleText}</Typography>`}
-                />
+                <ValueBox type="info" className="overflow-hidden">
+                  <div className="flex items-center justify-between pb-1.5 font-mono text-[11px] font-semibold">
+                    <span className="flex items-center gap-1.5">
+                      <Code className="size-3.5" />
+                      GENERATED COMPONENT CODE
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        copyToClipboard(
+                          `<Typography variant="${typographyVariant}" color="${typographyColor}"${typographyTabular ? " tabular" : ""}${typographyBalance ? " balance" : ""}>${typographySampleText}</Typography>`
+                        )
+                      }
+                      className="text-muted-foreground hover:text-foreground flex items-center gap-1 text-[11px] transition-colors"
+                    >
+                      <Copy className="size-3" />
+                      Copy JSX
+                    </button>
+                  </div>
+                  <div className="border-chart-3/30 bg-background/80 dark:bg-chart-3/20 text-chart-3 thin-scrollbar max-w-full overflow-x-auto rounded border p-2 font-mono text-xs font-semibold">
+                    <code>{`<Typography variant="${typographyVariant}" color="${typographyColor}"${typographyTabular ? " tabular" : ""}${typographyBalance ? " balance" : ""}>${typographySampleText}</Typography>`}</code>
+                  </div>
+                </ValueBox>
               </CardContent>
             </Card>
 
@@ -3404,7 +3422,7 @@ function ShowcasePage() {
               CUSTOM SCROLLBAR & RADIX SCROLLAREA SHOWCASE
               ========================================================================= */}
           <ScrollReveal variant="fade-up">
-            <Card className="border-border/80 mt-8 border shadow-md">
+            <Card className="border-border/80 mt-8 overflow-hidden border shadow-md">
               <CardHeader className="border-border/60 bg-muted/20 border-b p-6">
                 <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                   <div>
@@ -3432,7 +3450,7 @@ function ShowcasePage() {
               <CardContent className="space-y-6 p-6">
                 <div className="grid gap-6 md:grid-cols-2">
                   {/* Vertical ScrollArea Demo */}
-                  <div className="space-y-3">
+                  <div className="min-w-0 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground font-mono text-xs font-semibold">
                         VERTICAL SCROLLAREA (LOGS / EVENTS)
@@ -3528,7 +3546,7 @@ function ShowcasePage() {
                   </div>
 
                   {/* Horizontal ScrollArea Demo & Scrollbar Variants */}
-                  <div className="space-y-4">
+                  <div className="min-w-0 space-y-4">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground font-mono text-xs font-semibold">
@@ -3541,8 +3559,8 @@ function ShowcasePage() {
                           &lt;ScrollBar orientation="horizontal" /&gt;
                         </Badge>
                       </div>
-                      <div className="border-border/70 bg-card rounded-xl border p-1 shadow-xs">
-                        <ScrollArea className="w-full rounded-lg p-3 whitespace-nowrap">
+                      <div className="border-border/70 bg-card overflow-hidden rounded-xl border p-1 shadow-xs">
+                        <ScrollArea className="w-full overflow-hidden rounded-lg p-3 whitespace-nowrap">
                           <div className="flex gap-2.5 pb-2">
                             {[
                               "All Photos (1,248)",
