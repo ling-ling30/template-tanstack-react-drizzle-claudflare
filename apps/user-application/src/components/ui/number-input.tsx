@@ -128,7 +128,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                 rawText !== "" &&
                 parseFloat(rawText) <= min)
             }
-            className="size-10 shrink-0 rounded-xl transition-transform active:scale-95"
+            className="h-9.5 w-9.5 shrink-0 rounded-md"
             onClick={stepDown}
             aria-label="Decrease value"
           >
@@ -138,7 +138,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 
         <div className="relative flex-1">
           {prefixText && (
-            <span className="text-muted-foreground pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-sm">
+            <span className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm">
               {prefixText}
             </span>
           )}
@@ -147,6 +147,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             {...props}
             ref={ref}
             type="text"
+            data-slot="input"
             inputMode="numeric"
             pattern="[0-9]*"
             value={rawText}
@@ -156,17 +157,18 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
             disabled={disabled}
             placeholder={placeholder}
             className={cn(
-              "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/20 border-input/70 bg-background/60 h-10 w-full min-w-0 rounded-xl border px-3.5 py-1.5 text-base shadow-xs backdrop-blur-xs transition-all duration-150 outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+              "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground border-input bg-background h-9.5 w-full min-w-0 rounded-md border px-3 py-1.5 text-sm shadow-xs transition-colors duration-120 outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
               withStepper && "text-center font-mono font-medium",
               prefixText && "pl-8",
               suffixText && "pr-8",
-              "focus-visible:border-foreground/40 focus-visible:ring-ring/25 focus-visible:ring-4",
+              "focus-visible:border-primary focus-visible:ring-ring/25 focus-visible:ring-2",
+              "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
               className
             )}
           />
 
           {suffixText && (
-            <span className="text-muted-foreground pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 font-mono text-sm">
+            <span className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 font-mono text-sm">
               {suffixText}
             </span>
           )}
@@ -183,7 +185,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
                 rawText !== "" &&
                 parseFloat(rawText) >= max)
             }
-            className="size-10 shrink-0 rounded-xl transition-transform active:scale-95"
+            className="h-9.5 w-9.5 shrink-0 rounded-md"
             onClick={stepUp}
             aria-label="Increase value"
           >
