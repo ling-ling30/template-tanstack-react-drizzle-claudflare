@@ -36,7 +36,7 @@ describe("PhoneInput", () => {
     fireEvent.click(trigger);
 
     expect(
-      screen.getByPlaceholderText("Search country or code...")
+      screen.getByPlaceholderText("Search country or dial code...")
     ).toBeInTheDocument();
     expect(screen.getByText("United Kingdom")).toBeInTheDocument();
   });

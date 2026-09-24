@@ -38,7 +38,9 @@ export interface PhoneInputProps {
   value?: string;
   defaultValue?: string;
   onChange?: (value: string, meta: PhoneValueMeta) => void;
+  country?: string;
   defaultCountry?: string;
+  onCountryChange?: (country: Country) => void;
   placeholder?: string;
   disabled?: boolean;
   readOnly?: boolean;
@@ -55,7 +57,9 @@ export function PhoneInput({
   value: controlledValue,
   defaultValue = "",
   onChange,
+  country: controlledCountryCode,
   defaultCountry = "US",
+  onCountryChange,
   placeholder,
   disabled = false,
   readOnly = false,
@@ -66,12 +70,17 @@ export function PhoneInput({
   autoComplete = "tel-national",
 }: PhoneInputProps) {
   // Selected country state
-  const [selectedCountry, setSelectedCountry] = React.useState<Country>(() => {
-    return (
-      (defaultCountry ? getCountryByCode(defaultCountry) : undefined) ??
-      DEFAULT_COUNTRY
-    );
+  const [internalCountry, setInternalCountry] = React.useState<Country>(() => {
+    const code = controlledCountryCode || defaultCountry;
+    return (code ? getCountryByCode(code) : undefined) ?? DEFAULT_COUNTRY;
   });
+
+  const selectedCountry = React.useMemo(() => {
+    if (controlledCountryCode) {
+      return getCountryByCode(controlledCountryCode) ?? internalCountry;
+    }
+    return internalCountry;
+  }, [controlledCountryCode, internalCountry]);
 
   // Country popover state
   const [isOpen, setIsOpen] = React.useState(false);
@@ -132,7 +141,10 @@ export function PhoneInput({
   );
 
   const handleCountrySelect = (country: Country) => {
-    setSelectedCountry(country);
+    if (!controlledCountryCode) {
+      setInternalCountry(country);
+    }
+    onCountryChange?.(country);
     setIsOpen(false);
     setSearchQuery("");
 
@@ -156,7 +168,10 @@ export function PhoneInput({
       );
       const matched = sorted.find((c) => rawInput.startsWith(c.dialCode));
       if (matched) {
-        setSelectedCountry(matched);
+        if (!controlledCountryCode) {
+          setInternalCountry(matched);
+        }
+        onCountryChange?.(matched);
         const nationalPart = rawInput.slice(matched.dialCode.length);
         const formatted = formatPhoneNumber(nationalPart, matched);
         if (!isControlled) {
@@ -189,7 +204,7 @@ export function PhoneInput({
       data-slot="phone-input-root"
       aria-invalid={isInvalid ? "true" : undefined}
       className={cn(
-        "border-input bg-background relative flex h-9.5 w-full items-center rounded-md border shadow-xs transition-colors duration-120",
+        "group border-input bg-background relative flex h-9.5 w-full items-center rounded-md border shadow-xs transition-all duration-120",
         "focus-within:border-primary focus-within:ring-ring/25 focus-within:ring-2",
         "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:ring-2",
         disabled &&
@@ -197,7 +212,7 @@ export function PhoneInput({
         className
       )}
     >
-      {/* Country Selector Dropdown */}
+      {/* Integrated Country Selector Button */}
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <button
@@ -205,7 +220,8 @@ export function PhoneInput({
             disabled={disabled || readOnly}
             aria-label={`Select country, current: ${selectedCountry.name}`}
             className={cn(
-              "hover:bg-muted/50 flex h-full shrink-0 items-center gap-1.5 rounded-l-md px-2.5 text-sm font-medium transition-colors focus-visible:outline-none",
+              "border-border/70 flex h-full shrink-0 items-center gap-1.5 rounded-l-[calc(var(--radius)-1px)] border-r px-2.5 text-sm font-medium transition-colors outline-none",
+              "hover:bg-muted/50 active:bg-muted/80 focus-visible:bg-muted/60",
               disabled && "pointer-events-none"
             )}
           >
@@ -216,12 +232,12 @@ export function PhoneInput({
             >
               {selectedCountry.flag}
             </span>
-            <span className="text-muted-foreground font-mono text-xs">
+            <span className="text-muted-foreground font-mono text-xs tabular-nums">
               {selectedCountry.dialCode}
             </span>
             <ChevronDown
               className={cn(
-                "text-muted-foreground/80 size-3 transition-transform duration-150",
+                "text-muted-foreground size-3 transition-transform duration-150",
                 isOpen && "rotate-180"
               )}
             />
@@ -230,36 +246,38 @@ export function PhoneInput({
 
         <PopoverContent
           align="start"
-          sideOffset={6}
-          className="border-border bg-popover w-72 rounded-lg border p-1.5 shadow-md"
+          sideOffset={4}
+          className="border-border bg-popover w-80 rounded-lg border p-0 shadow-md outline-none"
         >
-          {/* Search Box */}
-          <div className="relative mb-1 flex items-center px-1">
-            <Search className="text-muted-foreground pointer-events-none absolute left-3 size-3.5" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search country or code..."
-              className="bg-muted/40 border-input/60 focus:border-primary focus:bg-background placeholder:text-muted-foreground h-8 w-full rounded-md border pr-7 pl-8 text-xs transition-colors outline-none"
-              autoFocus
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="text-muted-foreground hover:text-foreground hover:bg-muted/80 absolute right-3 rounded-sm p-0.5"
-              >
-                <X className="size-3" />
-              </button>
-            )}
+          {/* Header Search Box with Asana 4px Grid Spacing */}
+          <div className="border-border/60 bg-muted/20 border-b p-2">
+            <div className="relative flex items-center">
+              <Search className="text-muted-foreground pointer-events-none absolute left-2.5 size-3.5" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search country or dial code..."
+                className="border-input/80 bg-background placeholder:text-muted-foreground focus:border-primary focus:ring-ring/25 h-8 w-full rounded-md border pr-7 pl-8 text-xs transition-colors outline-none focus:ring-1"
+                autoFocus
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="text-muted-foreground hover:bg-muted hover:text-foreground absolute right-2 rounded-sm p-0.5"
+                >
+                  <X className="size-3" />
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Countries List */}
-          <div className="max-h-60 space-y-0.5 overflow-y-auto py-1 text-xs">
+          {/* Precision Country List with Fixed-Width Tabular Columns */}
+          <div className="max-h-64 overflow-y-auto p-1 text-xs">
             {filteredCountries.length === 0 ? (
-              <div className="text-muted-foreground py-6 text-center text-xs">
-                No country found
+              <div className="text-muted-foreground py-8 text-center text-xs">
+                No matching country found
               </div>
             ) : (
               filteredCountries.map((c) => {
@@ -270,30 +288,37 @@ export function PhoneInput({
                     type="button"
                     onClick={() => handleCountrySelect(c)}
                     className={cn(
-                      "flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left transition-colors",
+                      "flex h-8.5 w-full items-center rounded-md px-2.5 text-left transition-colors",
                       isSelected
                         ? "bg-primary/10 text-primary font-medium"
                         : "text-foreground hover:bg-accent hover:text-accent-foreground"
                     )}
                   >
-                    <div className="flex items-center gap-2 truncate pr-2">
-                      <span
-                        className="text-sm select-none"
-                        role="img"
-                        aria-hidden="true"
-                      >
-                        {c.flag}
-                      </span>
-                      <span className="truncate">{c.name}</span>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-2">
-                      <span className="text-muted-foreground font-mono">
-                        {c.dialCode}
-                      </span>
+                    {/* Fixed Flag Column */}
+                    <span
+                      className="w-6 shrink-0 text-center text-base leading-none select-none"
+                      role="img"
+                      aria-hidden="true"
+                    >
+                      {c.flag}
+                    </span>
+
+                    {/* Country Name */}
+                    <span className="flex-1 truncate pr-2 text-xs">
+                      {c.name}
+                    </span>
+
+                    {/* Fixed Tabular Dial Code */}
+                    <span className="text-muted-foreground w-12 shrink-0 text-right font-mono text-[11px] tabular-nums">
+                      {c.dialCode}
+                    </span>
+
+                    {/* Active Checkmark */}
+                    <span className="ml-1.5 flex w-4 shrink-0 justify-end">
                       {isSelected && (
                         <Check className="text-primary size-3.5" />
                       )}
-                    </div>
+                    </span>
                   </button>
                 );
               })
@@ -301,9 +326,6 @@ export function PhoneInput({
           </div>
         </PopoverContent>
       </Popover>
-
-      {/* Vertical Hairline Divider */}
-      <div className="bg-border/80 h-4.5 w-px shrink-0" aria-hidden="true" />
 
       {/* National Number Input */}
       <input
@@ -319,32 +341,39 @@ export function PhoneInput({
         required={required}
         autoComplete={autoComplete}
         className={cn(
-          "placeholder:text-muted-foreground h-full min-w-0 flex-1 bg-transparent px-3 font-mono text-sm tracking-tight outline-none"
+          "text-foreground placeholder:text-muted-foreground/70 h-full min-w-0 flex-1 bg-transparent px-3 text-sm font-normal tabular-nums outline-none"
         )}
       />
 
-      {/* Clear Button */}
-      {displayValue && !disabled && !readOnly && (
-        <button
-          type="button"
-          onClick={handleClear}
-          aria-label="Clear phone number"
-          className="text-muted-foreground hover:text-foreground hover:bg-muted/80 mr-2 shrink-0 rounded-full p-1 transition-colors"
-        >
-          <X className="size-3.5" />
-        </button>
-      )}
+      {/* Trailing Controls (Clear Button & Validation Indicator) */}
+      <div className="flex shrink-0 items-center gap-1.5 pr-2.5">
+        {displayValue && !disabled && !readOnly && (
+          <button
+            type="button"
+            onClick={handleClear}
+            aria-label="Clear phone number"
+            className="text-muted-foreground hover:bg-muted hover:text-foreground flex size-5 items-center justify-center rounded-full transition-colors"
+          >
+            <X className="size-3.5" />
+          </button>
+        )}
 
-      {/* Validation Indicator */}
-      {showValidationState && nationalDigits.length > 0 && (
-        <div className="pointer-events-none mr-2.5 flex shrink-0 items-center">
-          {isValid ? (
-            <CheckCircle2 className="text-chart-2 size-4" />
-          ) : (
-            <AlertCircle className="text-destructive size-4" />
-          )}
-        </div>
-      )}
+        {/* Validation Status Indicator */}
+        {showValidationState && nationalDigits.length > 0 && (
+          <div
+            className="pointer-events-none flex size-4 items-center justify-center"
+            title={
+              isValid ? "Phone number valid" : "Incomplete or invalid number"
+            }
+          >
+            {isValid ? (
+              <CheckCircle2 className="text-chart-2 size-4" />
+            ) : (
+              <AlertCircle className="text-destructive size-4" />
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import {
   Copy,
   Search,
@@ -531,6 +532,7 @@ function ShowcasePage() {
   const [dateTimeValue, setDateTimeValue] = useState<Date | null>(
     () => new Date(2026, 9, 24, 15, 30)
   );
+  const [phoneCountry, setPhoneCountry] = useState("US");
   const [phoneValue, setPhoneValue] = useState("2025550123");
   const [phoneMeta, setPhoneMeta] = useState<PhoneValueMeta | null>(null);
   const [checkboxValue, setCheckboxValue] = useState(true);
@@ -1033,14 +1035,12 @@ function ShowcasePage() {
                   >
                     Phone Input (Country Dropdown & Validation)
                   </Label>
-                  {phoneMeta && (
-                    <Badge
-                      variant={phoneMeta.isValid ? "success" : "coral"}
-                      className="font-mono text-xs"
-                    >
-                      {phoneMeta.isValid ? "Valid" : "Incomplete"}
-                    </Badge>
-                  )}
+                  <Badge
+                    variant={phoneMeta?.isValid ? "success" : "coral"}
+                    className="font-mono text-xs"
+                  >
+                    {phoneMeta?.isValid ? "Valid" : "Incomplete"}
+                  </Badge>
                 </div>
                 <p className="text-muted-foreground text-xs">
                   Searchable country selector, Google libphonenumber formatting,
@@ -1048,10 +1048,11 @@ function ShowcasePage() {
                 </p>
               </div>
 
-              <div>
+              <div className="space-y-2">
                 <PhoneInput
                   id="phone-input"
-                  defaultCountry="US"
+                  country={phoneCountry}
+                  onCountryChange={(c) => setPhoneCountry(c.code)}
                   value={phoneValue}
                   onChange={(val, meta) => {
                     setPhoneValue(val);
@@ -1060,27 +1061,70 @@ function ShowcasePage() {
                   showValidationState
                   placeholder="Enter phone number..."
                 />
+
+                {/* Quick Switcher Pills */}
+                <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                  <span className="text-muted-foreground text-[11px] font-medium">
+                    Quick test:
+                  </span>
+                  {[
+                    { code: "US", flag: "🇺🇸", dial: "+1" },
+                    { code: "ID", flag: "🇮🇩", dial: "+62" },
+                    { code: "GB", flag: "🇬🇧", dial: "+44" },
+                    { code: "JP", flag: "🇯🇵", dial: "+81" },
+                    { code: "AU", flag: "🇦🇺", dial: "+61" },
+                  ].map((preset) => (
+                    <button
+                      key={preset.code}
+                      type="button"
+                      onClick={() => setPhoneCountry(preset.code)}
+                      className={cn(
+                        "flex h-6 items-center gap-1 rounded-md px-2 font-mono text-[11px] transition-colors",
+                        phoneCountry === preset.code
+                          ? "bg-primary text-primary-foreground font-medium shadow-xs"
+                          : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      <span>{preset.flag}</span>
+                      <span>{preset.dial}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <div className="text-muted-foreground bg-muted/30 space-y-1 rounded-lg p-2 font-mono text-xs">
-                <div className="flex justify-between">
-                  <span>Country:</span>
-                  <span className="text-foreground">
+              {/* Real-time Telemetry Panel */}
+              <div className="border-border/60 bg-muted/20 space-y-1.5 rounded-lg border p-3 font-mono text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Country:</span>
+                  <span className="text-foreground font-medium">
                     {phoneMeta?.country
                       ? `${phoneMeta.country.flag} ${phoneMeta.country.name} (${phoneMeta.dialCode})`
                       : "🇺🇸 United States (+1)"}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Formatted:</span>
-                  <span className="text-foreground">
-                    {phoneValue || "None"}
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Formatted:</span>
+                  <span className="text-foreground tabular-nums">
+                    {phoneValue || "—"}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>E.164 Output:</span>
-                  <span className="text-foreground">
-                    {phoneMeta?.e164 || "+12025550123"}
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">E.164 Payload:</span>
+                  <span className="text-foreground tabular-nums">
+                    {phoneMeta?.e164 || "—"}
+                  </span>
+                </div>
+                <div className="border-border/40 flex items-center justify-between border-t pt-1">
+                  <span className="text-muted-foreground">Validation:</span>
+                  <span
+                    className={cn(
+                      "font-semibold",
+                      phoneMeta?.isValid ? "text-chart-2" : "text-destructive"
+                    )}
+                  >
+                    {phoneMeta?.isValid
+                      ? "✓ Valid E.164 National Number"
+                      : "⚠ Incomplete digits"}
                   </span>
                 </div>
               </div>
