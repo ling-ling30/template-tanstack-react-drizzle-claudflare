@@ -35,7 +35,11 @@ import {
   DateTimeInput,
   TimeInput,
 } from "@/components/ui/date-input";
-import { PhoneInput, type PhoneValueMeta } from "@/components/ui/phone-input";
+import {
+  PhoneInput,
+  CountryFlag,
+  type PhoneValueMeta,
+} from "@/components/ui/phone-input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -1068,24 +1072,24 @@ function ShowcasePage() {
                     Quick test:
                   </span>
                   {[
-                    { code: "US", flag: "🇺🇸", dial: "+1" },
-                    { code: "ID", flag: "🇮🇩", dial: "+62" },
-                    { code: "GB", flag: "🇬🇧", dial: "+44" },
-                    { code: "JP", flag: "🇯🇵", dial: "+81" },
-                    { code: "AU", flag: "🇦🇺", dial: "+61" },
+                    { code: "US", dial: "+1" },
+                    { code: "ID", dial: "+62" },
+                    { code: "GB", dial: "+44" },
+                    { code: "JP", dial: "+81" },
+                    { code: "AU", dial: "+61" },
                   ].map((preset) => (
                     <button
                       key={preset.code}
                       type="button"
                       onClick={() => setPhoneCountry(preset.code)}
                       className={cn(
-                        "flex h-6 items-center gap-1 rounded-md px-2 font-mono text-[11px] transition-colors",
+                        "flex h-6 items-center gap-1.5 rounded-md px-2 font-mono text-[11px] transition-colors",
                         phoneCountry === preset.code
                           ? "bg-primary text-primary-foreground font-medium shadow-xs"
                           : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
                       )}
                     >
-                      <span>{preset.flag}</span>
+                      <CountryFlag code={preset.code} className="h-3 w-4" />
                       <span>{preset.dial}</span>
                     </button>
                   ))}
@@ -1096,10 +1100,15 @@ function ShowcasePage() {
               <div className="border-border/60 bg-muted/20 space-y-1.5 rounded-lg border p-3 font-mono text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">Country:</span>
-                  <span className="text-foreground font-medium">
-                    {phoneMeta?.country
-                      ? `${phoneMeta.country.flag} ${phoneMeta.country.name} (${phoneMeta.dialCode})`
-                      : "🇺🇸 United States (+1)"}
+                  <span className="text-foreground flex items-center gap-1.5 font-medium">
+                    <CountryFlag
+                      code={phoneMeta?.country?.code || phoneCountry}
+                    />
+                    <span>
+                      {phoneMeta?.country
+                        ? `${phoneMeta.country.name} (${phoneMeta.dialCode})`
+                        : "United States (+1)"}
+                    </span>
                   </span>
                 </div>
                 <div className="flex items-center justify-between">

@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import * as Flags from "country-flag-icons/react/3x2";
 import { cn } from "@/lib/utils";
 import {
   COUNTRIES,
@@ -30,6 +31,42 @@ export interface PhoneValueMeta {
   formatted: string;
   e164: string;
   isValid: boolean;
+}
+
+export function CountryFlag({
+  code,
+  className,
+}: {
+  code: string;
+  className?: string;
+}) {
+  const Flag = (
+    Flags as Record<string, React.ComponentType<{ className?: string }>>
+  )[code?.toUpperCase()];
+
+  if (!Flag) {
+    return (
+      <span
+        className={cn(
+          "bg-muted text-muted-foreground inline-flex h-3.5 w-5 shrink-0 items-center justify-center rounded-[2px] font-mono text-[9px] font-bold shadow-[0_0_0_1px_rgba(0,0,0,0.1)]",
+          className
+        )}
+      >
+        {code?.toUpperCase()}
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={cn(
+        "inline-flex h-3.5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-[2px] shadow-[0_0_0_1px_rgba(0,0,0,0.12)]",
+        className
+      )}
+    >
+      <Flag className="h-full w-full object-cover" />
+    </span>
+  );
 }
 
 export interface PhoneInputProps {
@@ -220,21 +257,20 @@ export function PhoneInput({
             disabled={disabled || readOnly}
             aria-label={`Select country, current: ${selectedCountry.name}`}
             className={cn(
-              "border-border/70 flex h-full shrink-0 items-center gap-1.5 rounded-l-[calc(var(--radius)-1px)] border-r px-2.5 text-sm font-medium transition-colors outline-none",
+              "border-border/70 flex h-full shrink-0 items-center gap-1.5 rounded-l-[calc(var(--radius)-1px)] border-r px-2.5 transition-colors outline-none",
               "hover:bg-muted/50 active:bg-muted/80 focus-visible:bg-muted/60",
               disabled && "pointer-events-none"
             )}
           >
-            <span
-              className="text-base leading-none select-none"
-              role="img"
-              aria-hidden="true"
-            >
-              {selectedCountry.flag}
-            </span>
-            <span className="text-muted-foreground font-mono text-xs tabular-nums">
+            {/* Real SVG Country Flag */}
+            <CountryFlag code={selectedCountry.code} />
+
+            {/* Dial Code - strictly inline with vertical centering */}
+            <span className="text-foreground font-mono text-xs leading-none font-medium tabular-nums">
               {selectedCountry.dialCode}
             </span>
+
+            {/* Dropdown Chevron */}
             <ChevronDown
               className={cn(
                 "text-muted-foreground size-3 transition-transform duration-150",
@@ -295,13 +331,9 @@ export function PhoneInput({
                     )}
                   >
                     {/* Fixed Flag Column */}
-                    <span
-                      className="w-6 shrink-0 text-center text-base leading-none select-none"
-                      role="img"
-                      aria-hidden="true"
-                    >
-                      {c.flag}
-                    </span>
+                    <div className="flex w-6 shrink-0 items-center">
+                      <CountryFlag code={c.code} />
+                    </div>
 
                     {/* Country Name */}
                     <span className="flex-1 truncate pr-2 text-xs">
