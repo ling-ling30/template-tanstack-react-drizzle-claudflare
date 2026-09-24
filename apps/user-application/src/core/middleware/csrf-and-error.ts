@@ -1,5 +1,8 @@
 import { appError } from "@repo/data-ops/errors";
-import { createMiddleware } from "@tanstack/react-start";
+// Imported from start-client-core, not react-start: react-start -> hydrateStart ->
+// start.ts -> this file is an import cycle, and react-start's `export *` hasn't run
+// yet when we get here after HMR, so createMiddleware would be undefined.
+import { createMiddleware } from "@tanstack/start-client-core";
 import { getRequest } from "@tanstack/react-start/server";
 import { logger } from "../logger/logger";
 import { toPublicError } from "./public-error";
