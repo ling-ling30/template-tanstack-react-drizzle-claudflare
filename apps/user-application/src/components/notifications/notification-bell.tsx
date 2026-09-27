@@ -57,7 +57,7 @@ export function NotificationBell() {
         >
           <Bell className="size-5" />
           {unreadCount > 0 && (
-            <span className="bg-destructive text-destructive-foreground absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full text-[10px] font-bold">
+            <span className="bg-destructive text-destructive-foreground animate-in fade-in-0 zoom-in-75 absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full text-[10px] font-bold duration-150 ease-out motion-reduce:transition-none">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
@@ -97,7 +97,7 @@ export function NotificationBell() {
               {notifications.map((n) => (
                 <div
                   key={n.id}
-                  className={`hover:bg-muted/50 p-4 transition-colors ${
+                  className={`hover:bg-muted/50 cursor-pointer p-4 transition-colors duration-150 ease-out ${
                     !n.readAt ? "bg-muted/20" : ""
                   }`}
                   onClick={() => {

@@ -273,7 +273,7 @@ export function PhoneInput({
       data-slot="phone-input-root"
       aria-invalid={isInvalid ? "true" : undefined}
       className={cn(
-        "group bg-background relative flex h-9.5 w-full items-center rounded-md border shadow-xs transition-all duration-120",
+        "group bg-background relative flex h-9.5 w-full items-center rounded-md border shadow-xs transition-[border-color,box-shadow] duration-120 ease-out",
         isInvalid
           ? "border-destructive ring-destructive/20 dark:ring-destructive/40 focus-within:border-destructive focus-within:ring-destructive/20 dark:focus-within:ring-destructive/40 ring-2"
           : "border-input focus-within:border-primary focus-within:ring-ring/25 focus-within:ring-2",

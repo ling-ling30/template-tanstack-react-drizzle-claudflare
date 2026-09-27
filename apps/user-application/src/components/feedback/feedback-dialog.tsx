@@ -143,7 +143,7 @@ export function FeedbackDialog({
                       <button
                         type="button"
                         onClick={() => field.handleChange("bug")}
-                        className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-medium transition-all ${
+                        className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-medium transition-[color,background-color,border-color,transform] duration-120 ease-out active:scale-[0.97] ${
                           currentVal === "bug"
                             ? "border-destructive bg-destructive/10 text-destructive"
                             : "border-border bg-card text-muted-foreground hover:bg-muted/50"
@@ -155,7 +155,7 @@ export function FeedbackDialog({
                       <button
                         type="button"
                         onClick={() => field.handleChange("feature")}
-                        className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-medium transition-all ${
+                        className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-medium transition-[color,background-color,border-color,transform] duration-120 ease-out active:scale-[0.97] ${
                           currentVal === "feature"
                             ? "border-primary bg-primary/10 text-primary"
                             : "border-border bg-card text-muted-foreground hover:bg-muted/50"
@@ -167,7 +167,7 @@ export function FeedbackDialog({
                       <button
                         type="button"
                         onClick={() => field.handleChange("general")}
-                        className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-medium transition-all ${
+                        className={`flex items-center justify-center gap-1.5 rounded-lg border p-2 text-xs font-medium transition-[color,background-color,border-color,transform] duration-120 ease-out active:scale-[0.97] ${
                           currentVal === "general"
                             ? "border-foreground bg-secondary text-foreground"
                             : "border-border bg-card text-muted-foreground hover:bg-muted/50"
@@ -191,7 +191,7 @@ export function FeedbackDialog({
                   <form.Field
                     name="severity"
                     children={(field) => (
-                      <div className="space-y-1.5">
+                      <div className="animate-in fade-in-0 slide-in-from-top-1 space-y-1.5 duration-150 ease-out motion-reduce:transition-none">
                         <FieldLabel className="text-xs font-semibold">
                           {t("feedback.severityLabel")}
                         </FieldLabel>
@@ -202,7 +202,7 @@ export function FeedbackDialog({
                                 key={sev}
                                 type="button"
                                 onClick={() => field.handleChange(sev)}
-                                className={`rounded-md border py-1 text-center font-mono text-[11px] capitalize transition-all ${
+                                className={`rounded-md border py-1 text-center font-mono text-[11px] capitalize transition-[color,background-color,border-color,transform] duration-120 ease-out active:scale-[0.97] ${
                                   field.state.value === sev
                                     ? "border-foreground bg-foreground text-background font-semibold"
                                     : "border-border text-muted-foreground hover:bg-muted/50"

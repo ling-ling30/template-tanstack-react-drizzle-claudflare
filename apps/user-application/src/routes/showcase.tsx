@@ -1022,7 +1022,7 @@ function ShowcasePage() {
             {COLOR_TOKENS.map((token) => (
               <Card
                 key={token.name}
-                className="border-border/70 hover:border-foreground/20 overflow-hidden border transition-all duration-150"
+                className="border-border/70 hover:border-foreground/20 overflow-hidden border transition-[border-color,box-shadow] duration-150 ease-out"
               >
                 <div
                   className={`h-20 w-full ${token.previewClass} ${
@@ -1104,7 +1104,7 @@ function ShowcasePage() {
               </CardHeader>
               <CardContent className="space-y-5">
                 {/* Live Preview Box */}
-                <div className="border-border/60 bg-muted/20 dark:bg-background relative flex min-h-[130px] flex-col justify-center rounded-xl border p-6 transition-all">
+                <div className="border-border/60 bg-muted/20 dark:bg-background relative flex min-h-[130px] flex-col justify-center rounded-xl border p-6 transition-[border-color,background-color] duration-150 ease-out">
                   <Typography
                     variant={typographyVariant}
                     color={typographyColor}
@@ -1574,7 +1574,7 @@ function ShowcasePage() {
                 {RADIUS_TOKENS.map((token) => (
                   <div
                     key={token.variable}
-                    className="border-border/60 bg-muted/20 dark:bg-background/80 hover:border-primary/40 flex flex-col items-center justify-between rounded-xl border p-3.5 text-center transition-all"
+                    className="border-border/60 bg-muted/20 dark:bg-background/80 hover:border-primary/40 flex flex-col items-center justify-between rounded-xl border p-3.5 text-center transition-[border-color,box-shadow] duration-150 ease-out"
                   >
                     <div
                       style={{

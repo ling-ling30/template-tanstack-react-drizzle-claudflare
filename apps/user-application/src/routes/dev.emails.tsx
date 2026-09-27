@@ -119,7 +119,7 @@ function EmailPreviewPage() {
           </CardHeader>
           <CardContent className="flex justify-center p-6">
             <div
-              className="overflow-hidden rounded-lg border shadow-sm transition-all duration-200"
+              className="overflow-hidden rounded-lg border shadow-sm transition-[width] duration-250 ease-out motion-reduce:transition-none"
               style={{
                 width: device === "mobile" ? "375px" : "600px",
                 height: "640px",

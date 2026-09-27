@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Megaphone, X, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 
 export interface AnnouncementBannerProps {
   id?: string;
@@ -20,6 +21,7 @@ export function AnnouncementBanner({
   dismissible = true,
 }: AnnouncementBannerProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isDismissing, setIsDismissing] = useState(false);
 
   useEffect(() => {
     try {
@@ -33,12 +35,15 @@ export function AnnouncementBanner({
   }, [id]);
 
   const handleDismiss = () => {
-    setIsVisible(false);
+    setIsDismissing(true);
     try {
       localStorage.setItem(`dismissed_announcement_${id}`, "true");
     } catch {
       // Ignore storage errors in private browsing modes
     }
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 200);
   };
 
   if (!isVisible) return null;
@@ -52,7 +57,15 @@ export function AnnouncementBanner({
   return (
     <aside
       aria-label="Announcement"
-      className={`relative z-40 flex items-center justify-between px-4 py-2 text-xs sm:text-sm ${bgStyles} transition-all`}
+      data-state={isDismissing ? "closing" : "open"}
+      className={cn(
+        "relative z-40 flex items-center justify-between px-4 text-xs sm:text-sm",
+        bgStyles,
+        "transition-[opacity,max-height,padding] duration-200 ease-out motion-reduce:transition-none",
+        isDismissing
+          ? "max-h-0 overflow-hidden py-0 opacity-0"
+          : "max-h-16 py-2 opacity-100"
+      )}
     >
       <div className="mx-auto flex flex-wrap items-center justify-center gap-2 text-center">
         <span className="inline-flex items-center gap-1.5 font-medium">
@@ -62,7 +75,7 @@ export function AnnouncementBanner({
         {actionText && actionHref && (
           <Link
             to={actionHref}
-            className="inline-flex items-center gap-1 font-semibold underline underline-offset-4 hover:opacity-80"
+            className="inline-flex items-center gap-1 font-semibold underline underline-offset-4 transition-opacity hover:opacity-80"
           >
             {actionText}
             <ArrowRight className="h-3.5 w-3.5" />
@@ -74,7 +87,7 @@ export function AnnouncementBanner({
         <button
           type="button"
           onClick={handleDismiss}
-          className="ml-2 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded p-1 hover:bg-black/10 dark:hover:bg-white/10"
+          className="ml-2 inline-flex size-6 shrink-0 items-center justify-center rounded p-1 transition-[transform,background-color] duration-120 ease-out hover:bg-black/10 active:scale-95 dark:hover:bg-white/10"
           aria-label="Dismiss banner"
         >
           <X className="h-3.5 w-3.5" />

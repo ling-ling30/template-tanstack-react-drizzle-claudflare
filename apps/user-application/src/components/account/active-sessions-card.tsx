@@ -143,7 +143,11 @@ export function ActiveSessionsCard() {
               return (
                 <div
                   key={sess.id}
-                  className="flex items-center justify-between p-4"
+                  className={`flex items-center justify-between p-4 transition-opacity duration-150 ease-out ${
+                    revokingId === sess.id
+                      ? "pointer-events-none opacity-50"
+                      : "opacity-100"
+                  }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="bg-muted/40 flex h-10 w-10 items-center justify-center rounded-lg border">

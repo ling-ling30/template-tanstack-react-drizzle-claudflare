@@ -136,9 +136,9 @@ export function ApiKeysCard({
                     onClick={handleCopy}
                   >
                     {copied ? (
-                      <Check className="size-4 text-green-500" />
+                      <Check className="animate-in zoom-in-75 size-4 text-emerald-500 duration-120" />
                     ) : (
-                      <Copy className="size-4" />
+                      <Copy className="size-4 transition-transform duration-120 active:scale-95" />
                     )}
                   </Button>
                 </div>
@@ -215,7 +215,7 @@ export function ApiKeysCard({
             {keysQuery.data.map((k) => (
               <div
                 key={k.id}
-                className="flex items-center justify-between rounded-lg border p-3"
+                className="flex items-center justify-between rounded-lg border p-3 transition-opacity duration-150 ease-out"
               >
                 <div>
                   <p className="text-sm font-medium">{k.name}</p>

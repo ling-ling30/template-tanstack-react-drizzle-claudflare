@@ -3,12 +3,14 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const STORAGE_KEY = "saas_cookie_consent";
 
 export function CookieConsent() {
   const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
+  const [isDismissing, setIsDismissing] = useState(false);
 
   useEffect(() => {
     try {
@@ -29,13 +31,25 @@ export function CookieConsent() {
     } catch {
       // Ignore
     }
-    setVisible(false);
+    setIsDismissing(true);
+    setTimeout(() => {
+      setVisible(false);
+    }, 200);
   };
 
   if (!visible) return null;
 
   return (
-    <div className="animate-in fade-in-50 slide-in-from-bottom-5 fixed right-4 bottom-4 z-50 max-w-sm duration-300">
+    <div
+      data-state={isDismissing ? "closed" : "open"}
+      className={cn(
+        "fixed right-4 bottom-4 z-50 max-w-sm",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out",
+        "data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-4",
+        "data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-bottom-4",
+        "duration-200 ease-out motion-reduce:transform-none motion-reduce:transition-none"
+      )}
+    >
       <div className="surface-glass surface-card-shadow border-border rounded-xl border p-4.5 text-xs shadow-lg backdrop-blur-md">
         <div className="flex items-start justify-between gap-3">
           <div className="text-foreground flex items-center gap-2 font-semibold">
@@ -46,7 +60,7 @@ export function CookieConsent() {
             type="button"
             onClick={() => handleChoice("essential")}
             aria-label={t("cookieConsent.close")}
-            className="text-muted-foreground hover:text-foreground transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-[transform,color] duration-120 ease-out active:scale-95"
           >
             <X className="size-3.5" />
           </button>

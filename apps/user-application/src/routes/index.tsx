@@ -457,7 +457,7 @@ function LandingPage() {
             {steps.map((step, idx) => (
               <div
                 key={step}
-                className="border-border bg-card surface-card-shadow hover:bg-card flex items-start gap-3.5 rounded-lg border p-5 transition-all"
+                className="border-border bg-card surface-card-shadow hover:border-foreground/20 flex items-start gap-3.5 rounded-lg border p-5 transition-[border-color,box-shadow,transform] duration-150 ease-out"
               >
                 <div className="bg-secondary text-foreground flex size-6 shrink-0 items-center justify-center rounded-md font-mono text-xs font-semibold">
                   {idx + 1}
