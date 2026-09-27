@@ -48,3 +48,41 @@ export async function requireOrganizationContext(organizationSlug: string) {
     userId: session.user.id,
   };
 }
+
+/**
+ * Validates that a user is authenticated and returns the session & user details.
+ */
+export async function requireAuthContext() {
+  const auth = getAuth();
+  const request = getRequest();
+  const session = await auth.api.getSession({ headers: request.headers });
+
+  if (!session) {
+    throw appError("AUTH_REQUIRED", "Please sign in first.");
+  }
+
+  return {
+    auth,
+    session: session.session,
+    user: session.user,
+  };
+}
+
+/**
+ * Returns the current authenticated session & user details if present, or null.
+ */
+export async function getOptionalAuthContext() {
+  try {
+    const auth = getAuth();
+    const request = getRequest();
+    const session = await auth.api.getSession({ headers: request.headers });
+    if (!session) return null;
+    return {
+      auth,
+      session: session.session,
+      user: session.user,
+    };
+  } catch {
+    return null;
+  }
+}

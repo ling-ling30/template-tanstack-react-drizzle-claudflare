@@ -14,10 +14,13 @@ import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ReadyRouteImport } from './routes/ready'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ShowcaseRouteImport } from './routes/showcase'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TodosRouteImport } from './routes/todos'
 import { Route as OrganizationSlugAppRouteRouteImport } from './routes/$organizationSlug/app/route'
 import { Route as OrganizationSlugLoginRouteImport } from './routes/$organizationSlug/login'
@@ -25,8 +28,13 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
 import { Route as DashboardUsersRouteImport } from './routes/dashboard/users'
+import { Route as DevEmailsRouteImport } from './routes/dev.emails'
 import { Route as OrganizationSlugAppIndexRouteImport } from './routes/$organizationSlug/app/index'
+import { Route as OrganizationSlugAppSettingsRouteImport } from './routes/$organizationSlug/app/settings'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
+import { Route as ApiPaymentsDokuRouteImport } from './routes/api/payments/doku'
+import { Route as ApiPaymentsFakeRouteImport } from './routes/api/payments/fake'
+import { Route as ApiPaymentsMidtransRouteImport } from './routes/api/payments/midtrans'
 import { Route as DashboardOrganizationsIndexRouteImport } from './routes/dashboard/organizations.index'
 import { Route as DashboardOrganizationsOrganizationIdRouteImport } from './routes/dashboard/organizations.$organizationId'
 
@@ -55,9 +63,19 @@ const OnboardingRoute = OnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReadyRoute = ReadyRouteImport.update({
   id: '/ready',
   path: '/ready',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShowcaseRoute = ShowcaseRouteImport.update({
@@ -73,6 +91,11 @@ const SignupRoute = SignupRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TodosRoute = TodosRouteImport.update({
@@ -111,15 +134,41 @@ const DashboardUsersRoute = DashboardUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DevEmailsRoute = DevEmailsRouteImport.update({
+  id: '/dev/emails',
+  path: '/dev/emails',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrganizationSlugAppIndexRoute =
   OrganizationSlugAppIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => OrganizationSlugAppRouteRoute,
   } as any)
+const OrganizationSlugAppSettingsRoute =
+  OrganizationSlugAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => OrganizationSlugAppRouteRoute,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPaymentsDokuRoute = ApiPaymentsDokuRouteImport.update({
+  id: '/api/payments/doku',
+  path: '/api/payments/doku',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPaymentsFakeRoute = ApiPaymentsFakeRouteImport.update({
+  id: '/api/payments/fake',
+  path: '/api/payments/fake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPaymentsMidtransRoute = ApiPaymentsMidtransRouteImport.update({
+  id: '/api/payments/midtrans',
+  path: '/api/payments/midtrans',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardOrganizationsIndexRoute =
@@ -141,18 +190,26 @@ export interface FileRoutesByFullPath {
   '/health': typeof HealthRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
   '/ready': typeof ReadyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/showcase': typeof ShowcaseRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/todos': typeof TodosRoute
   '/$organizationSlug/app': typeof OrganizationSlugAppRouteRouteWithChildren
   '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
   '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
+  '/dev/emails': typeof DevEmailsRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/$organizationSlug/app/settings': typeof OrganizationSlugAppSettingsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/payments/doku': typeof ApiPaymentsDokuRoute
+  '/api/payments/fake': typeof ApiPaymentsFakeRoute
+  '/api/payments/midtrans': typeof ApiPaymentsMidtransRoute
   '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
   '/$organizationSlug/app/': typeof OrganizationSlugAppIndexRoute
   '/dashboard/organizations/': typeof DashboardOrganizationsIndexRoute
@@ -162,17 +219,25 @@ export interface FileRoutesByTo {
   '/health': typeof HealthRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
   '/ready': typeof ReadyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/showcase': typeof ShowcaseRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/todos': typeof TodosRoute
   '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
   '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
+  '/dev/emails': typeof DevEmailsRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/$organizationSlug/app/settings': typeof OrganizationSlugAppSettingsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/payments/doku': typeof ApiPaymentsDokuRoute
+  '/api/payments/fake': typeof ApiPaymentsFakeRoute
+  '/api/payments/midtrans': typeof ApiPaymentsMidtransRoute
   '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
   '/$organizationSlug/app': typeof OrganizationSlugAppIndexRoute
   '/dashboard/organizations': typeof DashboardOrganizationsIndexRoute
@@ -184,18 +249,26 @@ export interface FileRoutesById {
   '/health': typeof HealthRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/privacy': typeof PrivacyRoute
   '/ready': typeof ReadyRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/showcase': typeof ShowcaseRoute
   '/signup': typeof SignupRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms': typeof TermsRoute
   '/todos': typeof TodosRoute
   '/$organizationSlug/app': typeof OrganizationSlugAppRouteRouteWithChildren
   '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
   '/dashboard/account': typeof DashboardAccountRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/users': typeof DashboardUsersRoute
+  '/dev/emails': typeof DevEmailsRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/$organizationSlug/app/settings': typeof OrganizationSlugAppSettingsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/payments/doku': typeof ApiPaymentsDokuRoute
+  '/api/payments/fake': typeof ApiPaymentsFakeRoute
+  '/api/payments/midtrans': typeof ApiPaymentsMidtransRoute
   '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
   '/$organizationSlug/app/': typeof OrganizationSlugAppIndexRoute
   '/dashboard/organizations/': typeof DashboardOrganizationsIndexRoute
@@ -208,18 +281,26 @@ export interface FileRouteTypes {
     | '/health'
     | '/login'
     | '/onboarding'
+    | '/privacy'
     | '/ready'
+    | '/robots.txt'
     | '/showcase'
     | '/signup'
     | '/sitemap.xml'
+    | '/terms'
     | '/todos'
     | '/$organizationSlug/app'
     | '/$organizationSlug/login'
     | '/dashboard/account'
     | '/dashboard/settings'
     | '/dashboard/users'
+    | '/dev/emails'
     | '/dashboard/'
+    | '/$organizationSlug/app/settings'
     | '/api/auth/$'
+    | '/api/payments/doku'
+    | '/api/payments/fake'
+    | '/api/payments/midtrans'
     | '/dashboard/organizations/$organizationId'
     | '/$organizationSlug/app/'
     | '/dashboard/organizations/'
@@ -229,17 +310,25 @@ export interface FileRouteTypes {
     | '/health'
     | '/login'
     | '/onboarding'
+    | '/privacy'
     | '/ready'
+    | '/robots.txt'
     | '/showcase'
     | '/signup'
     | '/sitemap.xml'
+    | '/terms'
     | '/todos'
     | '/$organizationSlug/login'
     | '/dashboard/account'
     | '/dashboard/settings'
     | '/dashboard/users'
+    | '/dev/emails'
     | '/dashboard'
+    | '/$organizationSlug/app/settings'
     | '/api/auth/$'
+    | '/api/payments/doku'
+    | '/api/payments/fake'
+    | '/api/payments/midtrans'
     | '/dashboard/organizations/$organizationId'
     | '/$organizationSlug/app'
     | '/dashboard/organizations'
@@ -250,18 +339,26 @@ export interface FileRouteTypes {
     | '/health'
     | '/login'
     | '/onboarding'
+    | '/privacy'
     | '/ready'
+    | '/robots.txt'
     | '/showcase'
     | '/signup'
     | '/sitemap.xml'
+    | '/terms'
     | '/todos'
     | '/$organizationSlug/app'
     | '/$organizationSlug/login'
     | '/dashboard/account'
     | '/dashboard/settings'
     | '/dashboard/users'
+    | '/dev/emails'
     | '/dashboard/'
+    | '/$organizationSlug/app/settings'
     | '/api/auth/$'
+    | '/api/payments/doku'
+    | '/api/payments/fake'
+    | '/api/payments/midtrans'
     | '/dashboard/organizations/$organizationId'
     | '/$organizationSlug/app/'
     | '/dashboard/organizations/'
@@ -273,14 +370,21 @@ export interface RootRouteChildren {
   HealthRoute: typeof HealthRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ReadyRoute: typeof ReadyRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   ShowcaseRoute: typeof ShowcaseRoute
   SignupRoute: typeof SignupRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsRoute: typeof TermsRoute
   TodosRoute: typeof TodosRoute
   OrganizationSlugAppRouteRoute: typeof OrganizationSlugAppRouteRouteWithChildren
   OrganizationSlugLoginRoute: typeof OrganizationSlugLoginRoute
+  DevEmailsRoute: typeof DevEmailsRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiPaymentsDokuRoute: typeof ApiPaymentsDokuRoute
+  ApiPaymentsFakeRoute: typeof ApiPaymentsFakeRoute
+  ApiPaymentsMidtransRoute: typeof ApiPaymentsMidtransRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -320,11 +424,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ready': {
       id: '/ready'
       path: '/ready'
       fullPath: '/ready'
       preLoaderRoute: typeof ReadyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/showcase': {
@@ -346,6 +464,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/todos': {
@@ -397,6 +522,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardUsersRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dev/emails': {
+      id: '/dev/emails'
+      path: '/dev/emails'
+      fullPath: '/dev/emails'
+      preLoaderRoute: typeof DevEmailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$organizationSlug/app/': {
       id: '/$organizationSlug/app/'
       path: '/'
@@ -404,11 +536,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrganizationSlugAppIndexRouteImport
       parentRoute: typeof OrganizationSlugAppRouteRoute
     }
+    '/$organizationSlug/app/settings': {
+      id: '/$organizationSlug/app/settings'
+      path: '/settings'
+      fullPath: '/$organizationSlug/app/settings'
+      preLoaderRoute: typeof OrganizationSlugAppSettingsRouteImport
+      parentRoute: typeof OrganizationSlugAppRouteRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/payments/doku': {
+      id: '/api/payments/doku'
+      path: '/api/payments/doku'
+      fullPath: '/api/payments/doku'
+      preLoaderRoute: typeof ApiPaymentsDokuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/payments/fake': {
+      id: '/api/payments/fake'
+      path: '/api/payments/fake'
+      fullPath: '/api/payments/fake'
+      preLoaderRoute: typeof ApiPaymentsFakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/payments/midtrans': {
+      id: '/api/payments/midtrans'
+      path: '/api/payments/midtrans'
+      fullPath: '/api/payments/midtrans'
+      preLoaderRoute: typeof ApiPaymentsMidtransRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/organizations/': {
@@ -452,11 +612,13 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 )
 
 interface OrganizationSlugAppRouteRouteChildren {
+  OrganizationSlugAppSettingsRoute: typeof OrganizationSlugAppSettingsRoute
   OrganizationSlugAppIndexRoute: typeof OrganizationSlugAppIndexRoute
 }
 
 const OrganizationSlugAppRouteRouteChildren: OrganizationSlugAppRouteRouteChildren =
   {
+    OrganizationSlugAppSettingsRoute: OrganizationSlugAppSettingsRoute,
     OrganizationSlugAppIndexRoute: OrganizationSlugAppIndexRoute,
   }
 
@@ -471,14 +633,21 @@ const rootRouteChildren: RootRouteChildren = {
   HealthRoute: HealthRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
+  PrivacyRoute: PrivacyRoute,
   ReadyRoute: ReadyRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   ShowcaseRoute: ShowcaseRoute,
   SignupRoute: SignupRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsRoute: TermsRoute,
   TodosRoute: TodosRoute,
   OrganizationSlugAppRouteRoute: OrganizationSlugAppRouteRouteWithChildren,
   OrganizationSlugLoginRoute: OrganizationSlugLoginRoute,
+  DevEmailsRoute: DevEmailsRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiPaymentsDokuRoute: ApiPaymentsDokuRoute,
+  ApiPaymentsFakeRoute: ApiPaymentsFakeRoute,
+  ApiPaymentsMidtransRoute: ApiPaymentsMidtransRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

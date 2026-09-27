@@ -14,7 +14,11 @@ const BRAND = {
   bg: "#fafafa",
 };
 
-function layout(opts: { heading: string; body: string; cta?: { label: string; url: string } }): string {
+function layout(opts: {
+  heading: string;
+  body: string;
+  cta?: { label: string; url: string };
+}): string {
   const button = opts.cta
     ? `<a href="${opts.cta.url}" style="display:inline-block;background:${BRAND.color};color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;">${opts.cta.label}</a>`
     : "";
@@ -54,6 +58,34 @@ export function resetPasswordEmail(url: string) {
       heading: "Reset your password",
       body: "Click the button below to choose a new password. If you didn't request this, you can ignore this email.",
       cta: { label: "Reset password", url },
+    }),
+  };
+}
+
+export function invitationEmail(opts: {
+  organizationName: string;
+  inviteUrl: string;
+  role: string;
+}) {
+  return {
+    subject: `You've been invited to join ${opts.organizationName}`,
+    text: `You have been invited to join ${opts.organizationName} as a ${opts.role}. Join here: ${opts.inviteUrl}`,
+    html: layout({
+      heading: `Join ${opts.organizationName}`,
+      body: `You've been invited to collaborate with ${opts.organizationName} as a <strong>${opts.role}</strong>. Click below to accept your invitation.`,
+      cta: { label: "Accept invitation", url: opts.inviteUrl },
+    }),
+  };
+}
+
+export function welcomeEmail(opts: { name: string; appUrl: string }) {
+  return {
+    subject: `Welcome to ${BRAND.name}!`,
+    text: `Welcome, ${opts.name}! Get started with your new workspace: ${opts.appUrl}`,
+    html: layout({
+      heading: `Welcome, ${opts.name}!`,
+      body: `Your account is ready. Explore your new workspace and start collaborating today.`,
+      cta: { label: "Go to workspace", url: opts.appUrl },
     }),
   };
 }

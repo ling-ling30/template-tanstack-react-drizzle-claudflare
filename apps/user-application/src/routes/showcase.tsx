@@ -236,7 +236,8 @@ const COLOR_TOKENS: ColorToken[] = [
   {
     name: "Signature Coral",
     variable: "--coral",
-    description: "Iconic Asana brand accent for key actions and celebrations.",
+    description:
+      "Primary vivid accent for key callouts, actions, and interactive focus.",
     previewClass: "bg-coral",
     category: "brand",
   },
@@ -583,96 +584,101 @@ const RADIUS_TOKENS: RadiusToken[] = [
   },
 ];
 
-const SAMPLE_VENUES: ComboboxOption[] = [
+const SAMPLE_REGIONS: ComboboxOption[] = [
   {
-    value: "villa-sol",
-    label: "Villa Solstice Clifftop",
-    description: "Uluwatu, Bali · 300 Guests",
-    group: "Bali Venues",
+    value: "us-east-1",
+    label: "US East (N. Virginia)",
+    description: "aws / cf-colo-iad · Primary Hub",
+    group: "North America",
   },
   {
-    value: "ayana-estate",
-    label: "Ayana Ocean Glasshouse",
-    description: "Jimbaran · 450 Guests",
-    group: "Bali Venues",
+    value: "us-west-2",
+    label: "US West (Oregon)",
+    description: "aws / cf-colo-pdx · Low Latency",
+    group: "North America",
   },
   {
-    value: "como-shambhala",
-    label: "COMO Shambhala Rainforest",
-    description: "Ubud · 180 Guests",
-    group: "Bali Venues",
+    value: "eu-west-1",
+    label: "Europe West (Dublin)",
+    description: "aws / cf-colo-dub · GDPR Compliant",
+    group: "Europe",
   },
   {
-    value: "como-point-yamu",
-    label: "Point Yamu Overlook",
-    description: "Phuket, Thailand · 200 Guests",
-    group: "International",
+    value: "eu-central-1",
+    label: "Europe Central (Frankfurt)",
+    description: "aws / cf-colo-fra · Enterprise Tier",
+    group: "Europe",
   },
   {
-    value: "chateau-bouffemont",
-    label: "Château de Bouffémont",
-    description: "Paris, France · 150 Guests",
-    group: "International",
+    value: "ap-southeast-1",
+    label: "Asia Pacific (Singapore)",
+    description: "aws / cf-colo-sin · High Bandwidth",
+    group: "Asia Pacific",
   },
   {
-    value: "amalfi-belmond",
-    label: "Hotel Caruso Belvedere",
-    description: "Ravello, Italy · 120 Guests",
-    group: "International",
+    value: "ap-northeast-1",
+    label: "Asia Pacific (Tokyo)",
+    description: "aws / cf-colo-nrt · Low Jitter",
+    group: "Asia Pacific",
   },
 ];
 
 /* -------------------------------------------------------------------------
    Sample Table Data
    ------------------------------------------------------------------------- */
-interface EventRow {
+interface ProjectRow {
   id: string;
   name: string;
-  couple: string;
+  lead: string;
   date: string;
-  photos: number;
+  records: number;
   storage: string;
   status: "active" | "completed" | "processing" | "pending";
 }
 
-const SAMPLE_EVENTS: EventRow[] = [
+const SAMPLE_PROJECTS: ProjectRow[] = [
   {
-    id: "EVT-8921",
-    name: "Summer Botanical Wedding",
-    couple: "Clara & Liam",
+    id: "PRJ-8921",
+    name: "Global Realtime Telemetry",
+    lead: "Clara Vance",
     date: "2026-10-14",
-    photos: 1420,
+    records: 1420,
     storage: "18.4 GB",
     status: "active",
   },
   {
-    id: "EVT-8922",
-    name: "Bali Cliffside Vows",
-    couple: "Maya & Nathan",
+    id: "PRJ-8922",
+    name: "Production API Edge Gateway",
+    lead: "Maya Lin",
     date: "2026-10-22",
-    photos: 980,
+    records: 980,
     storage: "12.1 GB",
     status: "processing",
   },
   {
-    id: "EVT-8923",
-    name: "Historic Villa Reception",
-    couple: "Sophie & Julian",
+    id: "PRJ-8923",
+    name: "Multi-Region Storage Sync",
+    lead: "Julian Thorne",
     date: "2026-09-18",
-    photos: 2150,
+    records: 2150,
     storage: "29.7 GB",
     status: "completed",
   },
   {
-    id: "EVT-8924",
-    name: "Kyoto Autumn Nuptials",
-    couple: "Hana & Kenji",
+    id: "PRJ-8924",
+    name: "Developer Portal V2",
+    lead: "Kenji Sato",
     date: "2026-11-05",
-    photos: 0,
+    records: 0,
     storage: "0 GB",
     status: "pending",
   },
 ];
+const SAMPLE_EVENTS = SAMPLE_PROJECTS.map((p) => ({
+  ...p,
+  couple: p.lead,
+  photos: p.records,
+}));
 
 type SectionTab =
   | "tokens"
@@ -843,16 +849,17 @@ function ShowcasePage() {
   });
   const [checkboxValue, setCheckboxValue] = useState(true);
   const [selectValue, setSelectValue] = useState("pro");
-  const [comboboxValue, setComboboxValue] = useState("villa-sol");
-  const [selectedRows, setSelectedRows] = useState<string[]>(["EVT-8921"]);
+  const [comboboxValue, setComboboxValue] = useState("us-east-1");
+  const [selectedRows, setSelectedRows] = useState<string[]>(["PRJ-8921"]);
   const [tableSearch, setTableSearch] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Primitives showcase interactive states
   const [buttonLoading, setButtonLoading] = useState(false);
   const [lastClickedButton, setLastClickedButton] = useState<string>("None");
-  const [primitiveInputText, setPrimitiveInputText] =
-    useState("Asana Design Token");
+  const [primitiveInputText, setPrimitiveInputText] = useState(
+    "Precision Design Token"
+  );
   const [valueBoxTypeDemo, setValueBoxTypeDemo] =
     useState<ValueBoxType>("info");
 
@@ -869,7 +876,7 @@ function ShowcasePage() {
   const [typographyTabular, setTypographyTabular] = useState(false);
   const [typographyBalance, setTypographyBalance] = useState(true);
   const [typographySampleText, setTypographySampleText] = useState(
-    "Cinematic Wedding Photography & Client Gallery"
+    "Next-Gen Enterprise Edge Cloud Architecture"
   );
 
   // Form states
@@ -893,7 +900,7 @@ function ShowcasePage() {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Event settings saved successfully with live feedback.");
+      toast.success("Project settings saved successfully with live feedback.");
     }, 600);
   };
 
@@ -906,8 +913,8 @@ function ShowcasePage() {
 
   return (
     <div className="bg-background text-foreground selection:bg-primary/10 min-h-screen antialiased">
-      {/* Translucent Asana Glass Header */}
-      <header className="asana-glass border-border sticky top-0 z-50 w-full border-b transition-colors">
+      {/* Translucent Surface Glass Header */}
+      <header className="surface-glass border-border sticky top-0 z-50 w-full border-b transition-colors">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 sm:px-8">
           <div className="flex items-center gap-3">
             <Link
@@ -1370,7 +1377,7 @@ function ShowcasePage() {
                 </div>
                 <CardDescription>
                   Ergonomic convenience components built on top of Typography
-                  with automatic HTML tag assignment and Asana styling.
+                  with automatic HTML tag assignment and design token styling.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -2268,8 +2275,8 @@ function ShowcasePage() {
               <CardHeader>
                 <CardTitle>Date Input (Choose One Date)</CardTitle>
                 <CardDescription>
-                  Interactive Asana calendar popover with quick day presets and
-                  clear button.
+                  Interactive calendar popover with quick day presets and clear
+                  button.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -2362,8 +2369,8 @@ function ShowcasePage() {
               <CardHeader>
                 <CardTitle>Date & Time Input (Combined Date & Time)</CardTitle>
                 <CardDescription>
-                  Integrated Asana calendar with synchronized time picker panel
-                  and chip shortcuts.
+                  Integrated calendar with synchronized time picker panel and
+                  chip shortcuts.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -2573,11 +2580,11 @@ function ShowcasePage() {
                 <div>
                   <Combobox
                     id="combobox-demo"
-                    options={SAMPLE_VENUES}
+                    options={SAMPLE_REGIONS}
                     value={comboboxValue}
                     onChange={(val) => setComboboxValue(val)}
-                    placeholder="Select or search wedding venue..."
-                    searchPlaceholder="Filter venues or locations..."
+                    placeholder="Select or search edge region..."
+                    searchPlaceholder="Filter regions or locations..."
                   />
                 </div>
 
@@ -2592,10 +2599,10 @@ function ShowcasePage() {
                   </div>
                   <div className="flex min-w-0 items-center justify-between gap-2 text-xs">
                     <span className="text-muted-foreground shrink-0">
-                      Venue:
+                      Region:
                     </span>
                     <span className="text-foreground truncate">
-                      {SAMPLE_VENUES.find((v) => v.value === comboboxValue)
+                      {SAMPLE_REGIONS.find((v) => v.value === comboboxValue)
                         ?.label || "—"}
                     </span>
                   </div>
@@ -2937,7 +2944,7 @@ function ShowcasePage() {
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="font-mono text-xs">
-                {filteredEvents.length} Events Listed
+                {filteredEvents.length} Projects Listed
               </Badge>
             </div>
           </div>
@@ -2950,7 +2957,7 @@ function ShowcasePage() {
                 <Input
                   value={tableSearch}
                   onChange={(e) => setTableSearch(e.target.value)}
-                  placeholder="Search events, couples, IDs..."
+                  placeholder="Search projects, leads, IDs..."
                   className="h-9 pl-9"
                 />
               </div>
@@ -2967,10 +2974,10 @@ function ShowcasePage() {
                 <Button
                   size="sm"
                   className="h-9 gap-1.5 rounded-xl text-xs"
-                  onClick={() => toast.info("Create event dialog opened")}
+                  onClick={() => toast.info("Create project dialog opened")}
                 >
                   <Plus className="size-3.5" />
-                  <span>New Event</span>
+                  <span>New Project</span>
                 </Button>
               </div>
             </div>
@@ -2996,10 +3003,10 @@ function ShowcasePage() {
                         aria-label="Select all"
                       />
                     </TableHead>
-                    <TableHead>Event ID</TableHead>
-                    <TableHead>Event & Couple</TableHead>
-                    <TableHead>Event Date</TableHead>
-                    <TableHead>Photos</TableHead>
+                    <TableHead>Project ID</TableHead>
+                    <TableHead>Project &amp; Lead</TableHead>
+                    <TableHead>Target Date</TableHead>
+                    <TableHead>Records</TableHead>
                     <TableHead>Storage</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
@@ -3012,7 +3019,7 @@ function ShowcasePage() {
                         colSpan={8}
                         className="text-muted-foreground py-10 text-center"
                       >
-                        No events matching "{tableSearch}".
+                        No projects matching "{tableSearch}".
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -3147,12 +3154,12 @@ function ShowcasePage() {
                 7. Production Form Composition
               </h2>
               <p className="text-muted-foreground mt-0.5 text-sm">
-                Demonstrates how all inputs integrate into an Asana-grade,
+                Demonstrates how all inputs integrate into an enterprise-grade,
                 responsive data entry experience.
               </p>
             </div>
             <Badge variant="outline" className="w-fit font-mono text-xs">
-              Asana Precision
+              Precision Architecture
             </Badge>
           </div>
 
@@ -3160,13 +3167,13 @@ function ShowcasePage() {
             <CardHeader className="border-border/60 bg-muted/20 border-b p-6 sm:p-8">
               <div className="text-primary flex items-center gap-2 font-mono text-xs">
                 <Sparkles className="size-3.5" />
-                <span>Wedding Photo App Setup</span>
+                <span>Project Setup</span>
               </div>
               <CardTitle className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
-                Configure New Wedding Gallery
+                Configure Workspace Project
               </CardTitle>
               <CardDescription className="text-muted-foreground text-xs sm:text-sm">
-                Set guest permissions, storage quotas, and album access
+                Set project boundaries, compute quotas, and regional access
                 parameters.
               </CardDescription>
             </CardHeader>
@@ -3179,7 +3186,7 @@ function ShowcasePage() {
                     htmlFor="form-title"
                     className="flex items-center justify-between text-sm font-semibold"
                   >
-                    <span>Event Name / Couple Names</span>
+                    <span>Project Name / Organization Identifier</span>
                     <span className="text-muted-foreground text-xs font-normal">
                       Required
                     </span>
@@ -3189,30 +3196,31 @@ function ShowcasePage() {
                     required
                     value={formEventName}
                     onChange={(e) => setFormEventName(e.target.value)}
-                    placeholder="e.g. Maya & Nathan's Wedding"
+                    placeholder="e.g. Acme Global Analytics"
                   />
                   <p className="text-muted-foreground text-[11px]">
-                    This appears as the hero banner on the guest upload portal.
+                    This appears on team invitation links and top navigation
+                    headers.
                   </p>
                 </div>
 
-                {/* Two Column Row: Guest Limit & Event Date */}
+                {/* Two Column Row: Team Seats & Launch Date */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label
                       htmlFor="form-guests"
                       className="text-sm font-semibold"
                     >
-                      Estimated Guests
+                      Estimated Team Seats
                     </Label>
                     <NumberInput
                       id="form-guests"
                       value={formGuestLimit}
                       onChange={setFormGuestLimit}
-                      min={10}
+                      min={1}
                       max={5000}
-                      step={25}
-                      placeholder="e.g. 150"
+                      step={5}
+                      placeholder="e.g. 50"
                     />
                   </div>
 
@@ -3221,14 +3229,14 @@ function ShowcasePage() {
                       htmlFor="form-date"
                       className="text-sm font-semibold"
                     >
-                      Wedding Date
+                      Target Launch Date
                     </Label>
                     <DateInput
                       id="form-date"
                       mode="single"
                       value={formDate}
                       onChange={setFormDate}
-                      placeholder="Select wedding date..."
+                      placeholder="Select launch date..."
                     />
                   </div>
                 </div>
@@ -3244,18 +3252,18 @@ function ShowcasePage() {
                     value={formPhone}
                     onChange={(val) => setFormPhone(val)}
                     showValidationState
-                    placeholder="Organizer phone number..."
+                    placeholder="Lead engineer contact..."
                   />
                   <p className="text-muted-foreground text-[11px]">
-                    Receive real-time SMS status updates when guests upload new
-                    photo galleries.
+                    Receive operational alerts when anomalous load or quota
+                    thresholds are reached.
                   </p>
                 </div>
 
                 {/* Package Tier Select */}
                 <div className="space-y-2">
                   <Label className="text-sm font-semibold">
-                    Album Package Tier
+                    Architecture Tier
                   </Label>
                   <Select value={formPackage} onValueChange={setFormPackage}>
                     <SelectTrigger className="w-full">
@@ -3269,20 +3277,20 @@ function ShowcasePage() {
                         Professional Tier — 50 GB Storage · 1 Year Retention
                       </SelectItem>
                       <SelectItem value="archive">
-                        Forever Archive — 200 GB Storage · Permanent Cloudflare
-                        R2
+                        Enterprise Cloud — 200 GB Storage · Multi-Region R2
+                        Replicas
                       </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* Guest Description Notes */}
+                {/* Description Notes */}
                 <div className="space-y-2">
                   <Label
                     htmlFor="form-notes"
                     className="flex items-center justify-between text-sm font-semibold"
                   >
-                    <span>Welcome Note for Guests</span>
+                    <span>Project Mission &amp; Scope</span>
                     <span className="text-muted-foreground text-xs font-normal">
                       Optional
                     </span>
@@ -3291,7 +3299,7 @@ function ShowcasePage() {
                     id="form-notes"
                     value={formNotes}
                     onChange={(e) => setFormNotes(e.target.value)}
-                    placeholder="Welcome our friends and family! Please snap photos throughout the day and scan the table QR code to drop them directly here."
+                    placeholder="High-throughput distributed analytics pipeline hosted on Cloudflare Workers and D1 database."
                     rows={3}
                   />
                 </div>
@@ -3311,11 +3319,11 @@ function ShowcasePage() {
                       htmlFor="form-upload-perm"
                       className="cursor-pointer text-sm font-medium"
                     >
-                      Enable Direct QR Uploads (No App or Account Required)
+                      Enable Public API Ingestion (Rate-Limited Edge Endpoints)
                     </Label>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      Guests can scan table QR codes and upload directly from
-                      their mobile browser into Cloudflare R2.
+                      Allow anonymous event ingest through edge endpoints
+                      authenticated via signed temporary tokens.
                     </p>
                   </div>
                 </div>
@@ -3344,12 +3352,12 @@ function ShowcasePage() {
                     {isSubmitting ? (
                       <>
                         <Loader2 className="mr-2 size-4 animate-spin" />
-                        Saving Event...
+                        Saving Project...
                       </>
                     ) : (
                       <>
                         <Send className="mr-2 size-4" />
-                        Create Wedding Gallery
+                        Create Workspace Project
                       </>
                     )}
                   </Button>
@@ -3587,7 +3595,7 @@ function ShowcasePage() {
                   triggerImmediate
                   className="grid gap-4 sm:grid-cols-3"
                 >
-                  <div className="border-border/60 bg-card asana-card-shadow rounded-xl border p-5">
+                  <div className="border-border/60 bg-card surface-card-shadow rounded-xl border p-5">
                     <div className="bg-secondary text-primary flex size-8 items-center justify-center rounded-md font-mono text-xs font-semibold">
                       01
                     </div>
@@ -3601,7 +3609,7 @@ function ShowcasePage() {
                     </p>
                   </div>
 
-                  <div className="border-border/60 bg-card asana-card-shadow rounded-xl border p-5">
+                  <div className="border-border/60 bg-card surface-card-shadow rounded-xl border p-5">
                     <div className="bg-secondary text-primary flex size-8 items-center justify-center rounded-md font-mono text-xs font-semibold">
                       02
                     </div>
@@ -3614,7 +3622,7 @@ function ShowcasePage() {
                     </p>
                   </div>
 
-                  <div className="border-border/60 bg-card asana-card-shadow rounded-xl border p-5">
+                  <div className="border-border/60 bg-card surface-card-shadow rounded-xl border p-5">
                     <div className="bg-secondary text-primary flex size-8 items-center justify-center rounded-md font-mono text-xs font-semibold">
                       03
                     </div>
@@ -3736,8 +3744,8 @@ function ShowcasePage() {
                             },
                             {
                               time: "10:25:10",
-                              title: "Wedding event session initialized",
-                              meta: "Session ID #wed-2026-09",
+                              title: "Workspace project session initialized",
+                              meta: "Session ID #prj-2026-09",
                               badge: "Session",
                             },
                           ].map((item, idx) => (

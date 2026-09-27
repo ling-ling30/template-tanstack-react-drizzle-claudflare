@@ -14,6 +14,9 @@ export const permissionStatement = {
   settings: ["view", "edit"],
   users: ["manage"],
   roles: ["manage"],
+  billing: ["view", "manage"],
+  api_keys: ["read", "create", "revoke"],
+  danger_zone: ["delete"],
 } as const;
 
 export type PermissionResource = keyof typeof permissionStatement;
@@ -33,9 +36,12 @@ export const ownerRole = accessControl.newRole({
   settings: ["view", "edit"],
   users: ["manage"],
   roles: ["manage"],
+  billing: ["view", "manage"],
+  api_keys: ["read", "create", "revoke"],
+  danger_zone: ["delete"],
 });
 
-/** Runs the org day-to-day; cannot delete the org or manage roles. */
+/** Runs the org day-to-day; cannot delete the org, manage roles, or trigger danger zone deletion. */
 export const adminRole = accessControl.newRole({
   organization: ["update"],
   member: ["create", "update", "delete"],
@@ -46,28 +52,49 @@ export const adminRole = accessControl.newRole({
   items: ["view", "create", "edit", "delete"],
   settings: ["view", "edit"],
   users: ["manage"],
+  billing: ["view", "manage"],
+  api_keys: ["read", "create", "revoke"],
 });
 
-/** Regular member: uses the workspace, manages nothing. */
+/** Regular member: uses the workspace, creates/edits items, cannot manage settings/billing. */
 export const memberRole = accessControl.newRole({
   ac: ["read"],
   dashboard: ["view"],
   items: ["view", "create", "edit"],
   settings: ["view"],
+  billing: ["view"],
+  api_keys: ["read"],
+});
+
+/** Viewer: strictly read-only access across the workspace. */
+export const viewerRole = accessControl.newRole({
+  ac: ["read"],
+  dashboard: ["view"],
+  items: ["view"],
+  settings: ["view"],
+  billing: ["view"],
+  api_keys: ["read"],
 });
 
 /**
  * Every org role, passed to Better Auth's organization plugin. Passing custom
- * roles REPLACES Better Auth's defaults, so all three must be defined here —
+ * roles REPLACES Better Auth's defaults, so all must be defined here —
  * a role missing from this map has no permissions at all.
  */
 export const organizationRoles = {
   owner: ownerRole,
   admin: adminRole,
   member: memberRole,
+  viewer: viewerRole,
 };
 
 export type OrganizationRole = keyof typeof organizationRoles;
+export const ALL_ORGANIZATION_ROLES: OrganizationRole[] = [
+  "owner",
+  "admin",
+  "member",
+  "viewer",
+];
 
 /**
  * Pure RBAC check. `role` is the member's stored role string, which Better Auth

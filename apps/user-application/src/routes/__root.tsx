@@ -12,11 +12,13 @@ import type { QueryClient } from "@tanstack/react-query";
 import { DefaultCatchBoundary } from "@/components/default-catch-boundary";
 import { NotFound } from "@/components/not-found";
 import { OfflineBanner } from "@/components/pwa/offline-banner";
+import { AnnouncementBanner } from "@/components/layout/announcement-banner";
 import { ServiceWorkerRegistration } from "@/components/pwa/service-worker-registration";
 import { ThemeProvider } from "@/components/theme";
 import { I18nProvider } from "@/i18n/provider";
 import { GlobalProgressBar } from "@/components/ui/progress-bar";
 import { Toaster } from "@/components/ui/sonner";
+import { CookieConsent } from "@/components/legal/cookie-consent";
 import appCss from "@/styles.css?url";
 import { seo } from "@/utils/seo";
 import { getSiteSettingsFn } from "@/core/functions/site-settings";
@@ -96,6 +98,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <GlobalProgressBar />
         <OfflineBanner />
+        <AnnouncementBanner />
+        <CookieConsent />
         <ServiceWorkerRegistration />
         {children}
         <TanStackRouterDevtools position="bottom-right" />

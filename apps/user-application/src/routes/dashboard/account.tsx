@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { SubmitButton } from "@/components/forms/submit-button";
+import { ActiveSessionsCard } from "@/components/account/active-sessions-card";
 
 export const Route = createFileRoute("/dashboard/account")({
   component: AccountPage,
@@ -158,6 +159,9 @@ function AccountPage() {
           </form>
         </CardContent>
       </Card>
+
+      {/* Active Sessions */}
+      <ActiveSessionsCard />
     </section>
   );
 }

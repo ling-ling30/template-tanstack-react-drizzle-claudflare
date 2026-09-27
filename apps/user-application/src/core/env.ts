@@ -15,8 +15,17 @@ export const envSchema = z.object({
   DB: z.custom<D1Database>((db) => db !== undefined, "DB binding is required"),
   PROOF_BUCKET: z.custom<R2Bucket>(
     (bucket) => bucket !== undefined,
-    "PROOF_BUCKET binding is required",
+    "PROOF_BUCKET binding is required"
   ),
+  // Payment gateway configuration (defaults to offline fake provider in local dev)
+  PAYMENT_MODE: z.enum(["fake", "doku", "midtrans"]).optional().default("fake"),
+  PAYMENT_CONFIG_KEY: z.string().optional(),
+  DOKU_CLIENT_ID: z.string().optional(),
+  DOKU_SECRET_KEY: z.string().optional(),
+  DOKU_PRODUCTION: z.enum(["true", "false"]).optional().default("false"),
+  MIDTRANS_SERVER_KEY: z.string().optional(),
+  MIDTRANS_PRODUCTION: z.enum(["true", "false"]).optional().default("false"),
+  OPERATOR_EMAIL: z.string().email().optional(),
 });
 
 export type ValidatedEnv = z.infer<typeof envSchema>;
@@ -28,7 +37,10 @@ export type ValidatedEnv = z.infer<typeof envSchema>;
 export function validateEnv(env: unknown): ValidatedEnv {
   const result = envSchema.safeParse(env);
   if (!result.success) {
-    logger.fatal("Environment validation failed", result.error.flatten().fieldErrors);
+    logger.fatal(
+      "Environment validation failed",
+      result.error.flatten().fieldErrors
+    );
     throw new Error("Invalid environment configuration. Check server logs.", {
       cause: result.error,
     });

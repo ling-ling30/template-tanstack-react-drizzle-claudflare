@@ -114,7 +114,7 @@ export default tseslint.config(
   // ---------------------------------------------------------------------------
   // @shadcn/lint: Agent-first design system enforcement.
   // Enforces theme tokens, prevents arbitrary raw colors & arbitrary values,
-  // and maintains component contracts according to Asana DESIGN.md.
+  // and maintains component contracts according to DESIGN.md.
   // ---------------------------------------------------------------------------
   {
     files: [
@@ -133,7 +133,7 @@ export default tseslint.config(
     settings: {
       shadcn: {
         ui: "@/components/ui",
-        note: "Follow the Asana design system rules in DESIGN.md. Use theme tokens and component variants.",
+        note: "Follow the design system rules in DESIGN.md. Use theme tokens and component variants.",
       },
     },
     rules: {

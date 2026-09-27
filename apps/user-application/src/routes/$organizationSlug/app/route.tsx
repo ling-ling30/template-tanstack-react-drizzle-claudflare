@@ -7,6 +7,17 @@ import {
 } from "@tanstack/react-router";
 import { OrganizationSidebar } from "@/components/layout/organization-sidebar";
 import { getOrganizationWorkspaceFn } from "@/core/functions/organizations";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/components/theme";
+import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { NotificationBell } from "@/components/notifications/notification-bell";
+import { FeedbackDialog } from "@/components/feedback/feedback-dialog";
+import { RbacProvider } from "@/components/auth/rbac";
 
 export const Route = createFileRoute("/$organizationSlug/app")({
   // Server-verified membership gate. Child routes read `organization` / `role`
@@ -26,20 +37,49 @@ export const Route = createFileRoute("/$organizationSlug/app")({
       throw error;
     }
   },
+  loader: async ({ params }) => {
+    return getOrganizationWorkspaceFn({
+      data: params.organizationSlug,
+    });
+  },
   component: OrganizationAppLayout,
 });
 
 function OrganizationAppLayout() {
   const { organizationSlug } = Route.useParams();
+  const { organization, role } = Route.useLoaderData();
 
   return (
-    <div className="bg-background flex min-h-screen">
-      <OrganizationSidebar organizationSlug={organizationSlug} />
-      <main className="flex-1 p-6">
-        <div className="mx-auto max-w-7xl">
-          <Outlet />
-        </div>
-      </main>
-    </div>
+    <RbacProvider role={role}>
+      <SidebarProvider>
+        <OrganizationSidebar
+          organizationSlug={organizationSlug}
+          organizationName={organization.name}
+          role={role}
+        />
+        <SidebarInset>
+          <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <div className="flex items-center gap-2">
+              <span className="text-foreground text-sm font-semibold">
+                {organization.name}
+              </span>
+            </div>
+            <div className="ml-auto flex items-center gap-2">
+              <FeedbackDialog />
+              <NotificationBell />
+              <LanguageSwitcher />
+              <ThemeToggle />
+            </div>
+          </header>
+          <main className="flex-1 p-6">
+            <div className="mx-auto max-w-7xl">
+              <Outlet />
+            </div>
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
+    </RbacProvider>
   );
 }

@@ -320,7 +320,7 @@ export function PhoneInput({
           sideOffset={4}
           className="border-border bg-popover w-80 rounded-lg border p-0 shadow-md outline-none"
         >
-          {/* Header Search Box with Asana 4px Grid Spacing */}
+          {/* Header Search Box with 4px Grid Spacing */}
           <div className="border-border/60 bg-muted/20 border-b p-2">
             <div className="relative flex items-center">
               <Search className="text-muted-foreground pointer-events-none absolute left-2.5 size-3.5" />

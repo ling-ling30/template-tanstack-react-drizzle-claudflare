@@ -9,6 +9,9 @@ export type AppErrorCode =
   | "UNSUPPORTED_FILE_TYPE"
   | "STORAGE_WRITE_FAILED"
   | "DATABASE_WRITE_FAILED"
+  | "PAYMENT_NOT_CONFIGURED"
+  | "PAYMENT_CONFIG_KEY_MISSING"
+  | "FEEDBACK_FAILED"
   | "INTERNAL";
 
 export type AppError = {
@@ -20,7 +23,7 @@ export type AppError = {
 export function appError(
   code: AppErrorCode,
   message: string,
-  fieldErrors?: Record<string, string>,
+  fieldErrors?: Record<string, string>
 ): AppError {
   return fieldErrors ? { code, message, fieldErrors } : { code, message };
 }

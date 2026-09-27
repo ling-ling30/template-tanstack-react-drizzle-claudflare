@@ -70,3 +70,34 @@ TanStack Start serializes whatever a server function throws, including an Error'
 global middleware now passes `AppError`s and router control flow (redirect/notFound) through,
 maps `ZodError` to `VALIDATION_FAILED` with field errors, and replaces anything else with a bare
 `INTERNAL` error. The original error is logged on the server only.
+
+## Granular RBAC & declarative UI gates
+
+Better-Auth stores organization member roles as strings (`owner`, `admin`, `member`, `viewer`).
+The server boundary remains authoritative via `requirePermission({ role, resource, action })` and
+`roleCan()`. For the UI layer, `RbacProvider` exposes `useCan()` and declarative `<Can>` / `<RoleGate>`
+components. Client authorization is treated as UX-only gating per Rulebook §5, ensuring all
+state-changing operations are still guarded on the server.
+
+## In-app bug and feedback reporter
+
+User bug reports and feedback use a dedicated `feedback` table in D1 with telemetry (browser,
+viewport, screen resolution, and current route URL) automatically attached. The submission seam
+follows the exact TanStack Form + shared Zod schema + React Query `useSubmitFeedback` standard.
+The endpoint is intentionally public so visitors can report landing or authentication issues,
+while authenticated sessions automatically attach actor details.
+
+## Encrypted payment credential vault
+
+Payment gateway secret keys (Midtrans & DOKU) are stored encrypted at rest in D1 using AES-256-GCM
+(`secret-box.ts`) keyed by the Worker secret `PAYMENT_CONFIG_KEY`. Secrets are never sent back to the
+browser (write-only / unreadable states) and webhook payloads verify cryptographic signatures before
+updating payment statuses.
+
+## Static legal compliance & edge crawler controls
+
+Terms of Service and Privacy Policy pages are maintained as standard zero-dependency legal routes
+(`/terms`, `/privacy`) styled with theme tokens. A non-intrusive `<CookieConsent />` banner persists
+local user choice. An edge-rendered `robots.txt` explicitly disallows crawling of authenticated and
+sensitive paths (`/api/`, `/dashboard/`, `/*/app/`) while pointing search bots directly to the
+dynamic `sitemap.xml`.

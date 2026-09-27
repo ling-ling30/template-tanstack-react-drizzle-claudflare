@@ -31,8 +31,30 @@ import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "@/components/theme";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 import { ScrollReveal, ScrollRevealGroup } from "@/components/ui/scroll-reveal";
+import { FeedbackDialog } from "@/components/feedback/feedback-dialog";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Production-Grade SaaS Starter | TanStack Start & Cloudflare" },
+      {
+        name: "description",
+        content:
+          "Enterprise multi-tenant SaaS starter with TanStack Start, React 19, Drizzle ORM, Better-Auth, Cloudflare D1/R2, and automated payment gateways.",
+      },
+      {
+        property: "og:title",
+        content: "Production-Grade SaaS Starter | TanStack Start & Cloudflare",
+      },
+      {
+        property: "og:description",
+        content:
+          "Enterprise multi-tenant SaaS starter with TanStack Start, React 19, Drizzle ORM, Better-Auth, Cloudflare D1/R2, and automated payment gateways.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: LandingPage,
 });
 
@@ -79,8 +101,8 @@ function LandingPage() {
     },
     {
       id: "task-4",
-      title: "Configure Asana design tokens & @shadcn/lint rules",
-      assignee: "Design",
+      title: "Integrate Midtrans / DOKU payment gateways & API keys",
+      assignee: "Billing",
       dueDate: "Done",
       priority: "Normal",
       status: "Completed",
@@ -152,14 +174,14 @@ function LandingPage() {
 
   return (
     <div className="bg-background text-foreground selection:bg-destructive/15 min-h-screen antialiased">
-      {/* Asana Translucent Frosted Glass Navbar */}
-      <header className="asana-glass border-border sticky top-0 z-50 w-full border-b transition-colors">
+      {/* Translucent Frosted Glass Navbar */}
+      <header className="surface-glass border-border sticky top-0 z-50 w-full border-b transition-colors">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 sm:px-8">
           <Link
             to="/"
-            className="text-foreground asana-press flex items-center gap-2.5 font-medium tracking-tight transition-opacity hover:opacity-85"
+            className="text-foreground surface-press flex items-center gap-2.5 font-medium tracking-tight transition-opacity hover:opacity-85"
           >
-            {/* Asana Iconic 3-Dot / Coral Energy Mark */}
+            {/* Brand Logo Mark */}
             <div className="bg-foreground text-background flex size-7 items-center justify-center rounded-md shadow-xs">
               <span className="bg-destructive inline-block size-2 rounded-full" />
             </div>
@@ -189,15 +211,15 @@ function LandingPage() {
       </header>
 
       <main className="relative mx-auto max-w-6xl px-6 pt-12 pb-24 sm:px-8 sm:pt-20 sm:pb-32">
-        {/* Subtle Ambient Asana Coral Glow */}
-        <div className="asana-glow pointer-events-none absolute inset-x-0 top-0 -z-10 h-96" />
+        {/* Subtle Ambient Glow */}
+        <div className="surface-glow pointer-events-none absolute inset-x-0 top-0 -z-10 h-96" />
 
         {/* Hero Section */}
         <section className="mx-auto max-w-4xl text-center">
           <div className="mb-6 flex justify-center">
             <Badge variant="outline">
-              <span className="bg-destructive inline-block size-2 animate-pulse rounded-full" />
-              <span>Asana Productivity Design System</span>
+              <span className="bg-primary inline-block size-2 animate-pulse rounded-full" />
+              <span>Production-Grade Edge SaaS Architecture</span>
               <ChevronRight className="text-muted-foreground size-3" />
             </Badge>
           </div>
@@ -228,10 +250,10 @@ function LandingPage() {
           </div>
         </section>
 
-        {/* Asana Work Management Stage Preview */}
+        {/* Workspace Management Stage Preview */}
         <ScrollReveal as="section" variant="fade-up" className="mt-16 sm:mt-24">
-          <div className="border-border bg-card asana-card-shadow overflow-hidden rounded-lg border">
-            {/* Asana Workspace Header */}
+          <div className="border-border bg-card surface-card-shadow overflow-hidden rounded-lg border">
+            {/* Workspace Header */}
             <div className="border-border bg-secondary/50 flex flex-col justify-between gap-3 border-b px-5 py-3.5 sm:flex-row sm:items-center">
               <div className="flex items-center gap-3">
                 <div className="bg-primary text-primary-foreground flex size-7 items-center justify-center rounded-md">
@@ -270,7 +292,7 @@ function LandingPage() {
               </div>
             </div>
 
-            {/* Asana Interactive Task Rows */}
+            {/* Interactive Task Rows */}
             <div className="divide-border bg-card divide-y">
               {tasks.map((task) => (
                 <div
@@ -282,7 +304,7 @@ function LandingPage() {
                     <button
                       type="button"
                       aria-label="Toggle task completion"
-                      className="border-border asana-check hover:border-destructive flex size-4.5 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,transform] duration-150 ease-out"
+                      className="border-border surface-check hover:border-destructive flex size-4.5 shrink-0 items-center justify-center rounded-full border transition-[background-color,border-color,transform] duration-150 ease-out"
                       style={{
                         backgroundColor: task.completed
                           ? "var(--destructive)"
@@ -333,7 +355,7 @@ function LandingPage() {
               ))}
             </div>
 
-            {/* Asana Bottom Telemetry Bar */}
+            {/* Telemetry Bar */}
             <div className="divide-border border-border bg-secondary/30 grid grid-cols-1 divide-y border-t sm:grid-cols-3 sm:divide-x sm:divide-y-0">
               <div className="flex items-center gap-3 p-4">
                 <div className="bg-chart-2/10 text-chart-2 flex size-8 items-center justify-center rounded-md">
@@ -435,7 +457,7 @@ function LandingPage() {
             {steps.map((step, idx) => (
               <div
                 key={step}
-                className="border-border bg-card asana-card-shadow hover:bg-card flex items-start gap-3.5 rounded-lg border p-5 transition-all"
+                className="border-border bg-card surface-card-shadow hover:bg-card flex items-start gap-3.5 rounded-lg border p-5 transition-all"
               >
                 <div className="bg-secondary text-foreground flex size-6 shrink-0 items-center justify-center rounded-md font-mono text-xs font-semibold">
                   {idx + 1}
@@ -455,7 +477,7 @@ function LandingPage() {
         </section>
       </main>
 
-      {/* Asana Minimalist Footer */}
+      {/* Minimalist Footer */}
       <footer className="border-border bg-card border-t">
         <div className="text-muted-foreground mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-xs sm:flex-row sm:px-8">
           <div className="flex items-center gap-2">
@@ -466,7 +488,7 @@ function LandingPage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <Link
               to="/showcase"
               className="hover:text-foreground transition-colors"
@@ -480,6 +502,18 @@ function LandingPage() {
               {t("todos.title")}
             </Link>
             <Link
+              to="/terms"
+              className="hover:text-foreground transition-colors"
+            >
+              Terms
+            </Link>
+            <Link
+              to="/privacy"
+              className="hover:text-foreground transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link
               to="/login"
               className="hover:text-foreground transition-colors"
             >
@@ -491,6 +525,7 @@ function LandingPage() {
             >
               {t("nav.dashboard")}
             </Link>
+            <FeedbackDialog />
           </div>
         </div>
       </footer>

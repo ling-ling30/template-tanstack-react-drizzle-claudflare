@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { SubmitButton } from "@/components/forms/submit-button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PaymentGatewayCard } from "@/components/platform/payment-gateway-card";
 
 export const Route = createFileRoute("/dashboard/settings")({
   // Prefetch settings so the pending skeleton shows during navigation.
@@ -211,6 +212,9 @@ function SettingsPage() {
           </form.Subscribe>
         </CardContent>
       </Card>
+
+      {/* Payment Gateway Configuration */}
+      <PaymentGatewayCard />
     </section>
   );
 }

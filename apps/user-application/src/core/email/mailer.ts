@@ -1,44 +1,105 @@
 /**
- * Transactional Email Shell
+ * Transactional Email Shell & Provider Abstraction
  *
  * Inversion-of-control layer for sending transactional email (verification,
- * password reset, org invites). By default it logs the message to the console
- * in development. For production, drop your provider SDK (Resend, SES, Postmark,
- * SendGrid) into `sendEmail` — the rest of the app and Better Auth call this one
- * function, so there is exactly one place to swap.
+ * password reset, org invites).
  *
- * This runs on the server (inside the Cloudflare Worker), not in the browser.
+ * Runs on the server (inside the Cloudflare Worker), not in the browser.
  */
+
 export type EmailMessage = {
   to: string;
   subject: string;
-  /** Plain-text body. Providers can derive HTML or you can add an `html` field. */
+  /** Plain-text body. */
   text: string;
+  /** HTML body. */
   html?: string;
+  /** Custom sender address, if overriding default. */
+  from?: string;
 };
 
-export async function sendEmail(message: EmailMessage): Promise<void> {
-  // --- Development: log instead of sending ---------------------------------
-  if (import.meta.env?.DEV) {
+export type EmailSendResult = {
+  id?: string;
+  success: boolean;
+};
+
+export interface EmailProvider {
+  send(message: EmailMessage): Promise<EmailSendResult>;
+}
+
+/**
+ * Development & test email provider that logs to console.
+ */
+export class ConsoleEmailProvider implements EmailProvider {
+  async send(message: EmailMessage): Promise<EmailSendResult> {
     console.info(
-      `[email] (dev, not sent) to=${message.to} subject="${message.subject}"\n${message.text}`,
+      `[email] (dev, not sent) to=${message.to} subject="${message.subject}"\n${message.text}`
     );
-    return;
+    return { id: `mock_email_${Date.now()}`, success: true };
+  }
+}
+
+/**
+ * Native fetch-based Resend provider (Worker-compatible, zero npm dependencies).
+ */
+export class ResendEmailProvider implements EmailProvider {
+  constructor(
+    private apiKey: string,
+    private defaultFrom = "no-reply@example.com"
+  ) {}
+
+  async send(message: EmailMessage): Promise<EmailSendResult> {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: message.from ?? this.defaultFrom,
+        to: [message.to],
+        subject: message.subject,
+        text: message.text,
+        html: message.html,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      console.error(`[email:resend] Failed to send email: ${err}`);
+      return { success: false };
+    }
+
+    const data = (await res.json()) as { id: string };
+    return { id: data.id, success: true };
+  }
+}
+
+let activeProvider: EmailProvider | null = null;
+
+export function getEmailProvider(env?: Record<string, unknown>): EmailProvider {
+  if (activeProvider) return activeProvider;
+
+  const resendApiKey = env?.RESEND_API_KEY as string | undefined;
+  if (resendApiKey) {
+    const from = (env?.EMAIL_FROM as string) ?? "no-reply@example.com";
+    activeProvider = new ResendEmailProvider(resendApiKey, from);
+    return activeProvider;
   }
 
-  // --- Production: wire your provider here ---------------------------------
-  // Example (Resend):
-  //   const resend = new Resend(env.RESEND_API_KEY);
-  //   await resend.emails.send({
-  //     from: "no-reply@yourdomain.com",
-  //     to: message.to,
-  //     subject: message.subject,
-  //     text: message.text,
-  //     html: message.html,
-  //   });
-  //
-  // Until a provider is wired, fail loudly so missing email isn't silent.
-  console.error(
-    `[email] No provider configured. Drop your SDK into core/email/mailer.ts. Dropped message to ${message.to}: "${message.subject}"`,
-  );
+  // Default to console logger in development/test
+  activeProvider = new ConsoleEmailProvider();
+  return activeProvider;
+}
+
+export function setEmailProvider(provider: EmailProvider | null): void {
+  activeProvider = provider;
+}
+
+export async function sendEmail(
+  message: EmailMessage,
+  env?: Record<string, unknown>
+): Promise<void> {
+  const provider = getEmailProvider(env);
+  await provider.send(message);
 }

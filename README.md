@@ -23,21 +23,16 @@ multi-language ready, and batteries-included. Built to be cloned and shipped, no
 
 **Pages** — marketing landing, `/showcase` (live component + capability gallery), org login,
 an **admin dashboard** (shadcn sidebar + header, responsive via Sheet) with organization
-management, an account page (name + password + sign-out), and site settings with a working
-**Open Graph editor** that injects `og:*` tags into `<head>`.
+management, account page, site settings with **Open Graph editor**, a **tenant workspace shell** (`/$organizationSlug/app`) with team invitation dialog and **workspace settings & danger zone** (`/$organizationSlug/app/settings`), **legal compliance pages** (`/terms`, `/privacy`), a dev-only **email template previewer** (`/dev/emails`), and a global **cookie consent notice** (`<CookieConsent />`).
 
 **Backend** — a memoized server runtime (env-validated DB + auth, built once per isolate),
-typed server functions (RPC) with **global CSRF + error middleware**, org-scoped auth + RBAC,
+typed server functions (RPC) with **global CSRF + error middleware**, org-scoped auth with **granular RBAC** (`owner`, `admin`, `member`, `viewer`),
 rate-limited auth routes, and a separate `data-service` worker with **background jobs**
 (Cloudflare Workflows) and a typed **REST + OpenAPI** surface.
 
-**Platform** — Drizzle + D1 with migrations, R2 storage, security headers + **CSP**,
-health/ready probes, a transactional **email** shell with HTML templates, `/sitemap.xml`,
-and `robots.txt`.
+**Platform** — Drizzle + D1 with safe parameter batching (`chunkedInArray`), **in-app bug & feedback reporter** (`FeedbackDialog` with automated client telemetry capture and D1 persistence), **production payment gateways** (Midtrans Snap & DOKU Checkout with AES-GCM encrypted credential vault), **audit logging system** (`audit_logs`), **Cloudflare Turnstile bot defense**, **agnostic Blob Storage** (R2 + in-memory fallback), **agnostic Billing & Entitlements** (features/quotas/checkout), security headers + **CSP**, health/ready probes, a transactional **email** shell (Console + Resend), dynamic `/sitemap.xml`, and dynamic edge `robots.txt`.
 
-**DX** — react-i18next with a **no-hardcoded-strings** lint rule, shadcn/ui + dark mode,
-Storybook, Vitest with example test patterns, husky + lint-staged, `pnpm check:env` and
-`pnpm seed`, CI/CD workflows, in-repo `.claude/skills`, and full docs.
+**DX** — react-i18next with a **no-hardcoded-strings** lint rule, **server-to-form field error bridge** (`fieldErrorsOf`), **full-stack CRUD resource generator** (`pnpm gen:resource <name>`), declarative UI auth gates (`<Can>`, `<RoleGate>`), shadcn/ui + dark mode, Storybook, Vitest with 215+ unit & integration tests, `pnpm clean:starter` (one-command demo purge), husky + lint-staged, `pnpm check:env` and `pnpm seed`, CI/CD workflows, in-repo `.claude/skills`, and full docs.
 
 ## 🏁 Quickstart
 
@@ -76,10 +71,13 @@ See **[docs/quickstart.md](docs/quickstart.md)** for the full command table.
 | `/`                        | Marketing landing + feature guide             | public         |
 | `/showcase`                | Live component + capability gallery           | public         |
 | `/todos`                   | Mock form example (TanStack Form + server fn) | public         |
-| `/sitemap.xml`             | Dynamic sitemap                               | public         |
+| `/terms`                   | Terms of Service & acceptable use agreement   | public         |
+| `/privacy`                 | Privacy policy (GDPR & CCPA edge disclosures) | public         |
+| `/robots.txt`              | Crawler rules (protects internal routes)      | public         |
+| `/sitemap.xml`             | Dynamic search-engine sitemap with priorities | public         |
 | `/login`                   | Sign in (platform admin)                      | public         |
 | `/$organizationSlug/login` | Org login                                     | public         |
-| `/$organizationSlug/app`   | Organization workspace shell                  | org member     |
+| `/$organizationSlug/app`   | Organization workspace shell (RBAC-aware)     | org member     |
 | `/dashboard`               | Admin dashboard shell                         | platform admin |
 | `/dashboard/account`       | Profile, change password, sign out            | platform admin |
 | `/dashboard/settings`      | Site settings + Open Graph editor             | platform admin |

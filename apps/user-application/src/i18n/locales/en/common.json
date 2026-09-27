@@ -14,7 +14,8 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "create": "Create"
+    "create": "Create",
+    "submitting": "Submitting…"
   },
   "common": {
     "loading": "Loading…",
@@ -46,9 +47,13 @@
     "UNSUPPORTED_FILE_TYPE": "File type is not supported.",
     "STORAGE_WRITE_FAILED": "Failed to save the file.",
     "DATABASE_WRITE_FAILED": "Failed to save data.",
+    "PAYMENT_NOT_CONFIGURED": "Payments are not configured yet.",
+    "PAYMENT_CONFIG_KEY_MISSING": "Payment configuration encryption key is missing.",
+    "FEEDBACK_FAILED": "Unable to record feedback at this time. Please try again later.",
     "INTERNAL": "A system error occurred.",
     "loadFailed": "Failed to load data."
   },
+
   "nav": {
     "dashboard": "Dashboard",
     "settings": "Settings",
@@ -284,5 +289,164 @@
     "previousPage": "Previous page",
     "nextPage": "Next page",
     "lastPage": "Last page"
+  },
+  "fieldErrors": {
+    "tooShort": "At least {{count}} characters.",
+    "tooLong": "At most {{count}} characters.",
+    "format": "This format is invalid.",
+    "required": "Required.",
+    "invalid": "Please check this field.",
+    "date": "Invalid date.",
+    "time": "Invalid time."
+  },
+  "fieldNames": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "title": "Title",
+    "slug": "Slug",
+    "description": "Description",
+    "url": "URL"
+  },
+  "team": {
+    "title": "Team Members",
+    "desc": "Collaborate with colleagues inside this workspace.",
+    "emptyHint": "Manage roles, permissions, and pending invitations.",
+    "inviteMember": "Invite member",
+    "inviteDesc": "Send an invitation email to collaborate in this workspace.",
+    "roleLabel": "Role",
+    "sendInvite": "Send invitation",
+    "inviteSent": "Invitation sent to {{email}}."
+  },
+  "workspaceSettings": {
+    "title": "Workspace Settings",
+    "subtitle": "Manage workspace details, team preferences, and access.",
+    "general": "General Information",
+    "generalDesc": "The display name and identifier for your organization.",
+    "slugHint": "The unique URL identifier for this workspace.",
+    "updatedSuccess": "Workspace name updated.",
+    "dangerZone": "Danger Zone",
+    "dangerDesc": "Irreversible actions regarding your workspace membership and data.",
+    "leaveTitle": "Leave this workspace",
+    "leaveNote": "You will lose access to all resources in this organization.",
+    "leaveBtn": "Leave workspace",
+    "leaveConfirm": "Are you sure you want to leave this workspace?",
+    "leaveSuccess": "Left workspace successfully.",
+    "deleteTitle": "Delete workspace",
+    "deleteNote": "Permanently delete this organization, members, and all associated data.",
+    "deleteBtn": "Delete workspace",
+    "deleteConfirmTitle": "Delete Workspace",
+    "deleteConfirmDesc": "This action cannot be undone. To confirm, type your workspace slug below:",
+    "slugMismatch": "Slug confirmation does not match.",
+    "deleteSuccess": "Workspace deleted."
+  },
+  "apiKeys": {
+    "title": "API Keys",
+    "desc": "Authenticate programmatic requests and automation integrations.",
+    "createBtn": "Create Key",
+    "modalTitle": "Generate API Key",
+    "modalDesc": "Name your API key to remember its purpose (e.g. Zapier, GitHub Actions).",
+    "generate": "Generate Key",
+    "saveTitle": "Save Your API Key",
+    "saveDesc": "Make sure to copy your API key now. You will not be able to see it again!",
+    "createdSuccess": "API key generated.",
+    "revokedSuccess": "API key revoked.",
+    "revokeConfirm": "Revoke this API key? Any integration using it will immediately stop working.",
+    "empty": "No active API keys yet. Create one to get started.",
+    "lastUsed": "Last used {{date}}",
+    "neverUsed": "Never used"
+  },
+  "notifications": {
+    "bell": "Notifications",
+    "title": "Notifications",
+    "unread": "unread",
+    "markAllRead": "Mark all read",
+    "empty": "You have no notifications.",
+    "view": "View details →"
+  },
+  "sessions": {
+    "title": "Active Sessions",
+    "desc": "Devices and browsers currently logged into your account.",
+    "currentSession": "This device",
+    "revoke": "Revoke",
+    "revokeAllOthers": "Log out of other sessions",
+    "revoking": "Revoking…",
+    "revokeSuccess": "Session revoked.",
+    "revokeAllSuccess": "Other sessions revoked.",
+    "unknownDevice": "Unknown Device / Browser",
+    "lastActive": "Active {{date}}",
+    "ip": "IP: {{ip}}"
+  },
+  "paymentGateway": {
+    "title": "Payment Gateway",
+    "description": "Which gateway takes new payments, and its credentials. Secret keys are stored encrypted and never shown again.",
+    "source": {
+      "database": "Saved here",
+      "env": "From Worker settings",
+      "fake": "Local test mode"
+    },
+    "localFake": "This is local development: payments settle instantly with the fake gateway. Settings saved here apply once PAYMENT_MODE isn't \"fake\".",
+    "configKeyMissingTitle": "Encryption key not set",
+    "configKeyMissingBody": "Keys can't be saved until the PAYMENT_CONFIG_KEY Worker secret is set to 32+ random characters. Set it using:",
+    "provider": "Active gateway",
+    "environment": "Mode",
+    "env": {
+      "sandbox": "Sandbox (testing)",
+      "production": "Production (real money)"
+    },
+    "productionWarning": "Production mode charges real money. Test with sandbox first.",
+    "doku": "DOKU",
+    "midtrans": "Midtrans",
+    "clientId": "Client ID",
+    "secretKey": "Secret Key",
+    "serverKey": "Server Key",
+    "keyState": {
+      "saved": "Saved",
+      "env": "From Worker settings",
+      "unreadable": "Can't be read — enter it again",
+      "missing": "Not set"
+    },
+    "enterKey": "Paste the key",
+    "keepKey": "Leave empty to keep the current key",
+    "remove": "Remove saved key",
+    "undoRemove": "Keep saved key",
+    "test": "Test",
+    "testHint": "Test checks the saved keys against the provider without creating a transaction.",
+    "testOk": "{{where}}: keys work.",
+    "testMissing": "{{where}}: no keys saved.",
+    "testFail": "{{where}}: keys rejected ({{detail}}).",
+    "notifyUrl": "Webhook Notification URL for the gateway dashboard:",
+    "copy": "Copy URL",
+    "copied": "URL copied.",
+    "save": "Save payment settings",
+    "saved": "Payment settings saved.",
+    "notReady": "Saved, but the active gateway has no keys for this mode, so new payments are off."
+  },
+  "cookieConsent": {
+    "title": "Cookie & Privacy Notice",
+    "body": "We use strictly necessary cookies to ensure secure authentication, session integrity, and system reliability. Learn more in our",
+    "privacyPolicy": "Privacy Policy",
+    "essential": "Essential Only",
+    "acceptAll": "Accept All",
+    "close": "Close"
+  },
+  "feedback": {
+    "trigger": "Report Bug / Feedback",
+    "title": "Submit Feedback or Bug Report",
+    "description": "Encountered a bug or have an idea? Telemetry and current page context are automatically attached.",
+    "categoryLabel": "Category",
+    "categoryBug": "Bug",
+    "categoryFeature": "Feature",
+    "categoryGeneral": "General",
+    "severityLabel": "Severity Level",
+    "summaryLabel": "Summary",
+    "summaryPlaceholderBug": "e.g. Navigation drawer does not close on mobile",
+    "summaryPlaceholderFeature": "e.g. Add webhook retry logs",
+    "detailsLabel": "Details & Steps to Reproduce",
+    "detailsPlaceholder": "What happened? What were you expecting instead?",
+    "submitBtn": "Send Feedback",
+    "submitting": "Sending…",
+    "success": "Feedback submitted successfully! Thank you.",
+    "failed": "Failed to submit feedback. Please try again."
   }
 }

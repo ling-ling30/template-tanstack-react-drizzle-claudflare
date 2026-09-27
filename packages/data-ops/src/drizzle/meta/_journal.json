@@ -29,6 +29,13 @@
       "when": 1790229791607,
       "tag": "0003_wild_ego",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1790470309134,
+      "tag": "0004_panoramic_nightcrawler",
+      "breakpoints": true
     }
   ]
 }

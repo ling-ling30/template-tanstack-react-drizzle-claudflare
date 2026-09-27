@@ -7,6 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
+import { TeamMembersCard } from "@/components/team/team-members-card";
 
 export const Route = createFileRoute("/$organizationSlug/app/")({
   component: OrganizationAppPage,
@@ -26,7 +27,11 @@ function OrganizationAppPage() {
           <CardDescription>{t("orgApp.shellNote")}</CardDescription>
         </CardHeader>
       </Card>
-      <EmptyState title={t("orgApp.title")} description={t("orgApp.shellNote")} />
+      <TeamMembersCard />
+      <EmptyState
+        title={t("orgApp.title")}
+        description={t("orgApp.shellNote")}
+      />
     </section>
   );
 }

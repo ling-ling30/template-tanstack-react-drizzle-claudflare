@@ -15,3 +15,10 @@ export const siteSettings = sqliteTable("site_settings", {
   ogImage: text("og_image"),
   updatedAt: text("updated_at").notNull(),
 });
+
+export * from "./audit-schema";
+export * from "./api-keys-schema";
+export * from "./notifications-schema";
+export * from "./payment-config-schema";
+export * from "./payments-schema";
+export * from "./feedback-schema";

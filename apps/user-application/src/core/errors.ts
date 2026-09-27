@@ -12,8 +12,8 @@ import i18n from "@/i18n/config";
  * can also do: `const { t } = useTranslation(); t(\`errors.${error.code}\`)`.
  */
 export function getErrorMessage(error: AppError): string {
-  const key = `errors.${error.code}` as const;
-  const translated = i18n.t(key);
+  const key = `errors.${error.code}`;
+  const translated = i18n.t(key as any);
   // i18next returns the key itself when missing — fall back to the raw message.
-  return translated === key ? error.message : translated;
+  return translated === key ? error.message : String(translated);
 }

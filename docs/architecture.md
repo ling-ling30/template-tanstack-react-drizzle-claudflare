@@ -43,11 +43,16 @@ flowchart TD
 | Server functions (RPC)                   | `apps/user-application/src/core/functions/`                                                                |
 | Global server-fn middleware (CSRF/error) | registered in `src/start.ts`                                                                               |
 | Runtime boot (db/auth/env)               | `src/core/runtime.ts`, `src/core/env.ts`                                                                   |
-| Auth config                              | `packages/data-ops/src/auth/server.ts`                                                                     |
+| Auth config & RBAC rules                 | `packages/data-ops/src/auth/server.ts`, `packages/data-ops/src/auth/access-control.ts`                     |
+| Client RBAC Provider & Gates             | `apps/user-application/src/components/auth/rbac.tsx` (`<Can>`, `<RoleGate>`)                               |
 | DB schema + migrations                   | `packages/data-ops/src/drizzle/`                                                                           |
 | Reusable DB queries                      | `packages/data-ops/src/queries/`                                                                           |
-| Validation schemas                       | `packages/data-ops/src/zod-schema/`                                                                        |
+| Validation schemas (shared)              | `packages/data-ops/src/zod-schema/`                                                                        |
 | UI primitives (shadcn)                   | `apps/user-application/src/components/ui/`                                                                 |
+| In-app feedback & bug reporter           | `components/feedback/feedback-dialog.tsx`, `core/functions/feedback.ts`                                    |
+| Payment Gateways (Midtrans & DOKU)       | `core/payments/` (AES-GCM `secret-box`, webhooks, gateway adapters)                                        |
+| Legal & Cookie Compliance                | `routes/terms.tsx`, `routes/privacy.tsx`, `components/legal/cookie-consent.tsx`                            |
+| SEO & Crawler controls                   | `routes/robots[.]txt.tsx`, `routes/sitemap[.]xml.tsx`, `utils/seo.ts`                                      |
 | i18n                                     | `apps/user-application/src/i18n/`                                                                          |
 | Security (headers, rate limit)           | `apps/user-application/src/core/security/`                                                                 |
 | Email shell + HTML templates             | `apps/user-application/src/core/email/`                                                                    |
@@ -62,12 +67,15 @@ flowchart TD
 | `/`                        | Marketing landing + feature guide                                | public         |
 | `/showcase`                | Live component + capability gallery                              | public         |
 | `/todos`                   | Mock form example                                                | public         |
-| `/sitemap.xml`             | Dynamic sitemap                                                  | public         |
+| `/terms`                   | Terms of Service & acceptable use agreement                      | public         |
+| `/privacy`                 | Privacy policy (GDPR & CCPA edge disclosures)                    | public         |
+| `/robots.txt`              | Crawler rules (protects internal routes)                         | public         |
+| `/sitemap.xml`             | Dynamic search-engine sitemap with priorities                    | public         |
 | `/login`                   | Sign in (platform admins → `/dashboard`, others → `/onboarding`) | public         |
 | `/signup`                  | Self-serve account sign-up                                       | public         |
 | `/onboarding`              | Pick one of your orgs or create one (you become owner)           | signed in      |
 | `/$organizationSlug/login` | Org login                                                        | public         |
-| `/$organizationSlug/app`   | Organization workspace shell                                     | org member     |
+| `/$organizationSlug/app`   | Organization workspace shell (RBAC-aware)                        | org member     |
 | `/dashboard`               | Admin dashboard shell                                            | platform admin |
 | `/dashboard/account`       | Profile + change password + sign out                             | platform admin |
 | `/dashboard/settings`      | Site settings + Open Graph editor                                | platform admin |

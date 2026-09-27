@@ -14,7 +14,8 @@
     "cancel": "Batal",
     "delete": "Hapus",
     "edit": "Ubah",
-    "create": "Buat"
+    "create": "Buat",
+    "submitting": "Mengirim…"
   },
   "common": {
     "loading": "Memuat…",
@@ -46,9 +47,13 @@
     "UNSUPPORTED_FILE_TYPE": "Jenis file tidak didukung.",
     "STORAGE_WRITE_FAILED": "Gagal menyimpan file.",
     "DATABASE_WRITE_FAILED": "Gagal menyimpan data.",
+    "PAYMENT_NOT_CONFIGURED": "Pembayaran belum dikonfigurasi.",
+    "PAYMENT_CONFIG_KEY_MISSING": "Kunci enkripsi konfigurasi pembayaran belum diatur.",
+    "FEEDBACK_FAILED": "Tidak dapat mencatat masukan saat ini. Silakan coba lagi nanti.",
     "INTERNAL": "Terjadi kesalahan sistem.",
     "loadFailed": "Gagal memuat data."
   },
+
   "nav": {
     "dashboard": "Dasbor",
     "settings": "Pengaturan",
@@ -284,5 +289,164 @@
     "previousPage": "Halaman sebelumnya",
     "nextPage": "Halaman berikutnya",
     "lastPage": "Halaman terakhir"
+  },
+  "fieldErrors": {
+    "tooShort": "Minimal {{count}} karakter.",
+    "tooLong": "Maksimal {{count}} karakter.",
+    "format": "Format ini tidak valid.",
+    "required": "Wajib diisi.",
+    "invalid": "Silakan periksa kembali bagian ini.",
+    "date": "Format tanggal tidak valid.",
+    "time": "Format waktu tidak valid."
+  },
+  "fieldNames": {
+    "name": "Nama",
+    "email": "Email",
+    "password": "Kata sandi",
+    "title": "Judul",
+    "slug": "Slug",
+    "description": "Deskripsi",
+    "url": "URL"
+  },
+  "team": {
+    "title": "Anggota Tim",
+    "desc": "Berkolaborasi dengan rekan tim di ruang kerja ini.",
+    "emptyHint": "Kelola peran, izin, dan undangan yang tertunda.",
+    "inviteMember": "Undang anggota",
+    "inviteDesc": "Kirim email undangan untuk berkolaborasi di ruang kerja ini.",
+    "roleLabel": "Peran",
+    "sendInvite": "Kirim undangan",
+    "inviteSent": "Undangan telah dikirim ke {{email}}."
+  },
+  "workspaceSettings": {
+    "title": "Pengaturan Ruang Kerja",
+    "subtitle": "Kelola detail ruang kerja, preferensi tim, dan akses.",
+    "general": "Informasi Umum",
+    "generalDesc": "Nama tampilan dan pengenal untuk organisasi Anda.",
+    "slugHint": "Pengenal URL unik untuk ruang kerja ini.",
+    "updatedSuccess": "Nama ruang kerja telah diperbarui.",
+    "dangerZone": "Zona Bahaya",
+    "dangerDesc": "Tindakan permanen terkait keanggotaan dan data ruang kerja Anda.",
+    "leaveTitle": "Tinggalkan ruang kerja ini",
+    "leaveNote": "Anda akan kehilangan akses ke seluruh data di organisasi ini.",
+    "leaveBtn": "Tinggalkan ruang kerja",
+    "leaveConfirm": "Apakah Anda yakin ingin meninggalkan ruang kerja ini?",
+    "leaveSuccess": "Berhasil meninggalkan ruang kerja.",
+    "deleteTitle": "Hapus ruang kerja",
+    "deleteNote": "Hapus permanen organisasi ini, anggota, dan seluruh data terkait.",
+    "deleteBtn": "Hapus ruang kerja",
+    "deleteConfirmTitle": "Hapus Ruang Kerja",
+    "deleteConfirmDesc": "Tindakan ini tidak dapat dibatalkan. Untuk mengonfirmasi, ketik slug ruang kerja di bawah ini:",
+    "slugMismatch": "Konfirmasi slug tidak sesuai.",
+    "deleteSuccess": "Ruang kerja telah dihapus."
+  },
+  "apiKeys": {
+    "title": "Kunci API",
+    "desc": "Otentikasi permintaan terprogram dan integrasi otomatisasi.",
+    "createBtn": "Buat Kunci",
+    "modalTitle": "Buat Kunci API",
+    "modalDesc": "Beri nama kunci API Anda agar mudah diingat fungsinya (mis. Zapier, GitHub Actions).",
+    "generate": "Buat Kunci",
+    "saveTitle": "Simpan Kunci API Anda",
+    "saveDesc": "Pastikan Anda menyalin kunci API ini sekarang. Anda tidak akan dapat melihatnya lagi!",
+    "createdSuccess": "Kunci API telah dibuat.",
+    "revokedSuccess": "Kunci API telah dicabut.",
+    "revokeConfirm": "Cabut kunci API ini? Setiap integrasi yang menggunakannya akan segera berhenti berfungsi.",
+    "empty": "Belum ada kunci API aktif. Buat sekarang untuk memulai.",
+    "lastUsed": "Terakhir digunakan {{date}}",
+    "neverUsed": "Belum pernah digunakan"
+  },
+  "notifications": {
+    "bell": "Notifikasi",
+    "title": "Notifikasi",
+    "unread": "belum dibaca",
+    "markAllRead": "Tandai semua dibaca",
+    "empty": "Tidak ada notifikasi.",
+    "view": "Lihat detail →"
+  },
+  "sessions": {
+    "title": "Sesi Aktif",
+    "desc": "Perangkat dan peramban yang sedang masuk ke akun Anda.",
+    "currentSession": "Perangkat ini",
+    "revoke": "Cabut",
+    "revokeAllOthers": "Keluar dari sesi lain",
+    "revoking": "Mencabut…",
+    "revokeSuccess": "Sesi berhasil dicabut.",
+    "revokeAllSuccess": "Sesi lain berhasil dicabut.",
+    "unknownDevice": "Perangkat / Peramban Tidak Diketahui",
+    "lastActive": "Aktif {{date}}",
+    "ip": "IP: {{ip}}"
+  },
+  "paymentGateway": {
+    "title": "Payment Gateway",
+    "description": "Gateway yang dipakai untuk pembayaran baru, beserta kredensialnya. Secret key disimpan terenkripsi dan tidak ditampilkan lagi.",
+    "source": {
+      "database": "Tersimpan di sini",
+      "env": "Dari pengaturan Worker",
+      "fake": "Mode uji lokal"
+    },
+    "localFake": "Ini development lokal: pembayaran langsung lunas lewat gateway palsu. Pengaturan di sini berlaku kalau PAYMENT_MODE bukan \"fake\".",
+    "configKeyMissingTitle": "Kunci enkripsi belum diatur",
+    "configKeyMissingBody": "Kunci belum bisa disimpan sebelum secret Worker PAYMENT_CONFIG_KEY berisi 32+ karakter acak. Atur menggunakan:",
+    "provider": "Gateway aktif",
+    "environment": "Mode",
+    "env": {
+      "sandbox": "Sandbox (uji coba)",
+      "production": "Production (uang asli)"
+    },
+    "productionWarning": "Mode production menarik uang asli. Uji dulu dengan sandbox.",
+    "doku": "DOKU",
+    "midtrans": "Midtrans",
+    "clientId": "Client ID",
+    "secretKey": "Secret Key",
+    "serverKey": "Server Key",
+    "keyState": {
+      "saved": "Tersimpan",
+      "env": "Dari pengaturan Worker",
+      "unreadable": "Tidak terbaca — masukkan lagi",
+      "missing": "Belum diisi"
+    },
+    "enterKey": "Tempel kuncinya",
+    "keepKey": "Kosongkan untuk tetap memakai kunci sekarang",
+    "remove": "Hapus kunci tersimpan",
+    "undoRemove": "Batal hapus",
+    "test": "Tes",
+    "testHint": "Tes memeriksa kunci yang sudah tersimpan ke provider tanpa membuat transaksi.",
+    "testOk": "{{where}}: kunci berfungsi.",
+    "testMissing": "{{where}}: belum ada kunci tersimpan.",
+    "testFail": "{{where}}: kunci ditolak ({{detail}}).",
+    "notifyUrl": "Webhook Notification URL untuk dashboard gateway:",
+    "copy": "Salin URL",
+    "copied": "URL disalin.",
+    "save": "Simpan pengaturan pembayaran",
+    "saved": "Pengaturan pembayaran tersimpan.",
+    "notReady": "Tersimpan, tapi gateway aktif belum punya kunci untuk mode ini, jadi pembayaran baru mati."
+  },
+  "cookieConsent": {
+    "title": "Pemberitahuan Cookie & Privasi",
+    "body": "Kami menggunakan cookie yang benar-benar penting untuk menjamin autentikasi aman, integritas sesi, dan keandalan sistem. Pelajari selengkapnya di",
+    "privacyPolicy": "Kebijakan Privasi",
+    "essential": "Hanya yang Penting",
+    "acceptAll": "Terima Semua",
+    "close": "Tutup"
+  },
+  "feedback": {
+    "trigger": "Laporkan Bug / Masukan",
+    "title": "Kirim Masukan atau Laporan Bug",
+    "description": "Menemukan bug atau punya ide? Telemetri dan konteks halaman akan otomatis disertakan.",
+    "categoryLabel": "Kategori",
+    "categoryBug": "Bug",
+    "categoryFeature": "Fitur",
+    "categoryGeneral": "Umum",
+    "severityLabel": "Tingkat Keparahan",
+    "summaryLabel": "Ringkasan",
+    "summaryPlaceholderBug": "cth. Menu navigasi tidak dapat ditutup di perangkat seluler",
+    "summaryPlaceholderFeature": "cth. Tambahkan log pengulangan webhook",
+    "detailsLabel": "Detail & Langkah Mereproduksi",
+    "detailsPlaceholder": "Apa yang terjadi? Apa yang Anda harapkan terjadi?",
+    "submitBtn": "Kirim Masukan",
+    "submitting": "Mengirim…",
+    "success": "Masukan berhasil dikirim! Terima kasih.",
+    "failed": "Gagal mengirim masukan. Silakan coba lagi."
   }
 }

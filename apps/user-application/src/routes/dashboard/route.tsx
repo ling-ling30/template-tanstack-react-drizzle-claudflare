@@ -15,6 +15,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 
 export const Route = createFileRoute("/dashboard")({
   // UX gate only: every platform server function re-checks on its own.
@@ -59,6 +60,7 @@ function DashboardLayout() {
             {t(titleKeyForPath(pathname))}
           </h1>
           <div className="ml-auto flex items-center gap-2">
+            <NotificationBell />
             <LanguageSwitcher />
             <ThemeToggle />
           </div>
