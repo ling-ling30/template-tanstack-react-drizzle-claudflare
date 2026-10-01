@@ -37,11 +37,12 @@ export type ValidatedEnv = z.infer<typeof envSchema>;
 export function validateEnv(env: unknown): ValidatedEnv {
   const result = envSchema.safeParse(env);
   if (!result.success) {
-    logger.fatal(
-      "Environment validation failed",
-      result.error.flatten().fieldErrors
-    );
-    throw new Error("Invalid environment configuration. Check server logs.", {
+    const fieldErrors = result.error.flatten().fieldErrors;
+    logger.fatal("Environment validation failed", fieldErrors);
+    const details = Object.entries(fieldErrors)
+      .map(([k, v]) => `${k}: ${v?.join(", ")}`)
+      .join("; ");
+    throw new Error(`Invalid environment configuration: ${details}`, {
       cause: result.error,
     });
   }

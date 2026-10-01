@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "saas-template-app",
+  "name": "template-tanstack-react-drizzle-claudflare",
   "compatibility_date": "2026-05-21",
   "compatibility_flags": ["nodejs_compat"],
   "main": "./src/server.ts",
@@ -19,7 +19,7 @@
     }
   ],
   "vars": {
-    "BETTER_AUTH_URL": "http://localhost:3030",
+    "BETTER_AUTH_URL": "https://template-tanstack-react-drizzle-claudflare.rickyjay567.workers.dev",
     "PLATFORM_ADMIN_EMAILS": "owner@example.com"
   }
-}
+}
