@@ -6,6 +6,9 @@ vi.mock("@/core/functions/platform-organizations", () => ({
   getPlatformOrganizationFn: vi.fn(),
   listPlatformOrganizationsFn: vi.fn(),
 }));
+vi.mock("@/core/functions/platform-settings", () => ({
+  getOrganizationPolicyFn: vi.fn(),
+}));
 vi.mock("@/core/functions/platform-users", () => ({
   getPlatformStatsFn: vi.fn(),
   listPlatformUsersFn: vi.fn(),

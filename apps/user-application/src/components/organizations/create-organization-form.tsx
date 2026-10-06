@@ -1,11 +1,16 @@
 import { useForm } from "@tanstack/react-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { FieldError } from "@/components/forms/field-error";
 import { SubmitButton } from "@/components/forms/submit-button";
+import { organizationKeys } from "@/core/queries/organizations";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+
+/** Better Auth's error code when the platform policy blocks creating one. */
+const CREATE_NOT_ALLOWED = "YOU_ARE_NOT_ALLOWED_TO_CREATE_A_NEW_ORGANIZATION";
 
 /**
  * Self-serve org creation. Better Auth makes the signed-in user the org's
@@ -21,6 +26,7 @@ export function CreateOrganizationForm({
   onCreated: (organization: { slug: string }) => void;
 }) {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const form = useForm({
     defaultValues: { name: "" },
@@ -30,10 +36,18 @@ export function CreateOrganizationForm({
         slug: crypto.randomUUID(),
       });
       if (error || !data) {
-        toast.error(t("orgForm.saveFailed"));
+        // The platform policy can cap how many organizations one user creates.
+        toast.error(
+          error?.code === CREATE_NOT_ALLOWED
+            ? t("orgForm.limitReached")
+            : t("orgForm.saveFailed")
+        );
+        // The policy (or the user's count) may have changed; refresh the UI.
+        await queryClient.invalidateQueries({ queryKey: organizationKeys.all });
         return;
       }
       form.reset();
+      await queryClient.invalidateQueries({ queryKey: organizationKeys.all });
       onCreated({ slug: data.slug });
     },
   });

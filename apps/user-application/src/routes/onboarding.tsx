@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { CreateOrganizationForm } from "@/components/organizations/create-organization-form";
 import { Skeleton } from "@/components/ui/skeleton";
+import { organizationCreationStatusQuery } from "@/core/queries/organizations";
 import { authClient, useSession } from "@/lib/auth-client";
 
 export const Route = createFileRoute("/onboarding")({
@@ -19,6 +21,11 @@ function OnboardingPage() {
   const navigate = useNavigate();
   const { data: session, isPending } = useSession();
   const organizations = authClient.useListOrganizations();
+  // Only once signed in: the status is per-user and needs a session.
+  const creation = useQuery({
+    ...organizationCreationStatusQuery(),
+    enabled: !!session,
+  });
 
   useEffect(() => {
     if (!isPending && !session) navigate({ to: "/login" });
@@ -65,10 +72,22 @@ function OnboardingPage() {
         </section>
       ) : null}
 
-      <section className="space-y-2">
-        <h2 className="font-medium">{t("onboarding.createTitle")}</h2>
-        <CreateOrganizationForm onCreated={({ slug }) => openWorkspace(slug)} />
-      </section>
+      {creation.data?.canCreate === false ? (
+        <p className="text-muted-foreground text-sm">
+          {t("onboarding.limitReached")}
+        </p>
+      ) : (
+        <section className="space-y-2">
+          <h2 className="font-medium">{t("onboarding.createTitle")}</h2>
+          {creation.isPending ? (
+            <Skeleton className="h-24 w-full" />
+          ) : (
+            <CreateOrganizationForm
+              onCreated={({ slug }) => openWorkspace(slug)}
+            />
+          )}
+        </section>
+      )}
     </main>
   );
 }

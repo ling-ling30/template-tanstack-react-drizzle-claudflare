@@ -1,6 +1,7 @@
 import { adminRoles } from "@/auth/access-control";
 import { organizationPluginOptions } from "@/auth/organization-options";
 import type { AppDatabase } from "@/database/setup";
+import { canUserCreateOrganization } from "@/queries/organization-policy";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin } from "better-auth/plugins/admin";
@@ -100,7 +101,14 @@ export function createAuth(config: AuthConfig) {
         adminRoles: ["platform_admin"],
         roles: adminRoles,
       }),
-      organization(organizationPluginOptions),
+      organization({
+        ...organizationPluginOptions,
+        // Self-serve creation follows the platform's organization policy
+        // (platform settings: one organization per user, or several). Server-side
+        // provisioning on behalf of a user bypasses this gate in Better Auth.
+        allowUserToCreateOrganization: (user) =>
+          canUserCreateOrganization(config.adapter.drizzleDb, user.id),
+      }),
       username(),
     ],
   });

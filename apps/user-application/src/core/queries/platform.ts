@@ -3,6 +3,7 @@ import {
   getPlatformOrganizationFn,
   listPlatformOrganizationsFn,
 } from "@/core/functions/platform-organizations";
+import { getOrganizationPolicyFn } from "@/core/functions/platform-settings";
 import {
   getPlatformStatsFn,
   listPlatformUsersFn,
@@ -18,6 +19,8 @@ import {
 export const platformKeys = {
   all: ["platform"] as const,
   stats: () => [...platformKeys.all, "stats"] as const,
+  organizationPolicy: () =>
+    [...platformKeys.all, "organization-policy"] as const,
   organizations: (params: PlatformListParams) =>
     [...platformKeys.all, "organizations", params] as const,
   organization: (id: string) =>
@@ -42,6 +45,12 @@ export const platformStatsQuery = () =>
   queryOptions({
     queryKey: platformKeys.stats(),
     queryFn: () => getPlatformStatsFn(),
+  });
+
+export const organizationPolicyQuery = () =>
+  queryOptions({
+    queryKey: platformKeys.organizationPolicy(),
+    queryFn: () => getOrganizationPolicyFn(),
   });
 
 export const platformOrganizationsQuery = (params: PlatformListParams) =>

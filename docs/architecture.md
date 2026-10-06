@@ -78,7 +78,7 @@ flowchart TD
 | `/$organizationSlug/dashboard` | Organization workspace shell (RBAC-aware)                        | org member     |
 | `/dashboard`                   | Admin dashboard shell                                            | platform admin |
 | `/dashboard/account`           | Profile + change password + sign out                             | platform admin |
-| `/dashboard/settings`          | Site settings + Open Graph editor                                | platform admin |
+| `/dashboard/settings`          | Site settings, Open Graph editor, org limit                      | platform admin |
 | `/dashboard/organizations`     | Organization oversight (list, status)                            | platform admin |
 | `/health`, `/ready`            | Liveness / readiness probes                                      | public         |
 | `/api/auth/$`                  | Better Auth handler (rate-limited)                               | —              |

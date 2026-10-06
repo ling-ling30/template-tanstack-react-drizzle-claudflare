@@ -265,7 +265,8 @@
     "nameRequired": "Nama wajib diisi",
     "save": "Simpan",
     "create": "Buat organisasi",
-    "saveFailed": "Gagal menyimpan organisasi."
+    "saveFailed": "Gagal menyimpan organisasi.",
+    "limitReached": "Anda tidak dapat membuat organisasi lagi di platform ini."
   },
   "status": {
     "active": "Aktif",
@@ -275,7 +276,8 @@
     "title": "Organisasi Anda",
     "subtitle": "Buka organisasi atau buat yang baru.",
     "yourOrgs": "Organisasi tempat Anda bergabung",
-    "createTitle": "Buat organisasi"
+    "createTitle": "Buat organisasi",
+    "limitReached": "Anda sudah memiliki organisasi. Platform ini hanya mengizinkan satu per pengguna, jadi buka dari daftar di atas."
   },
   "roles": {
     "owner": "Pemilik",
@@ -448,5 +450,13 @@
     "submitting": "Mengirim…",
     "success": "Masukan berhasil dikirim! Terima kasih.",
     "failed": "Gagal mengirim masukan. Silakan coba lagi."
+  },
+  "orgPolicy": {
+    "title": "Organisasi",
+    "description": "Atur berapa banyak organisasi yang dapat dibuat setiap pengguna.",
+    "allowMultiple": "Izinkan pengguna membuat beberapa organisasi",
+    "allowMultipleHint": "Jika dimatikan, setiap pengguna hanya dapat membuat satu organisasi. Pengguna yang sudah memiliki beberapa tetap memilikinya dan tetap dapat diundang ke organisasi lain.",
+    "saved": "Kebijakan organisasi disimpan.",
+    "saveError": "Gagal menyimpan kebijakan organisasi."
   }
 }

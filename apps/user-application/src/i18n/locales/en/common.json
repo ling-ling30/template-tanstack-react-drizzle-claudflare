@@ -265,7 +265,8 @@
     "nameRequired": "Name is required",
     "save": "Save",
     "create": "Create organization",
-    "saveFailed": "Failed to save organization."
+    "saveFailed": "Failed to save organization.",
+    "limitReached": "You can't create another organization on this platform."
   },
   "status": {
     "active": "Active",
@@ -275,7 +276,8 @@
     "title": "Your organizations",
     "subtitle": "Open an organization or create a new one.",
     "yourOrgs": "Organizations you belong to",
-    "createTitle": "Create an organization"
+    "createTitle": "Create an organization",
+    "limitReached": "You already have your organization. This platform allows one per user, so open it from the list above."
   },
   "roles": {
     "owner": "Owner",
@@ -448,5 +450,13 @@
     "submitting": "Sending…",
     "success": "Feedback submitted successfully! Thank you.",
     "failed": "Failed to submit feedback. Please try again."
+  },
+  "orgPolicy": {
+    "title": "Organizations",
+    "description": "Control how many organizations each user can create.",
+    "allowMultiple": "Allow users to create multiple organizations",
+    "allowMultipleHint": "When off, each user can create one organization. Users who already own several keep them and can still be invited to others.",
+    "saved": "Organization policy saved.",
+    "saveError": "Failed to save the organization policy."
   }
 }

@@ -97,6 +97,8 @@ packages/data-ops/src/
 - Organizations are Better Auth's `organization` table — the **only** org table. Create orgs and
   change membership through Better Auth (`authClient.organization.create`, `auth.api.addMember`);
   never add an app-level copy. Users sign up at `/signup` and create their own org at `/onboarding`.
+  How many a user may create (one or several) is the platform setting `allowMultipleOrganizations`,
+  enforced in `createAuth` via `canUserCreateOrganization` — not in the UI.
 - Platform-admin access uses `checkPlatformAdminStatusFn` / the `requirePlatformAdmin` pattern,
   gated on `PLATFORM_ADMIN_EMAILS`.
 - Client-side auth checks (e.g. `<RequirePermission>`) are **UX only** — never the security boundary.

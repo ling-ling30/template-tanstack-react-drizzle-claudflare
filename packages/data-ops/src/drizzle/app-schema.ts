@@ -22,3 +22,4 @@ export * from "./notifications-schema";
 export * from "./payment-config-schema";
 export * from "./payments-schema";
 export * from "./feedback-schema";
+export * from "./platform-settings-schema";

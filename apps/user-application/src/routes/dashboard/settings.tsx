@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { SubmitButton } from "@/components/forms/submit-button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OrganizationPolicyCard } from "@/components/platform/organization-policy-card";
 import { PaymentGatewayCard } from "@/components/platform/payment-gateway-card";
 
 export const Route = createFileRoute("/dashboard/settings")({
@@ -212,6 +213,9 @@ function SettingsPage() {
           </form.Subscribe>
         </CardContent>
       </Card>
+
+      {/* Organization creation policy */}
+      <OrganizationPolicyCard />
 
       {/* Payment Gateway Configuration */}
       <PaymentGatewayCard />

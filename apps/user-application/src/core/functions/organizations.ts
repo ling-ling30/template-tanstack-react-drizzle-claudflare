@@ -1,7 +1,11 @@
 import { getDb } from "@repo/data-ops/database/setup";
 import { getOrganizationBySlug } from "@repo/data-ops/queries/organizations";
+import { canUserCreateOrganization } from "@repo/data-ops/queries/organization-policy";
 import { createServerFn } from "@tanstack/react-start";
-import { requireOrganizationContext } from "@/core/auth/context";
+import {
+  requireAuthContext,
+  requireOrganizationContext,
+} from "@/core/auth/context";
 import { z } from "zod";
 import { zodInput } from "@/core/validation/zod-input";
 
@@ -33,3 +37,15 @@ export const getOrganizationWorkspaceFn = createServerFn({ method: "GET" })
     const { organization, role } = await requireOrganizationContext(data);
     return { organization, role };
   });
+
+/**
+ * Can the caller create another organization of their own? Drives the
+ * /onboarding UI only: Better Auth enforces the same platform policy on every
+ * create, so hiding the form is not the security boundary.
+ */
+export const getOrganizationCreationStatusFn = createServerFn({
+  method: "GET",
+}).handler(async () => {
+  const { user } = await requireAuthContext();
+  return { canCreate: await canUserCreateOrganization(getDb(), user.id) };
+});

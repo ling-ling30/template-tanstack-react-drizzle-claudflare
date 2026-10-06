@@ -58,6 +58,21 @@ Users sign up (`/signup`) and create their own org (`/onboarding`), becoming its
 Platform admins oversee orgs (list, disable) but do not create them and get no implicit
 access inside an org.
 
+**Organization creation limit.** Whether a user may create several organizations or only one is a
+platform setting (`platform_settings.allow_multiple_organizations`, default: several), toggled by
+platform admins at `/dashboard/settings`. It is enforced where creation happens: `createAuth` passes
+Better Auth's `allowUserToCreateOrganization` a function backed by `canUserCreateOrganization`
+(`data-ops/queries/organization-policy.ts`), so `/onboarding` hiding the form is only UX. When the
+setting is off, "one" counts organizations the user **owns**: an invitation to someone else's
+organization doesn't use it up, and users who already own several keep them. Better Auth skips this
+gate for server-side provisioning on a user's behalf (`auth.api.createOrganization` with a `userId`
+and no session), so such code paths are not capped.
+
+Known limitation (Rulebook §11a): the check runs just before Better Auth inserts the organization,
+and D1 can't wrap both in a transaction, so two simultaneous creates by the same user can both pass.
+That is acceptable for a product policy (not money or a security boundary); the extra organization
+shows up in the platform dashboard and can be disabled there.
+
 ## Membership and roles are enforced server-side
 
 `requireOrganizationContext` requires active-org membership and returns the caller's role;

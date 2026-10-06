@@ -12,7 +12,9 @@ import { accessControl, organizationRoles } from "./access-control";
 export const organizationPluginOptions = {
   ac: accessControl,
   roles: organizationRoles,
-  // Self-serve: any signed-in user can create an org and becomes its owner.
+  // Self-serve: a signed-in user can create an org and becomes its owner.
+  // `createAuth` replaces this with the platform's organization policy at
+  // runtime; the schema generator has no database, so it keeps this value.
   allowUserToCreateOrganization: true,
   schema: {
     organization: {
