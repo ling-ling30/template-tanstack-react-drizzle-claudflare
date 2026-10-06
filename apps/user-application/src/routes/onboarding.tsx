@@ -1,13 +1,25 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useNavigate,
+} from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { CreateOrganizationForm } from "@/components/organizations/create-organization-form";
 import { Skeleton } from "@/components/ui/skeleton";
+import { checkPlatformAdminStatusFn } from "@/core/functions/auth-status";
 import { organizationCreationStatusQuery } from "@/core/queries/organizations";
 import { authClient, useSession } from "@/lib/auth-client";
 
 export const Route = createFileRoute("/onboarding")({
+  // Platform admins have no organization to pick: straight to their dashboard.
+  beforeLoad: async () => {
+    if (await checkPlatformAdminStatusFn()) {
+      throw redirect({ to: "/dashboard" });
+    }
+  },
   component: OnboardingPage,
 });
 

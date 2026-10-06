@@ -1,11 +1,19 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  redirect,
+  useNavigate,
+} from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { resolvePostLoginPath } from "@/core/auth/post-login";
 import { validateLoginSearch } from "@/core/auth/safe-redirect";
-import { checkPlatformAdminStatusFn } from "@/core/functions/auth-status";
+import {
+  checkPlatformAdminStatusFn,
+  getSignedInHomeInputFn,
+} from "@/core/functions/auth-status";
 import { authClient, signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
 
@@ -13,6 +21,15 @@ export const Route = createFileRoute("/login")({
   // `redirect` is where a route guard sent the user from. Untrusted input:
   // only same-site paths survive (see validateLoginSearch).
   validateSearch: validateLoginSearch,
+  // Already signed in: skip the form and go where a fresh sign-in would.
+  beforeLoad: async ({ search }) => {
+    const home = await getSignedInHomeInputFn();
+    if (home) {
+      throw redirect({
+        href: resolvePostLoginPath({ redirect: search.redirect, ...home }),
+      });
+    }
+  },
   component: LoginPage,
 });
 

@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { getSignedInHomeInputFn } from "@/core/functions/auth-status";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,15 @@ import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/$organizationSlug/login")({
+  // Already signed in: go straight to the workspace (it re-checks membership).
+  beforeLoad: async ({ params }) => {
+    if (await getSignedInHomeInputFn()) {
+      throw redirect({
+        to: "/$organizationSlug/dashboard",
+        params: { organizationSlug: params.organizationSlug },
+      });
+    }
+  },
   component: OrganizationLoginPage,
 });
 
