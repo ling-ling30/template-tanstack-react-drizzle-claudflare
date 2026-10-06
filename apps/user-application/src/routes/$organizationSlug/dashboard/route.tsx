@@ -19,7 +19,7 @@ import { NotificationBell } from "@/components/notifications/notification-bell";
 import { FeedbackDialog } from "@/components/feedback/feedback-dialog";
 import { RbacProvider } from "@/components/auth/rbac";
 
-export const Route = createFileRoute("/$organizationSlug/app")({
+export const Route = createFileRoute("/$organizationSlug/dashboard")({
   // Server-verified membership gate. Child routes read `organization` / `role`
   // from route context; every server function still re-checks on its own.
   beforeLoad: async ({ params, location }) => {

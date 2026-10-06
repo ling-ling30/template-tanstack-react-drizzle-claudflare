@@ -8,593 +8,593 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
-import { Route as HealthRouteImport } from './routes/health'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ReadyRouteImport } from './routes/ready'
-import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
-import { Route as ShowcaseRouteImport } from './routes/showcase'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as TodosRouteImport } from './routes/todos'
-import { Route as OrganizationSlugAppRouteRouteImport } from './routes/$organizationSlug/app/route'
-import { Route as OrganizationSlugLoginRouteImport } from './routes/$organizationSlug/login'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardAccountRouteImport } from './routes/dashboard/account'
-import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
-import { Route as DashboardUsersRouteImport } from './routes/dashboard/users'
-import { Route as DevEmailsRouteImport } from './routes/dev.emails'
-import { Route as OrganizationSlugAppIndexRouteImport } from './routes/$organizationSlug/app/index'
-import { Route as OrganizationSlugAppSettingsRouteImport } from './routes/$organizationSlug/app/settings'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
-import { Route as ApiPaymentsDokuRouteImport } from './routes/api/payments/doku'
-import { Route as ApiPaymentsFakeRouteImport } from './routes/api/payments/fake'
-import { Route as ApiPaymentsMidtransRouteImport } from './routes/api/payments/midtrans'
-import { Route as DashboardOrganizationsIndexRouteImport } from './routes/dashboard/organizations.index'
-import { Route as DashboardOrganizationsOrganizationIdRouteImport } from './routes/dashboard/organizations.$organizationId'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as DashboardRouteRouteImport } from "./routes/dashboard/route";
+import { Route as HealthRouteImport } from "./routes/health";
+import { Route as LoginRouteImport } from "./routes/login";
+import { Route as OnboardingRouteImport } from "./routes/onboarding";
+import { Route as PrivacyRouteImport } from "./routes/privacy";
+import { Route as ReadyRouteImport } from "./routes/ready";
+import { Route as RobotsDottxtRouteImport } from "./routes/robots[.]txt";
+import { Route as ShowcaseRouteImport } from "./routes/showcase";
+import { Route as SignupRouteImport } from "./routes/signup";
+import { Route as SitemapDotxmlRouteImport } from "./routes/sitemap[.]xml";
+import { Route as TermsRouteImport } from "./routes/terms";
+import { Route as TodosRouteImport } from "./routes/todos";
+import { Route as OrganizationSlugDashboardRouteRouteImport } from "./routes/$organizationSlug/dashboard/route";
+import { Route as OrganizationSlugLoginRouteImport } from "./routes/$organizationSlug/login";
+import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
+import { Route as DashboardAccountRouteImport } from "./routes/dashboard/account";
+import { Route as DashboardSettingsRouteImport } from "./routes/dashboard/settings";
+import { Route as DashboardUsersRouteImport } from "./routes/dashboard/users";
+import { Route as DevEmailsRouteImport } from "./routes/dev.emails";
+import { Route as OrganizationSlugDashboardIndexRouteImport } from "./routes/$organizationSlug/dashboard/index";
+import { Route as OrganizationSlugDashboardSettingsRouteImport } from "./routes/$organizationSlug/dashboard/settings";
+import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth.$";
+import { Route as ApiPaymentsDokuRouteImport } from "./routes/api/payments/doku";
+import { Route as ApiPaymentsFakeRouteImport } from "./routes/api/payments/fake";
+import { Route as ApiPaymentsMidtransRouteImport } from "./routes/api/payments/midtrans";
+import { Route as DashboardOrganizationsIndexRouteImport } from "./routes/dashboard/organizations.index";
+import { Route as DashboardOrganizationsOrganizationIdRouteImport } from "./routes/dashboard/organizations.$organizationId";
 
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+  id: "/dashboard",
+  path: "/dashboard",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const HealthRoute = HealthRouteImport.update({
-  id: '/health',
-  path: '/health',
+  id: "/health",
+  path: "/health",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
+  id: "/onboarding",
+  path: "/onboarding",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
+  id: "/privacy",
+  path: "/privacy",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ReadyRoute = ReadyRouteImport.update({
-  id: '/ready',
-  path: '/ready',
+  id: "/ready",
+  path: "/ready",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
-  id: '/robots.txt',
-  path: '/robots.txt',
+  id: "/robots.txt",
+  path: "/robots.txt",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ShowcaseRoute = ShowcaseRouteImport.update({
-  id: '/showcase',
-  path: '/showcase',
+  id: "/showcase",
+  path: "/showcase",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
+  id: "/signup",
+  path: "/signup",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+  id: "/sitemap.xml",
+  path: "/sitemap.xml",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
+  id: "/terms",
+  path: "/terms",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const TodosRoute = TodosRouteImport.update({
-  id: '/todos',
-  path: '/todos',
+  id: "/todos",
+  path: "/todos",
   getParentRoute: () => rootRouteImport,
-} as any)
-const OrganizationSlugAppRouteRoute =
-  OrganizationSlugAppRouteRouteImport.update({
-    id: '/$organizationSlug/app',
-    path: '/$organizationSlug/app',
+} as any);
+const OrganizationSlugDashboardRouteRoute =
+  OrganizationSlugDashboardRouteRouteImport.update({
+    id: "/$organizationSlug/dashboard",
+    path: "/$organizationSlug/dashboard",
     getParentRoute: () => rootRouteImport,
-  } as any)
+  } as any);
 const OrganizationSlugLoginRoute = OrganizationSlugLoginRouteImport.update({
-  id: '/$organizationSlug/login',
-  path: '/$organizationSlug/login',
+  id: "/$organizationSlug/login",
+  path: "/$organizationSlug/login",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const DashboardAccountRoute = DashboardAccountRouteImport.update({
-  id: '/account',
-  path: '/account',
+  id: "/account",
+  path: "/account",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+  id: "/settings",
+  path: "/settings",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const DashboardUsersRoute = DashboardUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
+  id: "/users",
+  path: "/users",
   getParentRoute: () => DashboardRouteRoute,
-} as any)
+} as any);
 const DevEmailsRoute = DevEmailsRouteImport.update({
-  id: '/dev/emails',
-  path: '/dev/emails',
+  id: "/dev/emails",
+  path: "/dev/emails",
   getParentRoute: () => rootRouteImport,
-} as any)
-const OrganizationSlugAppIndexRoute =
-  OrganizationSlugAppIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => OrganizationSlugAppRouteRoute,
-  } as any)
-const OrganizationSlugAppSettingsRoute =
-  OrganizationSlugAppSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => OrganizationSlugAppRouteRoute,
-  } as any)
+} as any);
+const OrganizationSlugDashboardIndexRoute =
+  OrganizationSlugDashboardIndexRouteImport.update({
+    id: "/",
+    path: "/",
+    getParentRoute: () => OrganizationSlugDashboardRouteRoute,
+  } as any);
+const OrganizationSlugDashboardSettingsRoute =
+  OrganizationSlugDashboardSettingsRouteImport.update({
+    id: "/settings",
+    path: "/settings",
+    getParentRoute: () => OrganizationSlugDashboardRouteRoute,
+  } as any);
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
+  id: "/api/auth/$",
+  path: "/api/auth/$",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ApiPaymentsDokuRoute = ApiPaymentsDokuRouteImport.update({
-  id: '/api/payments/doku',
-  path: '/api/payments/doku',
+  id: "/api/payments/doku",
+  path: "/api/payments/doku",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ApiPaymentsFakeRoute = ApiPaymentsFakeRouteImport.update({
-  id: '/api/payments/fake',
-  path: '/api/payments/fake',
+  id: "/api/payments/fake",
+  path: "/api/payments/fake",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ApiPaymentsMidtransRoute = ApiPaymentsMidtransRouteImport.update({
-  id: '/api/payments/midtrans',
-  path: '/api/payments/midtrans',
+  id: "/api/payments/midtrans",
+  path: "/api/payments/midtrans",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DashboardOrganizationsIndexRoute =
   DashboardOrganizationsIndexRouteImport.update({
-    id: '/organizations/',
-    path: '/organizations/',
+    id: "/organizations/",
+    path: "/organizations/",
     getParentRoute: () => DashboardRouteRoute,
-  } as any)
+  } as any);
 const DashboardOrganizationsOrganizationIdRoute =
   DashboardOrganizationsOrganizationIdRouteImport.update({
-    id: '/organizations/$organizationId',
-    path: '/organizations/$organizationId',
+    id: "/organizations/$organizationId",
+    path: "/organizations/$organizationId",
     getParentRoute: () => DashboardRouteRoute,
-  } as any)
+  } as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/health': typeof HealthRoute
-  '/login': typeof LoginRoute
-  '/onboarding': typeof OnboardingRoute
-  '/privacy': typeof PrivacyRoute
-  '/ready': typeof ReadyRoute
-  '/robots.txt': typeof RobotsDottxtRoute
-  '/showcase': typeof ShowcaseRoute
-  '/signup': typeof SignupRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/terms': typeof TermsRoute
-  '/todos': typeof TodosRoute
-  '/$organizationSlug/app': typeof OrganizationSlugAppRouteRouteWithChildren
-  '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
-  '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/users': typeof DashboardUsersRoute
-  '/dev/emails': typeof DevEmailsRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/$organizationSlug/app/settings': typeof OrganizationSlugAppSettingsRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/payments/doku': typeof ApiPaymentsDokuRoute
-  '/api/payments/fake': typeof ApiPaymentsFakeRoute
-  '/api/payments/midtrans': typeof ApiPaymentsMidtransRoute
-  '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
-  '/$organizationSlug/app/': typeof OrganizationSlugAppIndexRoute
-  '/dashboard/organizations/': typeof DashboardOrganizationsIndexRoute
+  "/": typeof IndexRoute;
+  "/dashboard": typeof DashboardRouteRouteWithChildren;
+  "/health": typeof HealthRoute;
+  "/login": typeof LoginRoute;
+  "/onboarding": typeof OnboardingRoute;
+  "/privacy": typeof PrivacyRoute;
+  "/ready": typeof ReadyRoute;
+  "/robots.txt": typeof RobotsDottxtRoute;
+  "/showcase": typeof ShowcaseRoute;
+  "/signup": typeof SignupRoute;
+  "/sitemap.xml": typeof SitemapDotxmlRoute;
+  "/terms": typeof TermsRoute;
+  "/todos": typeof TodosRoute;
+  "/$organizationSlug/dashboard": typeof OrganizationSlugDashboardRouteRouteWithChildren;
+  "/$organizationSlug/login": typeof OrganizationSlugLoginRoute;
+  "/dashboard/account": typeof DashboardAccountRoute;
+  "/dashboard/settings": typeof DashboardSettingsRoute;
+  "/dashboard/users": typeof DashboardUsersRoute;
+  "/dev/emails": typeof DevEmailsRoute;
+  "/dashboard/": typeof DashboardIndexRoute;
+  "/$organizationSlug/dashboard/settings": typeof OrganizationSlugDashboardSettingsRoute;
+  "/api/auth/$": typeof ApiAuthSplatRoute;
+  "/api/payments/doku": typeof ApiPaymentsDokuRoute;
+  "/api/payments/fake": typeof ApiPaymentsFakeRoute;
+  "/api/payments/midtrans": typeof ApiPaymentsMidtransRoute;
+  "/dashboard/organizations/$organizationId": typeof DashboardOrganizationsOrganizationIdRoute;
+  "/$organizationSlug/dashboard/": typeof OrganizationSlugDashboardIndexRoute;
+  "/dashboard/organizations/": typeof DashboardOrganizationsIndexRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/health': typeof HealthRoute
-  '/login': typeof LoginRoute
-  '/onboarding': typeof OnboardingRoute
-  '/privacy': typeof PrivacyRoute
-  '/ready': typeof ReadyRoute
-  '/robots.txt': typeof RobotsDottxtRoute
-  '/showcase': typeof ShowcaseRoute
-  '/signup': typeof SignupRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/terms': typeof TermsRoute
-  '/todos': typeof TodosRoute
-  '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
-  '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/users': typeof DashboardUsersRoute
-  '/dev/emails': typeof DevEmailsRoute
-  '/dashboard': typeof DashboardIndexRoute
-  '/$organizationSlug/app/settings': typeof OrganizationSlugAppSettingsRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/payments/doku': typeof ApiPaymentsDokuRoute
-  '/api/payments/fake': typeof ApiPaymentsFakeRoute
-  '/api/payments/midtrans': typeof ApiPaymentsMidtransRoute
-  '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
-  '/$organizationSlug/app': typeof OrganizationSlugAppIndexRoute
-  '/dashboard/organizations': typeof DashboardOrganizationsIndexRoute
+  "/": typeof IndexRoute;
+  "/health": typeof HealthRoute;
+  "/login": typeof LoginRoute;
+  "/onboarding": typeof OnboardingRoute;
+  "/privacy": typeof PrivacyRoute;
+  "/ready": typeof ReadyRoute;
+  "/robots.txt": typeof RobotsDottxtRoute;
+  "/showcase": typeof ShowcaseRoute;
+  "/signup": typeof SignupRoute;
+  "/sitemap.xml": typeof SitemapDotxmlRoute;
+  "/terms": typeof TermsRoute;
+  "/todos": typeof TodosRoute;
+  "/$organizationSlug/login": typeof OrganizationSlugLoginRoute;
+  "/dashboard/account": typeof DashboardAccountRoute;
+  "/dashboard/settings": typeof DashboardSettingsRoute;
+  "/dashboard/users": typeof DashboardUsersRoute;
+  "/dev/emails": typeof DevEmailsRoute;
+  "/dashboard": typeof DashboardIndexRoute;
+  "/$organizationSlug/dashboard/settings": typeof OrganizationSlugDashboardSettingsRoute;
+  "/api/auth/$": typeof ApiAuthSplatRoute;
+  "/api/payments/doku": typeof ApiPaymentsDokuRoute;
+  "/api/payments/fake": typeof ApiPaymentsFakeRoute;
+  "/api/payments/midtrans": typeof ApiPaymentsMidtransRoute;
+  "/dashboard/organizations/$organizationId": typeof DashboardOrganizationsOrganizationIdRoute;
+  "/$organizationSlug/dashboard": typeof OrganizationSlugDashboardIndexRoute;
+  "/dashboard/organizations": typeof DashboardOrganizationsIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/health': typeof HealthRoute
-  '/login': typeof LoginRoute
-  '/onboarding': typeof OnboardingRoute
-  '/privacy': typeof PrivacyRoute
-  '/ready': typeof ReadyRoute
-  '/robots.txt': typeof RobotsDottxtRoute
-  '/showcase': typeof ShowcaseRoute
-  '/signup': typeof SignupRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/terms': typeof TermsRoute
-  '/todos': typeof TodosRoute
-  '/$organizationSlug/app': typeof OrganizationSlugAppRouteRouteWithChildren
-  '/$organizationSlug/login': typeof OrganizationSlugLoginRoute
-  '/dashboard/account': typeof DashboardAccountRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/users': typeof DashboardUsersRoute
-  '/dev/emails': typeof DevEmailsRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/$organizationSlug/app/settings': typeof OrganizationSlugAppSettingsRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/payments/doku': typeof ApiPaymentsDokuRoute
-  '/api/payments/fake': typeof ApiPaymentsFakeRoute
-  '/api/payments/midtrans': typeof ApiPaymentsMidtransRoute
-  '/dashboard/organizations/$organizationId': typeof DashboardOrganizationsOrganizationIdRoute
-  '/$organizationSlug/app/': typeof OrganizationSlugAppIndexRoute
-  '/dashboard/organizations/': typeof DashboardOrganizationsIndexRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/dashboard": typeof DashboardRouteRouteWithChildren;
+  "/health": typeof HealthRoute;
+  "/login": typeof LoginRoute;
+  "/onboarding": typeof OnboardingRoute;
+  "/privacy": typeof PrivacyRoute;
+  "/ready": typeof ReadyRoute;
+  "/robots.txt": typeof RobotsDottxtRoute;
+  "/showcase": typeof ShowcaseRoute;
+  "/signup": typeof SignupRoute;
+  "/sitemap.xml": typeof SitemapDotxmlRoute;
+  "/terms": typeof TermsRoute;
+  "/todos": typeof TodosRoute;
+  "/$organizationSlug/dashboard": typeof OrganizationSlugDashboardRouteRouteWithChildren;
+  "/$organizationSlug/login": typeof OrganizationSlugLoginRoute;
+  "/dashboard/account": typeof DashboardAccountRoute;
+  "/dashboard/settings": typeof DashboardSettingsRoute;
+  "/dashboard/users": typeof DashboardUsersRoute;
+  "/dev/emails": typeof DevEmailsRoute;
+  "/dashboard/": typeof DashboardIndexRoute;
+  "/$organizationSlug/dashboard/settings": typeof OrganizationSlugDashboardSettingsRoute;
+  "/api/auth/$": typeof ApiAuthSplatRoute;
+  "/api/payments/doku": typeof ApiPaymentsDokuRoute;
+  "/api/payments/fake": typeof ApiPaymentsFakeRoute;
+  "/api/payments/midtrans": typeof ApiPaymentsMidtransRoute;
+  "/dashboard/organizations/$organizationId": typeof DashboardOrganizationsOrganizationIdRoute;
+  "/$organizationSlug/dashboard/": typeof OrganizationSlugDashboardIndexRoute;
+  "/dashboard/organizations/": typeof DashboardOrganizationsIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/dashboard'
-    | '/health'
-    | '/login'
-    | '/onboarding'
-    | '/privacy'
-    | '/ready'
-    | '/robots.txt'
-    | '/showcase'
-    | '/signup'
-    | '/sitemap.xml'
-    | '/terms'
-    | '/todos'
-    | '/$organizationSlug/app'
-    | '/$organizationSlug/login'
-    | '/dashboard/account'
-    | '/dashboard/settings'
-    | '/dashboard/users'
-    | '/dev/emails'
-    | '/dashboard/'
-    | '/$organizationSlug/app/settings'
-    | '/api/auth/$'
-    | '/api/payments/doku'
-    | '/api/payments/fake'
-    | '/api/payments/midtrans'
-    | '/dashboard/organizations/$organizationId'
-    | '/$organizationSlug/app/'
-    | '/dashboard/organizations/'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | "/dashboard"
+    | "/health"
+    | "/login"
+    | "/onboarding"
+    | "/privacy"
+    | "/ready"
+    | "/robots.txt"
+    | "/showcase"
+    | "/signup"
+    | "/sitemap.xml"
+    | "/terms"
+    | "/todos"
+    | "/$organizationSlug/dashboard"
+    | "/$organizationSlug/login"
+    | "/dashboard/account"
+    | "/dashboard/settings"
+    | "/dashboard/users"
+    | "/dev/emails"
+    | "/dashboard/"
+    | "/$organizationSlug/dashboard/settings"
+    | "/api/auth/$"
+    | "/api/payments/doku"
+    | "/api/payments/fake"
+    | "/api/payments/midtrans"
+    | "/dashboard/organizations/$organizationId"
+    | "/$organizationSlug/dashboard/"
+    | "/dashboard/organizations/";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/health'
-    | '/login'
-    | '/onboarding'
-    | '/privacy'
-    | '/ready'
-    | '/robots.txt'
-    | '/showcase'
-    | '/signup'
-    | '/sitemap.xml'
-    | '/terms'
-    | '/todos'
-    | '/$organizationSlug/login'
-    | '/dashboard/account'
-    | '/dashboard/settings'
-    | '/dashboard/users'
-    | '/dev/emails'
-    | '/dashboard'
-    | '/$organizationSlug/app/settings'
-    | '/api/auth/$'
-    | '/api/payments/doku'
-    | '/api/payments/fake'
-    | '/api/payments/midtrans'
-    | '/dashboard/organizations/$organizationId'
-    | '/$organizationSlug/app'
-    | '/dashboard/organizations'
+    | "/"
+    | "/health"
+    | "/login"
+    | "/onboarding"
+    | "/privacy"
+    | "/ready"
+    | "/robots.txt"
+    | "/showcase"
+    | "/signup"
+    | "/sitemap.xml"
+    | "/terms"
+    | "/todos"
+    | "/$organizationSlug/login"
+    | "/dashboard/account"
+    | "/dashboard/settings"
+    | "/dashboard/users"
+    | "/dev/emails"
+    | "/dashboard"
+    | "/$organizationSlug/dashboard/settings"
+    | "/api/auth/$"
+    | "/api/payments/doku"
+    | "/api/payments/fake"
+    | "/api/payments/midtrans"
+    | "/dashboard/organizations/$organizationId"
+    | "/$organizationSlug/dashboard"
+    | "/dashboard/organizations";
   id:
-    | '__root__'
-    | '/'
-    | '/dashboard'
-    | '/health'
-    | '/login'
-    | '/onboarding'
-    | '/privacy'
-    | '/ready'
-    | '/robots.txt'
-    | '/showcase'
-    | '/signup'
-    | '/sitemap.xml'
-    | '/terms'
-    | '/todos'
-    | '/$organizationSlug/app'
-    | '/$organizationSlug/login'
-    | '/dashboard/account'
-    | '/dashboard/settings'
-    | '/dashboard/users'
-    | '/dev/emails'
-    | '/dashboard/'
-    | '/$organizationSlug/app/settings'
-    | '/api/auth/$'
-    | '/api/payments/doku'
-    | '/api/payments/fake'
-    | '/api/payments/midtrans'
-    | '/dashboard/organizations/$organizationId'
-    | '/$organizationSlug/app/'
-    | '/dashboard/organizations/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/dashboard"
+    | "/health"
+    | "/login"
+    | "/onboarding"
+    | "/privacy"
+    | "/ready"
+    | "/robots.txt"
+    | "/showcase"
+    | "/signup"
+    | "/sitemap.xml"
+    | "/terms"
+    | "/todos"
+    | "/$organizationSlug/dashboard"
+    | "/$organizationSlug/login"
+    | "/dashboard/account"
+    | "/dashboard/settings"
+    | "/dashboard/users"
+    | "/dev/emails"
+    | "/dashboard/"
+    | "/$organizationSlug/dashboard/settings"
+    | "/api/auth/$"
+    | "/api/payments/doku"
+    | "/api/payments/fake"
+    | "/api/payments/midtrans"
+    | "/dashboard/organizations/$organizationId"
+    | "/$organizationSlug/dashboard/"
+    | "/dashboard/organizations/";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
-  HealthRoute: typeof HealthRoute
-  LoginRoute: typeof LoginRoute
-  OnboardingRoute: typeof OnboardingRoute
-  PrivacyRoute: typeof PrivacyRoute
-  ReadyRoute: typeof ReadyRoute
-  RobotsDottxtRoute: typeof RobotsDottxtRoute
-  ShowcaseRoute: typeof ShowcaseRoute
-  SignupRoute: typeof SignupRoute
-  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  TermsRoute: typeof TermsRoute
-  TodosRoute: typeof TodosRoute
-  OrganizationSlugAppRouteRoute: typeof OrganizationSlugAppRouteRouteWithChildren
-  OrganizationSlugLoginRoute: typeof OrganizationSlugLoginRoute
-  DevEmailsRoute: typeof DevEmailsRoute
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiPaymentsDokuRoute: typeof ApiPaymentsDokuRoute
-  ApiPaymentsFakeRoute: typeof ApiPaymentsFakeRoute
-  ApiPaymentsMidtransRoute: typeof ApiPaymentsMidtransRoute
+  IndexRoute: typeof IndexRoute;
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
+  HealthRoute: typeof HealthRoute;
+  LoginRoute: typeof LoginRoute;
+  OnboardingRoute: typeof OnboardingRoute;
+  PrivacyRoute: typeof PrivacyRoute;
+  ReadyRoute: typeof ReadyRoute;
+  RobotsDottxtRoute: typeof RobotsDottxtRoute;
+  ShowcaseRoute: typeof ShowcaseRoute;
+  SignupRoute: typeof SignupRoute;
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute;
+  TermsRoute: typeof TermsRoute;
+  TodosRoute: typeof TodosRoute;
+  OrganizationSlugDashboardRouteRoute: typeof OrganizationSlugDashboardRouteRouteWithChildren;
+  OrganizationSlugLoginRoute: typeof OrganizationSlugLoginRoute;
+  DevEmailsRoute: typeof DevEmailsRoute;
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
+  ApiPaymentsDokuRoute: typeof ApiPaymentsDokuRoute;
+  ApiPaymentsFakeRoute: typeof ApiPaymentsFakeRoute;
+  ApiPaymentsMidtransRoute: typeof ApiPaymentsMidtransRoute;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/health': {
-      id: '/health'
-      path: '/health'
-      fullPath: '/health'
-      preLoaderRoute: typeof HealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ready': {
-      id: '/ready'
-      path: '/ready'
-      fullPath: '/ready'
-      preLoaderRoute: typeof ReadyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/robots.txt': {
-      id: '/robots.txt'
-      path: '/robots.txt'
-      fullPath: '/robots.txt'
-      preLoaderRoute: typeof RobotsDottxtRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/showcase': {
-      id: '/showcase'
-      path: '/showcase'
-      fullPath: '/showcase'
-      preLoaderRoute: typeof ShowcaseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/todos': {
-      id: '/todos'
-      path: '/todos'
-      fullPath: '/todos'
-      preLoaderRoute: typeof TodosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$organizationSlug/app': {
-      id: '/$organizationSlug/app'
-      path: '/$organizationSlug/app'
-      fullPath: '/$organizationSlug/app'
-      preLoaderRoute: typeof OrganizationSlugAppRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$organizationSlug/login': {
-      id: '/$organizationSlug/login'
-      path: '/$organizationSlug/login'
-      fullPath: '/$organizationSlug/login'
-      preLoaderRoute: typeof OrganizationSlugLoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/account': {
-      id: '/dashboard/account'
-      path: '/account'
-      fullPath: '/dashboard/account'
-      preLoaderRoute: typeof DashboardAccountRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/users': {
-      id: '/dashboard/users'
-      path: '/users'
-      fullPath: '/dashboard/users'
-      preLoaderRoute: typeof DashboardUsersRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dev/emails': {
-      id: '/dev/emails'
-      path: '/dev/emails'
-      fullPath: '/dev/emails'
-      preLoaderRoute: typeof DevEmailsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$organizationSlug/app/': {
-      id: '/$organizationSlug/app/'
-      path: '/'
-      fullPath: '/$organizationSlug/app/'
-      preLoaderRoute: typeof OrganizationSlugAppIndexRouteImport
-      parentRoute: typeof OrganizationSlugAppRouteRoute
-    }
-    '/$organizationSlug/app/settings': {
-      id: '/$organizationSlug/app/settings'
-      path: '/settings'
-      fullPath: '/$organizationSlug/app/settings'
-      preLoaderRoute: typeof OrganizationSlugAppSettingsRouteImport
-      parentRoute: typeof OrganizationSlugAppRouteRoute
-    }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/payments/doku': {
-      id: '/api/payments/doku'
-      path: '/api/payments/doku'
-      fullPath: '/api/payments/doku'
-      preLoaderRoute: typeof ApiPaymentsDokuRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/payments/fake': {
-      id: '/api/payments/fake'
-      path: '/api/payments/fake'
-      fullPath: '/api/payments/fake'
-      preLoaderRoute: typeof ApiPaymentsFakeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/payments/midtrans': {
-      id: '/api/payments/midtrans'
-      path: '/api/payments/midtrans'
-      fullPath: '/api/payments/midtrans'
-      preLoaderRoute: typeof ApiPaymentsMidtransRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/organizations/': {
-      id: '/dashboard/organizations/'
-      path: '/organizations'
-      fullPath: '/dashboard/organizations/'
-      preLoaderRoute: typeof DashboardOrganizationsIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/organizations/$organizationId': {
-      id: '/dashboard/organizations/$organizationId'
-      path: '/organizations/$organizationId'
-      fullPath: '/dashboard/organizations/$organizationId'
-      preLoaderRoute: typeof DashboardOrganizationsOrganizationIdRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/dashboard": {
+      id: "/dashboard";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof DashboardRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/health": {
+      id: "/health";
+      path: "/health";
+      fullPath: "/health";
+      preLoaderRoute: typeof HealthRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/login": {
+      id: "/login";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/onboarding": {
+      id: "/onboarding";
+      path: "/onboarding";
+      fullPath: "/onboarding";
+      preLoaderRoute: typeof OnboardingRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/privacy": {
+      id: "/privacy";
+      path: "/privacy";
+      fullPath: "/privacy";
+      preLoaderRoute: typeof PrivacyRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/ready": {
+      id: "/ready";
+      path: "/ready";
+      fullPath: "/ready";
+      preLoaderRoute: typeof ReadyRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/robots.txt": {
+      id: "/robots.txt";
+      path: "/robots.txt";
+      fullPath: "/robots.txt";
+      preLoaderRoute: typeof RobotsDottxtRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/showcase": {
+      id: "/showcase";
+      path: "/showcase";
+      fullPath: "/showcase";
+      preLoaderRoute: typeof ShowcaseRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/signup": {
+      id: "/signup";
+      path: "/signup";
+      fullPath: "/signup";
+      preLoaderRoute: typeof SignupRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/sitemap.xml": {
+      id: "/sitemap.xml";
+      path: "/sitemap.xml";
+      fullPath: "/sitemap.xml";
+      preLoaderRoute: typeof SitemapDotxmlRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/terms": {
+      id: "/terms";
+      path: "/terms";
+      fullPath: "/terms";
+      preLoaderRoute: typeof TermsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/todos": {
+      id: "/todos";
+      path: "/todos";
+      fullPath: "/todos";
+      preLoaderRoute: typeof TodosRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/$organizationSlug/dashboard": {
+      id: "/$organizationSlug/dashboard";
+      path: "/$organizationSlug/dashboard";
+      fullPath: "/$organizationSlug/dashboard";
+      preLoaderRoute: typeof OrganizationSlugDashboardRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/$organizationSlug/login": {
+      id: "/$organizationSlug/login";
+      path: "/$organizationSlug/login";
+      fullPath: "/$organizationSlug/login";
+      preLoaderRoute: typeof OrganizationSlugLoginRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/dashboard/": {
+      id: "/dashboard/";
+      path: "/";
+      fullPath: "/dashboard/";
+      preLoaderRoute: typeof DashboardIndexRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/account": {
+      id: "/dashboard/account";
+      path: "/account";
+      fullPath: "/dashboard/account";
+      preLoaderRoute: typeof DashboardAccountRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/settings": {
+      id: "/dashboard/settings";
+      path: "/settings";
+      fullPath: "/dashboard/settings";
+      preLoaderRoute: typeof DashboardSettingsRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/users": {
+      id: "/dashboard/users";
+      path: "/users";
+      fullPath: "/dashboard/users";
+      preLoaderRoute: typeof DashboardUsersRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dev/emails": {
+      id: "/dev/emails";
+      path: "/dev/emails";
+      fullPath: "/dev/emails";
+      preLoaderRoute: typeof DevEmailsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/$organizationSlug/dashboard/": {
+      id: "/$organizationSlug/dashboard/";
+      path: "/";
+      fullPath: "/$organizationSlug/dashboard/";
+      preLoaderRoute: typeof OrganizationSlugDashboardIndexRouteImport;
+      parentRoute: typeof OrganizationSlugDashboardRouteRoute;
+    };
+    "/$organizationSlug/dashboard/settings": {
+      id: "/$organizationSlug/dashboard/settings";
+      path: "/settings";
+      fullPath: "/$organizationSlug/dashboard/settings";
+      preLoaderRoute: typeof OrganizationSlugDashboardSettingsRouteImport;
+      parentRoute: typeof OrganizationSlugDashboardRouteRoute;
+    };
+    "/api/auth/$": {
+      id: "/api/auth/$";
+      path: "/api/auth/$";
+      fullPath: "/api/auth/$";
+      preLoaderRoute: typeof ApiAuthSplatRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/payments/doku": {
+      id: "/api/payments/doku";
+      path: "/api/payments/doku";
+      fullPath: "/api/payments/doku";
+      preLoaderRoute: typeof ApiPaymentsDokuRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/payments/fake": {
+      id: "/api/payments/fake";
+      path: "/api/payments/fake";
+      fullPath: "/api/payments/fake";
+      preLoaderRoute: typeof ApiPaymentsFakeRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/api/payments/midtrans": {
+      id: "/api/payments/midtrans";
+      path: "/api/payments/midtrans";
+      fullPath: "/api/payments/midtrans";
+      preLoaderRoute: typeof ApiPaymentsMidtransRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/dashboard/organizations/": {
+      id: "/dashboard/organizations/";
+      path: "/organizations";
+      fullPath: "/dashboard/organizations/";
+      preLoaderRoute: typeof DashboardOrganizationsIndexRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/organizations/$organizationId": {
+      id: "/dashboard/organizations/$organizationId";
+      path: "/organizations/$organizationId";
+      fullPath: "/dashboard/organizations/$organizationId";
+      preLoaderRoute: typeof DashboardOrganizationsOrganizationIdRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
   }
 }
 
 interface DashboardRouteRouteChildren {
-  DashboardAccountRoute: typeof DashboardAccountRoute
-  DashboardSettingsRoute: typeof DashboardSettingsRoute
-  DashboardUsersRoute: typeof DashboardUsersRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardOrganizationsOrganizationIdRoute: typeof DashboardOrganizationsOrganizationIdRoute
-  DashboardOrganizationsIndexRoute: typeof DashboardOrganizationsIndexRoute
+  DashboardAccountRoute: typeof DashboardAccountRoute;
+  DashboardSettingsRoute: typeof DashboardSettingsRoute;
+  DashboardUsersRoute: typeof DashboardUsersRoute;
+  DashboardIndexRoute: typeof DashboardIndexRoute;
+  DashboardOrganizationsOrganizationIdRoute: typeof DashboardOrganizationsOrganizationIdRoute;
+  DashboardOrganizationsIndexRoute: typeof DashboardOrganizationsIndexRoute;
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
@@ -605,27 +605,28 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardOrganizationsOrganizationIdRoute:
     DashboardOrganizationsOrganizationIdRoute,
   DashboardOrganizationsIndexRoute: DashboardOrganizationsIndexRoute,
-}
+};
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
-  DashboardRouteRouteChildren,
-)
+  DashboardRouteRouteChildren
+);
 
-interface OrganizationSlugAppRouteRouteChildren {
-  OrganizationSlugAppSettingsRoute: typeof OrganizationSlugAppSettingsRoute
-  OrganizationSlugAppIndexRoute: typeof OrganizationSlugAppIndexRoute
+interface OrganizationSlugDashboardRouteRouteChildren {
+  OrganizationSlugDashboardSettingsRoute: typeof OrganizationSlugDashboardSettingsRoute;
+  OrganizationSlugDashboardIndexRoute: typeof OrganizationSlugDashboardIndexRoute;
 }
 
-const OrganizationSlugAppRouteRouteChildren: OrganizationSlugAppRouteRouteChildren =
+const OrganizationSlugDashboardRouteRouteChildren: OrganizationSlugDashboardRouteRouteChildren =
   {
-    OrganizationSlugAppSettingsRoute: OrganizationSlugAppSettingsRoute,
-    OrganizationSlugAppIndexRoute: OrganizationSlugAppIndexRoute,
-  }
+    OrganizationSlugDashboardSettingsRoute:
+      OrganizationSlugDashboardSettingsRoute,
+    OrganizationSlugDashboardIndexRoute: OrganizationSlugDashboardIndexRoute,
+  };
 
-const OrganizationSlugAppRouteRouteWithChildren =
-  OrganizationSlugAppRouteRoute._addFileChildren(
-    OrganizationSlugAppRouteRouteChildren,
-  )
+const OrganizationSlugDashboardRouteRouteWithChildren =
+  OrganizationSlugDashboardRouteRoute._addFileChildren(
+    OrganizationSlugDashboardRouteRouteChildren
+  );
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -641,24 +642,25 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TodosRoute: TodosRoute,
-  OrganizationSlugAppRouteRoute: OrganizationSlugAppRouteRouteWithChildren,
+  OrganizationSlugDashboardRouteRoute:
+    OrganizationSlugDashboardRouteRouteWithChildren,
   OrganizationSlugLoginRoute: OrganizationSlugLoginRoute,
   DevEmailsRoute: DevEmailsRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiPaymentsDokuRoute: ApiPaymentsDokuRoute,
   ApiPaymentsFakeRoute: ApiPaymentsFakeRoute,
   ApiPaymentsMidtransRoute: ApiPaymentsMidtransRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
+import type { getRouter } from "./router.tsx";
+import type { startInstance } from "./start.ts";
+declare module "@tanstack/react-start" {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>;
   }
 }

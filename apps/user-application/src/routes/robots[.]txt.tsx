@@ -22,7 +22,7 @@ Allow: /terms
 Allow: /privacy
 Disallow: /api/
 Disallow: /dashboard/
-Disallow: /*/app/
+Disallow: /*/dashboard/
 
 Sitemap: ${origin}/sitemap.xml
 `;

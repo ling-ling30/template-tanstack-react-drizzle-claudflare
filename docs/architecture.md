@@ -62,26 +62,26 @@ flowchart TD
 
 ## Pages
 
-| Route                      | Purpose                                                          | Auth           |
-| -------------------------- | ---------------------------------------------------------------- | -------------- |
-| `/`                        | Marketing landing + feature guide                                | public         |
-| `/showcase`                | Live component + capability gallery                              | public         |
-| `/todos`                   | Mock form example                                                | public         |
-| `/terms`                   | Terms of Service & acceptable use agreement                      | public         |
-| `/privacy`                 | Privacy policy (GDPR & CCPA edge disclosures)                    | public         |
-| `/robots.txt`              | Crawler rules (protects internal routes)                         | public         |
-| `/sitemap.xml`             | Dynamic search-engine sitemap with priorities                    | public         |
-| `/login`                   | Sign in (platform admins → `/dashboard`, others → `/onboarding`) | public         |
-| `/signup`                  | Self-serve account sign-up                                       | public         |
-| `/onboarding`              | Pick one of your orgs or create one (you become owner)           | signed in      |
-| `/$organizationSlug/login` | Org login                                                        | public         |
-| `/$organizationSlug/app`   | Organization workspace shell (RBAC-aware)                        | org member     |
-| `/dashboard`               | Admin dashboard shell                                            | platform admin |
-| `/dashboard/account`       | Profile + change password + sign out                             | platform admin |
-| `/dashboard/settings`      | Site settings + Open Graph editor                                | platform admin |
-| `/dashboard/organizations` | Organization oversight (list, status)                            | platform admin |
-| `/health`, `/ready`        | Liveness / readiness probes                                      | public         |
-| `/api/auth/$`              | Better Auth handler (rate-limited)                               | —              |
+| Route                          | Purpose                                                          | Auth           |
+| ------------------------------ | ---------------------------------------------------------------- | -------------- |
+| `/`                            | Marketing landing + feature guide                                | public         |
+| `/showcase`                    | Live component + capability gallery                              | public         |
+| `/todos`                       | Mock form example                                                | public         |
+| `/terms`                       | Terms of Service & acceptable use agreement                      | public         |
+| `/privacy`                     | Privacy policy (GDPR & CCPA edge disclosures)                    | public         |
+| `/robots.txt`                  | Crawler rules (protects internal routes)                         | public         |
+| `/sitemap.xml`                 | Dynamic search-engine sitemap with priorities                    | public         |
+| `/login`                       | Sign in (platform admins → `/dashboard`, others → `/onboarding`) | public         |
+| `/signup`                      | Self-serve account sign-up                                       | public         |
+| `/onboarding`                  | Pick one of your orgs or create one (you become owner)           | signed in      |
+| `/$organizationSlug/login`     | Org login                                                        | public         |
+| `/$organizationSlug/dashboard` | Organization workspace shell (RBAC-aware)                        | org member     |
+| `/dashboard`                   | Admin dashboard shell                                            | platform admin |
+| `/dashboard/account`           | Profile + change password + sign out                             | platform admin |
+| `/dashboard/settings`          | Site settings + Open Graph editor                                | platform admin |
+| `/dashboard/organizations`     | Organization oversight (list, status)                            | platform admin |
+| `/health`, `/ready`            | Liveness / readiness probes                                      | public         |
+| `/api/auth/$`                  | Better Auth handler (rate-limited)                               | —              |
 
 ## Two ways the backend is reachable
 

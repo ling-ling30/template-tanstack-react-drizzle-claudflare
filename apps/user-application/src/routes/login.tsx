@@ -3,12 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  safeRedirectPath,
-  validateLoginSearch,
-} from "@/core/auth/safe-redirect";
+import { resolvePostLoginPath } from "@/core/auth/post-login";
+import { validateLoginSearch } from "@/core/auth/safe-redirect";
 import { checkPlatformAdminStatusFn } from "@/core/functions/auth-status";
-import { signIn } from "@/lib/auth-client";
+import { authClient, signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
@@ -17,6 +15,12 @@ export const Route = createFileRoute("/login")({
   validateSearch: validateLoginSearch,
   component: LoginPage,
 });
+
+/** Slugs of the signed-in user's organizations; empty if the lookup fails. */
+async function listOrganizationSlugs(): Promise<string[]> {
+  const { data } = await authClient.organization.list();
+  return data?.map((organization) => organization.slug) ?? [];
+}
 
 function LoginPage() {
   const { t } = useTranslation();
@@ -37,17 +41,21 @@ function LoginPage() {
           });
 
           if (!error) {
-            // Back to the page the guard bounced them from. Checked again here
-            // (defense in depth); the target route re-checks access itself.
-            const target = safeRedirectPath(redirect);
-            if (target) {
-              navigate({ href: target });
-              return;
-            }
-            // Platform admins go to the platform dashboard; everyone else
-            // picks (or creates) their organization.
+            // Back to the page the guard bounced them from, else their home:
+            // platform admins -> /dashboard, members -> their organization's
+            // dashboard. Checked again here (defense in depth); the target
+            // route re-checks access itself.
             const isPlatformAdmin = await checkPlatformAdminStatusFn();
-            navigate({ to: isPlatformAdmin ? "/dashboard" : "/onboarding" });
+            const organizationSlugs = isPlatformAdmin
+              ? []
+              : await listOrganizationSlugs();
+            navigate({
+              href: resolvePostLoginPath({
+                redirect,
+                isPlatformAdmin,
+                organizationSlugs,
+              }),
+            });
           } else {
             toast.error(t("platform.signInFailed"));
           }

@@ -35,7 +35,7 @@ function OnboardingPage() {
 
   const openWorkspace = (slug: string) =>
     navigate({
-      to: "/$organizationSlug/app",
+      to: "/$organizationSlug/dashboard",
       params: { organizationSlug: slug },
     });
 
@@ -53,7 +53,7 @@ function OnboardingPage() {
             {organizations.data.map((org) => (
               <li key={org.id}>
                 <Link
-                  to="/$organizationSlug/app"
+                  to="/$organizationSlug/dashboard"
                   params={{ organizationSlug: org.slug }}
                   className="hover:bg-accent flex items-center justify-between p-3"
                 >

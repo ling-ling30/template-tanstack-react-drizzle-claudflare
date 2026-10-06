@@ -9,7 +9,7 @@ import {
 import { EmptyState } from "@/components/ui/empty-state";
 import { TeamMembersCard } from "@/components/team/team-members-card";
 
-export const Route = createFileRoute("/$organizationSlug/app/")({
+export const Route = createFileRoute("/$organizationSlug/dashboard/")({
   component: OrganizationAppPage,
 });
 

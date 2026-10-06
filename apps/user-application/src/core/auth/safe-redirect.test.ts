@@ -5,7 +5,7 @@ describe("safeRedirectPath", () => {
   it.each([
     ["/dashboard", "/dashboard"],
     ["/dashboard/users?page=2", "/dashboard/users?page=2"],
-    ["/alice-wed/app#top", "/alice-wed/app#top"],
+    ["/alice-wed/dashboard#top", "/alice-wed/dashboard#top"],
   ])("keeps same-site path %s", (input, expected) => {
     expect(safeRedirectPath(input)).toBe(expected);
   });

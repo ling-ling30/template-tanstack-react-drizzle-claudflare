@@ -30,7 +30,7 @@ function OrganizationLoginPage() {
 
           if (!error) {
             navigate({
-              to: "/$organizationSlug/app",
+              to: "/$organizationSlug/dashboard",
               params: { organizationSlug },
             });
           } else {

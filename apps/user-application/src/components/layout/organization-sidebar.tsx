@@ -72,7 +72,7 @@ export function OrganizationSidebar({
                 <SidebarMenuButton asChild tooltip={t("orgApp.dashboard")}>
                   <Link
                     params={{ organizationSlug }}
-                    to="/$organizationSlug/app"
+                    to="/$organizationSlug/dashboard"
                     activeOptions={{ exact: true }}
                     activeProps={{ "data-active": "true" }}
                   >
@@ -89,7 +89,7 @@ export function OrganizationSidebar({
                 >
                   <Link
                     params={{ organizationSlug }}
-                    to="/$organizationSlug/app/settings"
+                    to="/$organizationSlug/dashboard/settings"
                     activeOptions={{ exact: true }}
                     activeProps={{ "data-active": "true" }}
                   >

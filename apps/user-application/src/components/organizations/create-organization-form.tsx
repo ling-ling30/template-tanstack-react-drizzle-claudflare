@@ -12,7 +12,7 @@ import { authClient } from "@/lib/auth-client";
  * `owner` member, so they pass `requireOrganizationContext` immediately.
  *
  * The user only names the org; its slug is a random UUID. Slugs appear in
- * workspace URLs (`/<slug>/app`), so a UUID can't be guessed or enumerated and
+ * workspace URLs (`/<slug>/dashboard`), so a UUID can't be guessed or enumerated and
  * never collides with another org's name.
  */
 export function CreateOrganizationForm({

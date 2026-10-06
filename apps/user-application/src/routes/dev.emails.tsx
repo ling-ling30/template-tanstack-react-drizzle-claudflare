@@ -51,7 +51,7 @@ const TEMPLATES: Record<
     render: () =>
       welcomeEmail({
         name: "Alex",
-        appUrl: "https://example.com/acme-corp/app",
+        appUrl: "https://example.com/acme-corp/dashboard",
       }),
   },
 };

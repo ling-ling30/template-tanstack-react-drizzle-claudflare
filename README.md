@@ -23,7 +23,7 @@ multi-language ready, and batteries-included. Built to be cloned and shipped, no
 
 **Pages** — marketing landing, `/showcase` (live component + capability gallery), org login,
 an **admin dashboard** (shadcn sidebar + header, responsive via Sheet) with organization
-management, account page, site settings with **Open Graph editor**, a **tenant workspace shell** (`/$organizationSlug/app`) with team invitation dialog and **workspace settings & danger zone** (`/$organizationSlug/app/settings`), **legal compliance pages** (`/terms`, `/privacy`), a dev-only **email template previewer** (`/dev/emails`), and a global **cookie consent notice** (`<CookieConsent />`).
+management, account page, site settings with **Open Graph editor**, a **tenant workspace shell** (`/$organizationSlug/dashboard`) with team invitation dialog and **workspace settings & danger zone** (`/$organizationSlug/dashboard/settings`), **legal compliance pages** (`/terms`, `/privacy`), a dev-only **email template previewer** (`/dev/emails`), and a global **cookie consent notice** (`<CookieConsent />`).
 
 **Backend** — a memoized server runtime (env-validated DB + auth, built once per isolate),
 typed server functions (RPC) with **global CSRF + error middleware**, org-scoped auth with **granular RBAC** (`owner`, `admin`, `member`, `viewer`),
@@ -66,24 +66,24 @@ See **[docs/quickstart.md](docs/quickstart.md)** for the full command table.
 
 ## 🗺️ Pages
 
-| Route                      | Purpose                                       | Access         |
-| -------------------------- | --------------------------------------------- | -------------- |
-| `/`                        | Marketing landing + feature guide             | public         |
-| `/showcase`                | Live component + capability gallery           | public         |
-| `/todos`                   | Mock form example (TanStack Form + server fn) | public         |
-| `/terms`                   | Terms of Service & acceptable use agreement   | public         |
-| `/privacy`                 | Privacy policy (GDPR & CCPA edge disclosures) | public         |
-| `/robots.txt`              | Crawler rules (protects internal routes)      | public         |
-| `/sitemap.xml`             | Dynamic search-engine sitemap with priorities | public         |
-| `/login`                   | Sign in (platform admin)                      | public         |
-| `/$organizationSlug/login` | Org login                                     | public         |
-| `/$organizationSlug/app`   | Organization workspace shell (RBAC-aware)     | org member     |
-| `/dashboard`               | Admin dashboard shell                         | platform admin |
-| `/dashboard/account`       | Profile, change password, sign out            | platform admin |
-| `/dashboard/settings`      | Site settings + Open Graph editor             | platform admin |
-| `/dashboard/organizations` | Organization oversight (list, status)         | platform admin |
-| `/health`, `/ready`        | Liveness / readiness probes                   | public         |
-| `/api/auth/$`              | Better Auth handler (rate-limited)            | —              |
+| Route                          | Purpose                                       | Access         |
+| ------------------------------ | --------------------------------------------- | -------------- |
+| `/`                            | Marketing landing + feature guide             | public         |
+| `/showcase`                    | Live component + capability gallery           | public         |
+| `/todos`                       | Mock form example (TanStack Form + server fn) | public         |
+| `/terms`                       | Terms of Service & acceptable use agreement   | public         |
+| `/privacy`                     | Privacy policy (GDPR & CCPA edge disclosures) | public         |
+| `/robots.txt`                  | Crawler rules (protects internal routes)      | public         |
+| `/sitemap.xml`                 | Dynamic search-engine sitemap with priorities | public         |
+| `/login`                       | Sign in (platform admin)                      | public         |
+| `/$organizationSlug/login`     | Org login                                     | public         |
+| `/$organizationSlug/dashboard` | Organization workspace shell (RBAC-aware)     | org member     |
+| `/dashboard`                   | Admin dashboard shell                         | platform admin |
+| `/dashboard/account`           | Profile, change password, sign out            | platform admin |
+| `/dashboard/settings`          | Site settings + Open Graph editor             | platform admin |
+| `/dashboard/organizations`     | Organization oversight (list, status)         | platform admin |
+| `/health`, `/ready`            | Liveness / readiness probes                   | public         |
+| `/api/auth/$`                  | Better Auth handler (rate-limited)            | —              |
 
 ## 🏗️ Project structure
 

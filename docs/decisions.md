@@ -99,5 +99,5 @@ updating payment statuses.
 Terms of Service and Privacy Policy pages are maintained as standard zero-dependency legal routes
 (`/terms`, `/privacy`) styled with theme tokens. A non-intrusive `<CookieConsent />` banner persists
 local user choice. An edge-rendered `robots.txt` explicitly disallows crawling of authenticated and
-sensitive paths (`/api/`, `/dashboard/`, `/*/app/`) while pointing search bots directly to the
+sensitive paths (`/api/`, `/dashboard/`, `/*/dashboard/`) while pointing search bots directly to the
 dynamic `sitemap.xml`.

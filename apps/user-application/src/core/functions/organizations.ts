@@ -24,7 +24,7 @@ export const getOrganizationBySlugFn = createServerFn({ method: "GET" })
   });
 
 /**
- * Server-side gate for the `/$organizationSlug/app` workspace: the caller must be
+ * Server-side gate for the `/$organizationSlug/dashboard` workspace: the caller must be
  * a member of an active org. Returns the org and the caller's role.
  */
 export const getOrganizationWorkspaceFn = createServerFn({ method: "GET" })

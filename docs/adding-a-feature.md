@@ -161,7 +161,7 @@ export function useNotes(organizationSlug: string) {
 }
 ```
 
-### 7. Route + UI — `apps/user-application/src/routes/$organizationSlug/app/notes.tsx`
+### 7. Route + UI — `apps/user-application/src/routes/$organizationSlug/dashboard/notes.tsx`
 
 Use `useTranslation()` — **no hardcoded strings**.
 
@@ -170,14 +170,14 @@ import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useNotes } from "@/hooks/use-notes";
 
-export const Route = createFileRoute("/$organizationSlug/app/notes")({
+export const Route = createFileRoute("/$organizationSlug/dashboard/notes")({
   component: NotesPage,
 });
 
 function NotesPage() {
   const { t } = useTranslation();
   const { organizationSlug } = useParams({
-    from: "/$organizationSlug/app/notes",
+    from: "/$organizationSlug/dashboard/notes",
   });
   const { data } = useNotes(organizationSlug);
   return (
